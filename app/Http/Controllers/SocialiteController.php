@@ -13,8 +13,19 @@ class SocialiteController extends Controller
     public function redirectToGoogle()
     {
         try {
+            Log::info('Redirecting to Google OAuth', [
+                'google_client_id' => env('GOOGLE_CLIENT_ID') ? 'Set' : 'Not Set',
+                'google_client_secret' => env('GOOGLE_CLIENT_SECRET') ? 'Set' : 'Not Set',
+                'google_redirect_uri' => env('GOOGLE_REDIRECT_URI'),
+                'app_url' => config('app.url')
+            ]);
+            
             return Socialite::driver('google')->redirect();
         } catch (\Exception $e) {
+            Log::error('Google OAuth redirect failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             return redirect('/login')->with('error', 'Something went wrong!');
         }
     }
@@ -22,6 +33,21 @@ class SocialiteController extends Controller
     public function handleGoogleCallback()
     {
         try {
+            Log::info('Google OAuth callback initiated', [
+                'request_url' => request()->fullUrl(),
+                'has_code' => request()->has('code'),
+                'has_state' => request()->has('state'),
+                'has_error' => request()->has('error')
+            ]);
+
+            if (request()->has('error')) {
+                Log::error('Google OAuth returned error', [
+                    'error' => request()->get('error'),
+                    'error_description' => request()->get('error_description')
+                ]);
+                return redirect('/login')->with('error', 'Google login was cancelled or failed.');
+            }
+
             $googleUser = Socialite::driver('google')->user();
             
             Log::info('Google OAuth Success', [

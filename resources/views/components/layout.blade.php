@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>Best Agadir Activity</title>
     <style>
         .swiper-pagination-bullet {
@@ -153,8 +153,6 @@
         }
     });
 </script>
-
-@vite(['resources/css/app.css', 'resources/js/app.js'])
     
 </body>
 </html>

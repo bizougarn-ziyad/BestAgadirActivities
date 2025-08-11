@@ -5,7 +5,7 @@
             "src": "api/index.php",
             "use": "vercel-php@0.7.2",
             "config": {
-                "includeFiles": "database/database.sqlite"
+                "includeFiles": "{database/database.sqlite,storage/**,bootstrap/cache/**}"
             }
         },
         {
@@ -23,16 +23,12 @@
             "dest": "public/$1/$2"
         },
         {
-            "src": "/css/(.*)",
-            "dest": "public/css/$1"
+            "src": "/favicon.ico",
+            "dest": "public/favicon.ico"
         },
         {
-            "src": "/js/(.*)",
-            "dest": "public/js/$1"
-        },
-        {
-            "src": "/images/(.*)",
-            "dest": "public/images/$1"
+            "src": "/robots.txt",
+            "dest": "public/robots.txt"
         },
         {
             "src": "/(.*)",
@@ -45,6 +41,7 @@
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "array",
         "CACHE_STORE": "array",
-        "QUEUE_CONNECTION": "sync"
+        "QUEUE_CONNECTION": "sync",
+        "VIEW_COMPILED_PATH": "/tmp"
     }
 }

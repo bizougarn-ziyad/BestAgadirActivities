@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Models\UserData;
 use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\Auth\LoginController;
@@ -21,6 +22,16 @@ Route::get('/test-userdata', function () {
 });
 
 Route::get('/login', function () {
+    // Check if user is already authenticated
+    if (Auth::check()) {
+        return redirect('/');
+    }
+    
+    // Check if user is admin (has admin session)
+    if (session('is_admin')) {
+        return redirect()->route('admin.dashboard');
+    }
+    
     return view('auth.login');
 })->name('login');
 
@@ -33,6 +44,13 @@ Route::controller(SocialiteController::class)->group(function () {
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+Route::get('/admin/dashboard', function () {
+    // Check if user is admin
+    if (!session('is_admin')) {
+        return redirect('/')->withErrors(['error' => 'Access denied.']);
+    }
+    return view('admin.dashboard');
+})->name('admin.dashboard');
 
 // Password Reset Routes
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])

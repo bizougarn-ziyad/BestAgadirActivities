@@ -18,13 +18,13 @@
                 <div class="bg-white p-8 w-full max-w-[450px] transition-all duration-300 border border-gray-200 rounded-lg shadow-lg {{ (isset($show_register) && $show_register) || session('show_register') || $errors->has('first_name') || $errors->has('last_name') || $errors->has('password_confirmation') ? 'hidden' : '' }}" id="login-form">
                     
                     @if(session('success'))
-                        <div class="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
+                        <div class="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-[12px]">
                             {{ session('success') }}
                         </div>
                     @endif
 
                     @if($errors->has('error'))
-                        <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                        <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-[12px]">
                             {{ $errors->first('error') }}
                         </div>
                     @endif
@@ -34,7 +34,7 @@
                         <p class="text-gray-600 mt-2">Please login to your account</p>
                     </div>
 
-                    <form class="space-y-6" method="POST" action="{{ route('login.post') }}">>
+                    <form class="space-y-6" method="POST" action="{{ route('login.post') }}">
                         @csrf
                         <div>
                             <label class="text-gray-700 text-sm font-semibold">Email Address</label>
@@ -92,7 +92,7 @@
                 <div class="bg-white p-8 w-full max-w-[450px] transition-all duration-300 {{ (isset($show_register) && $show_register) || session('show_register') || $errors->has('first_name') || $errors->has('last_name') || $errors->has('password_confirmation') || $errors->has('email') || $errors->has('password') || $errors->has('general') ? '' : 'hidden' }} mt-5 border border-gray-200 rounded-lg shadow-lg" id="sign-up-form">
                     
                     @if($errors->any())
-                        <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                        <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-[12px]">
                             @if($errors->has('general'))
                                 {{ $errors->first('general') }}
                             @elseif($errors->count() == 1)
@@ -118,33 +118,21 @@
                         <div>
                             <label class="text-gray-700 text-sm font-semibold">First Name</label>
                             <input type="text" name="first_name" required class="w-full mt-2 px-4 py-3 border {{ $errors->has('first_name') ? 'border-red-500' : 'border-gray-300' }} rounded-lg focus:outline-none focus:border-orange-500 transition-colors" placeholder="First name" value="{{ old('first_name') }}">
-                            @error('first_name')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
                         </div>
                         <div>
                             <label class="text-gray-700 text-sm font-semibold">Last Name</label>
                             <input type="text" name="last_name" required class="w-full mt-2 px-4 py-3 border {{ $errors->has('last_name') ? 'border-red-500' : 'border-gray-300' }} rounded-lg focus:outline-none focus:border-orange-500 transition-colors" placeholder="Last name" value="{{ old('last_name') }}">
-                            @error('last_name')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
                         </div>
                     </div>
 
                     <div>
                         <label class="text-gray-700 text-sm font-semibold">Email Address</label>
                         <input type="email" name="email" required class="w-full mt-2 px-4 py-3 border {{ $errors->has('email') ? 'border-red-500' : 'border-gray-300' }} rounded-lg focus:outline-none focus:border-orange-500 transition-colors" placeholder="Enter your email" value="{{ old('email') }}">
-                        @error('email')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
                     </div>
 
                     <div>
                         <label class="text-gray-700 text-sm font-semibold">Password</label>
                         <input type="password" name="password" required minlength="8" class="w-full mt-2 px-4 py-3 border {{ $errors->has('password') ? 'border-red-500' : 'border-gray-300' }} rounded-lg focus:outline-none focus:border-orange-500 transition-colors" placeholder="Create a password">
-                        @error('password')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
                     </div>
 
                     <div>

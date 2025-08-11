@@ -15,13 +15,16 @@ document.addEventListener('DOMContentLoaded', function () {
             input.classList.remove('border-red-500');
         });
 
-        // Clear input values
+        // Clear input values (except hidden inputs and CSRF tokens)
         const forms = [loginForm, signUpForm];
         forms.forEach(form => {
             if (form) {
                 const formInputs = form.querySelectorAll('input');
                 formInputs.forEach(input => {
-                    input.value = '';
+                    // Don't clear hidden inputs (like action, _token) or checkboxes
+                    if (input.type !== 'hidden' && input.type !== 'checkbox') {
+                        input.value = '';
+                    }
                 });
             }
         });

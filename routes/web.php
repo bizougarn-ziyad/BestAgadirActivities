@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use App\Models\UserData;
 use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\Auth\LoginController;
@@ -22,16 +23,27 @@ Route::get('/test-userdata', function () {
 });
 
 Route::get('/login', function () {
+    // Log current auth state
+    Log::info('Login page accessed', [
+        'auth_check' => Auth::check(),
+        'auth_user' => Auth::user() ? Auth::user()->id : null,
+        'session_id' => session()->getId(),
+        'is_admin' => session('is_admin', false)
+    ]);
+    
     // Check if user is already authenticated
     if (Auth::check()) {
+        Log::info('User is authenticated, redirecting to home');
         return redirect('/');
     }
     
     // Check if user is admin (has admin session)
     if (session('is_admin')) {
+        Log::info('Admin session found, redirecting to dashboard');
         return redirect()->route('admin.dashboard');
     }
     
+    Log::info('Showing login page');
     return view('auth.login');
 })->name('login');
 

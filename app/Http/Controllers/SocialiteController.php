@@ -59,7 +59,19 @@ class SocialiteController extends Controller
 
             // Log the user in
             Auth::login($user);
-            Log::info('User logged in successfully', ['user_id' => $user->id]);
+            Log::info('User logged in successfully', [
+                'user_id' => $user->id,
+                'auth_check_after_login' => Auth::check(),
+                'auth_user_after_login' => Auth::user() ? Auth::user()->id : null
+            ]);
+
+            // Force session regeneration
+            request()->session()->regenerate();
+            
+            Log::info('Session regenerated', [
+                'session_id' => session()->getId(),
+                'auth_check_after_regenerate' => Auth::check()
+            ]);
 
             return redirect('/')->with('success', 'Successfully logged in! Welcome back.');
 

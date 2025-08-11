@@ -3,7 +3,10 @@
     "builds": [
         {
             "src": "api/index.php",
-            "use": "vercel-php@0.7.2"
+            "use": "vercel-php@0.7.2",
+            "config": {
+                "includeFiles": "database/database.sqlite"
+            }
         },
         {
             "src": "public/**",
@@ -43,11 +46,5 @@
         "SESSION_DRIVER": "array",
         "CACHE_STORE": "array",
         "QUEUE_CONNECTION": "sync"
-    },
-    "functions": {
-        "api/index.php": {
-            "runtime": "vercel-php@0.7.2",
-            "includeFiles": "database/database.sqlite"
-        }
     }
 }

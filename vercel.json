@@ -38,7 +38,12 @@
         },
         {
             "src": "/(.*)",
-            "dest": "api/index.php"
+            "dest": "api/index.php",
+            "headers": {
+                "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+                "X-Frame-Options": "SAMEORIGIN",
+                "X-Content-Type-Options": "nosniff"
+            }
         }
     ],
     "env": {
@@ -57,6 +62,8 @@
         "VIEW_COMPILED_PATH": "/tmp",
         "LOG_LEVEL": "debug",
         "ASSET_URL": "https://vala-project-agadir.vercel.app",
-        "APP_URL": "https://vala-project-agadir.vercel.app"
+        "APP_URL": "https://vala-project-agadir.vercel.app",
+        "FORCE_HTTPS": "true",
+        "APP_FORCE_HTTPS": "true"
     }
 }

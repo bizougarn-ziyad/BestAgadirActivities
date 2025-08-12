@@ -78,7 +78,7 @@
         "MAIL_ENCRYPTION": "tls",
         "MAIL_FROM_ADDRESS": "bizougarnziyad3@gmail.com",
         "MAIL_FROM_NAME": "Best Agadir Activities",
-        "GOOGLE_CLIENT_ID": "581669707717-bdhe3mdn00raoc25pnet",
+        "GOOGLE_CLIENT_ID": "581669707717-bdhe9mdn00raoc25pnet32ae4fl9dpmd.apps.googleusercontent.com",
         "GOOGLE_CLIENT_SECRET": "GOCSPX-lKncOrx5fi5KUkb-VGzxqxlf8a",
         "GOOGLE_REDIRECT_URI": "https://vala-project-agadir.vercel.app/auth/google-callback"
     }

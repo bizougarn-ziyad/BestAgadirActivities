@@ -116,6 +116,7 @@ Route::get('/login', function () {
 Route::controller(SocialiteController::class)->group(function () {
     Route::get('/auth/google', 'redirectToGoogle')->name('auth.google');
     Route::get('/auth/google-callback', 'handleGoogleCallback')->name('auth.google-callback');
+    Route::get('/auth/consume', 'consume')->name('auth.consume');
 });
 
 

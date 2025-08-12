@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\UserData;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Http\RedirectResponse;
 use Laravel\Socialite\Two\InvalidStateException;
 
 class SocialiteController extends Controller
@@ -107,7 +109,7 @@ class SocialiteController extends Controller
                 }
             }
 
-            // Log the user in (force remember)
+            // Primary attempt: log user in (force remember)
             Auth::login($user, true);
             
             Log::info('User logged in successfully', [
@@ -119,7 +121,19 @@ class SocialiteController extends Controller
 
             request()->session()->regenerate();
 
-            return redirect()->intended('/')->with('success', 'Successfully logged in! Welcome back.');
+            // Create a signed fallback URL in case session cookie wasn't persisted during OAuth round-trip
+            $fallbackUrl = URL::temporarySignedRoute(
+                'auth.consume',
+                now()->addMinutes(5),
+                [
+                    'uid' => $user->id,
+                    'h' => hash_hmac('sha256', $user->id.'|'.$user->email, config('app.key')),
+                ]
+            );
+
+            Log::info('Generated consume URL for fallback', ['url' => $fallbackUrl]);
+
+            return redirect($fallbackUrl)->with('success', 'Successfully logged in! Welcome back.');
 
         } catch (\Exception $e) {
             // Log the actual error for debugging
@@ -128,5 +142,37 @@ class SocialiteController extends Controller
             ]);
             return redirect('/login')->with('error', 'Google login failed. Please try again. Error: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Consume a signed login token (fallback if session lost after OAuth redirect)
+     */
+    public function consume(Request $request): RedirectResponse
+    {
+        if (!$request->hasValidSignature()) {
+            Log::warning('Invalid signature on consume route', ['query' => $request->query()]);
+            return redirect('/login')->withErrors(['error' => 'Invalid or expired login link.']);
+        }
+
+        $uid = (int) $request->query('uid');
+        $hash = $request->query('h');
+        $user = UserData::find($uid);
+        if (!$user) {
+            Log::warning('Consume route user not found', ['uid' => $uid]);
+            return redirect('/login')->withErrors(['error' => 'Account not found.']);
+        }
+
+        $expected = hash_hmac('sha256', $user->id.'|'.$user->email, config('app.key'));
+        if (!hash_equals($expected, $hash)) {
+            Log::warning('Hash mismatch on consume route', ['uid' => $uid]);
+            return redirect('/login')->withErrors(['error' => 'Security validation failed.']);
+        }
+
+        // Finalize login (idempotent)
+        Auth::login($user, true);
+        request()->session()->regenerate();
+        Log::info('Consume route login success', ['user_id' => $user->id, 'session_id' => session()->getId()]);
+
+        return redirect('/')->with('success', 'Welcome back!');
     }
 }

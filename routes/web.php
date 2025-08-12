@@ -93,6 +93,33 @@ Route::get('/health/bootstrap', function () {
     ]);
 });
 
+// Database test route
+Route::get('/test-db', function () {
+    try {
+        $dbPath = config('database.connections.sqlite.database');
+        $userCount = UserData::count();
+        $adminCount = \App\Models\Admin::count();
+        
+        return response()->json([
+            'status' => 'success',
+            'database_path' => $dbPath,
+            'database_exists' => file_exists($dbPath),
+            'database_writable' => is_writable($dbPath),
+            'database_size' => file_exists($dbPath) ? filesize($dbPath) : 0,
+            'user_count' => $userCount,
+            'admin_count' => $adminCount,
+            'sample_user' => UserData::first(['id', 'name', 'email']),
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage(),
+            'database_path' => config('database.connections.sqlite.database'),
+            'database_exists' => file_exists(config('database.connections.sqlite.database')),
+        ], 500);
+    }
+});
+
 // Simple test route
 Route::get('/test', function () {
     return response()->json([
@@ -117,29 +144,45 @@ Route::get('/test-userdata', function () {
 
 // Debug route for authentication testing
 Route::get('/debug-auth', function () {
-    return [
-        'auth_check' => Auth::check(),
-        'auth_user' => Auth::user(),
-        'session_id' => session()->getId(),
-        'is_admin' => session('is_admin', false),
-        'csrf_token' => csrf_token(),
-        'user_count' => UserData::count(),
-        'admin_count' => \App\Models\Admin::count(),
-        'environment' => app()->environment(),
-        'app_url' => config('app.url'),
-        'session_driver' => config('session.driver'),
-        'session_domain' => config('session.domain'),
-        'session_secure' => config('session.secure'),
-        'session_same_site' => config('session.same_site'),
-        'session_http_only' => config('session.http_only'),
-        'https_forced' => \Illuminate\Support\Facades\URL::isForced(),
-        'request_secure' => request()->secure(),
-        'headers' => [
-            'host' => request()->header('host'),
-            'user-agent' => request()->header('user-agent'),
-            'x-forwarded-proto' => request()->header('x-forwarded-proto'),
-        ]
-    ];
+    try {
+        return [
+            'auth_check' => Auth::check(),
+            'auth_user' => Auth::user(),
+            'session_id' => session()->getId(),
+            'is_admin' => session('is_admin', false),
+            'csrf_token' => csrf_token(),
+            'user_count' => UserData::count(),
+            'admin_count' => \App\Models\Admin::count(),
+            'environment' => app()->environment(),
+            'app_url' => config('app.url'),
+            'session_driver' => config('session.driver'),
+            'session_domain' => config('session.domain'),
+            'session_secure' => config('session.secure'),
+            'session_same_site' => config('session.same_site'),
+            'session_http_only' => config('session.http_only'),
+            'https_forced' => \Illuminate\Support\Facades\URL::isForced(),
+            'request_secure' => request()->secure(),
+            'database_path' => config('database.connections.sqlite.database'),
+            'database_exists' => file_exists(config('database.connections.sqlite.database')),
+            'google_config' => [
+                'client_id' => config('services.google.client_id') ? 'Set' : 'Not Set',
+                'client_secret' => config('services.google.client_secret') ? 'Set' : 'Not Set',
+                'redirect' => config('services.google.redirect'),
+            ],
+            'headers' => [
+                'host' => request()->header('host'),
+                'user-agent' => request()->header('user-agent'),
+                'x-forwarded-proto' => request()->header('x-forwarded-proto'),
+            ]
+        ];
+    } catch (\Exception $e) {
+        return [
+            'error' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => $e->getTraceAsString()
+        ];
+    }
 });
 
 Route::get('/debug-current-user', function () {
@@ -191,6 +234,28 @@ Route::post('/test-login', function (Illuminate\Http\Request $request) {
         'error' => 'Password mismatch',
         'user_exists' => true,
         'hash_check' => 'failed'
+    ]);
+});
+
+// Quick login test (GET version for easy testing)
+Route::get('/quick-login-test', function () {
+    // Find any user for testing
+    $user = UserData::first();
+    
+    if (!$user) {
+        return response()->json(['error' => 'No users found in database']);
+    }
+    
+    Auth::login($user);
+    request()->session()->regenerate();
+    
+    return response()->json([
+        'success' => 'Quick login successful',
+        'user_id' => $user->id,
+        'user_email' => $user->email,
+        'auth_check' => Auth::check(),
+        'session_id' => session()->getId(),
+        'redirect_url' => url('/')
     ]);
 });
 

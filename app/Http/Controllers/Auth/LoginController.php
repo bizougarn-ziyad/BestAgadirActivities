@@ -111,13 +111,29 @@ class LoginController extends Controller
             return redirect()->back()->withErrors(['email' => 'The provided credentials do not match our records.'])->withInput($request->except('password'));
 
         } catch (\Illuminate\Session\TokenMismatchException $e) {
+            Log::error('CSRF Token mismatch during login', [
+                'user_agent' => $request->header('User-Agent'),
+                'ip' => $request->ip(),
+                'session_id' => session()->getId(),
+                'error' => $e->getMessage()
+            ]);
             return redirect()->route('login')
                 ->withErrors(['error' => 'Your session has expired. Please try again.'])
                 ->with('show_register', $request->input('action') === 'register');
         } catch (\Exception $e) {
-            Log::error('Login/Registration error: ' . $e->getMessage());
+            Log::error('Login/Registration error', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'user_agent' => $request->header('User-Agent'),
+                'ip' => $request->ip(),
+                'session_id' => session()->getId(),
+                'action' => $request->input('action'),
+                'has_email' => $request->has('email'),
+                'has_password' => $request->has('password')
+            ]);
             return redirect()->route('login')
-                ->withErrors(['error' => 'An error occurred. Please try again.'])
+                ->withErrors(['error' => 'An error occurred. Please try again. Debug: ' . $e->getMessage()])
                 ->with('show_register', $request->input('action') === 'register');
         }
     }

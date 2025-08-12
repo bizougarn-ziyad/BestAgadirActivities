@@ -1,17 +1,27 @@
 <?php
 // Vercel initialization script - create necessary directories and set environment
 
-// Set up paths
+// Set up database paths
 $dbPath = __DIR__ . '/database/database.sqlite';
 $tmpDbPath = '/tmp/database.sqlite';
 
-// Copy database to /tmp if it doesn't exist there (for write access)
-if (!file_exists($tmpDbPath) && file_exists($dbPath)) {
-    copy($dbPath, $tmpDbPath);
-    // Update environment to use /tmp database
-    $_ENV['DB_DATABASE'] = $tmpDbPath;
-    putenv("DB_DATABASE=$tmpDbPath");
+// Always copy database to /tmp for write access in Vercel
+if (file_exists($dbPath)) {
+    if (!file_exists($tmpDbPath) || filemtime($dbPath) > filemtime($tmpDbPath)) {
+        copy($dbPath, $tmpDbPath);
+        chmod($tmpDbPath, 0666); // Ensure it's writable
+    }
+} else {
+    // Create empty database if source doesn't exist
+    if (!file_exists($tmpDbPath)) {
+        touch($tmpDbPath);
+        chmod($tmpDbPath, 0666);
+    }
 }
+
+// Force environment to use /tmp database
+$_ENV['DB_DATABASE'] = $tmpDbPath;
+putenv("DB_DATABASE=$tmpDbPath");
 
 // Ensure all required directories exist in /tmp
 $requiredDirs = [

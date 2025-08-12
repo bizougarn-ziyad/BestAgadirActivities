@@ -5,7 +5,7 @@
             "src": "api/index.php",
             "use": "vercel-php@0.7.2",
             "config": {
-                "includeFiles": "{database/database.sqlite,storage/**,bootstrap/cache/**}"
+                "includeFiles": "{database/**,storage/**,bootstrap/cache/**,vendor/**,resources/views/**}"
             }
         },
         {
@@ -48,16 +48,16 @@
     ],
     "env": {
         "APP_ENV": "production",
-        "APP_DEBUG": "true",
+        "APP_DEBUG": "false",
         "LOG_CHANNEL": "stderr",
-        "SESSION_DRIVER": "cookie",
+        "SESSION_DRIVER": "database",
         "SESSION_LIFETIME": "120",
         "SESSION_ENCRYPT": "false",
         "SESSION_PATH": "/",
         "SESSION_DOMAIN": "vala-project-agadir.vercel.app",
         "SESSION_SECURE_COOKIE": "true",
         "SESSION_SAME_SITE": "lax",
-        "CACHE_STORE": "array",
+        "CACHE_STORE": "database",
         "QUEUE_CONNECTION": "sync",
         "VIEW_COMPILED_PATH": "/tmp",
         "LOG_LEVEL": "debug",
@@ -66,6 +66,10 @@
         "FORCE_HTTPS": "true",
         "APP_FORCE_HTTPS": "true",
         "DB_CONNECTION": "sqlite",
-        "DB_DATABASE": "/tmp/database.sqlite"
+        "DB_DATABASE": "/tmp/database.sqlite",
+        "GOOGLE_REDIRECT_URI": "https://vala-project-agadir.vercel.app/auth/google-callback",
+        "MAIL_MAILER": "smtp",
+        "MAIL_FROM_ADDRESS": "noreply@vala-project-agadir.vercel.app",
+        "MAIL_FROM_NAME": "Best Agadir Activities"
     }
 }

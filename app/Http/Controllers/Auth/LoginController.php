@@ -46,9 +46,13 @@ class LoginController extends Controller
                 // Check if email exists in admins table
                 $admin = \App\Models\Admin::where('email', $credentials['email'])->first();
                 if ($admin && Hash::check($credentials['password'], $admin->password)) {
-                    Log::info('Admin login successful');
+                    Log::info('Admin login successful', [
+                        'admin_id' => $admin->id,
+                        'email' => $admin->email
+                    ]);
                     $request->session()->regenerate();
                     $request->session()->put('is_admin', true);
+                    $request->session()->put('admin_id', $admin->id);
                     return redirect()->route('admin.dashboard')->with('success', 'Welcome Admin!');
                 }
             } else {
@@ -58,9 +62,17 @@ class LoginController extends Controller
             // Normal user login
             if (Auth::guard('web')->attempt($credentials, $request->boolean('remember'))) {
                 $request->session()->regenerate();
+                Log::info('User login successful', [
+                    'user_id' => Auth::user()->id,
+                    'session_id' => session()->getId()
+                ]);
                 return redirect()->intended('/')->with('success', 'Successfully logged in! Welcome back!');
             }
 
+            Log::info('Login failed - credentials do not match', [
+                'email' => $credentials['email']
+            ]);
+            
             // If not admin or user, redirect to home
             return redirect('/')->withErrors(['email' => 'The provided credentials do not match our records.']);
 

@@ -23,6 +23,12 @@ class LoginController extends Controller
                 'has_last_name' => $request->has('last_name'),
                 'has_password_confirmation' => $request->has('password_confirmation'),
                 'email' => $request->input('email'),
+                'remember' => $request->input('remember'),
+                'request_method' => $request->method(),
+                'user_agent' => $request->header('User-Agent'),
+                'ip' => $request->ip(),
+                'session_id' => session()->getId(),
+                'csrf_token' => $request->header('X-CSRF-TOKEN') ?? 'not_set',
                 'all_inputs' => $request->except(['password', 'password_confirmation', '_token'])
             ]);
 
@@ -33,11 +39,20 @@ class LoginController extends Controller
                 return $this->register($request);
             }
 
-            // Handle normal login - ensure we have the required fields for login
-            $credentials = $request->validate([
-                'email' => 'required|email',
-                'password' => 'required',
-            ]);
+            // Validate login credentials
+            try {
+                $credentials = $request->validate([
+                    'email' => 'required|email',
+                    'password' => 'required',
+                ]);
+                Log::info('Login validation passed', ['email' => $credentials['email']]);
+            } catch (ValidationException $e) {
+                Log::error('Login validation failed', [
+                    'errors' => $e->errors(),
+                    'email' => $request->input('email')
+                ]);
+                return redirect()->back()->withErrors($e->errors())->withInput($request->except('password'));
+            }
 
             // Only check admin credentials if this is NOT a registration attempt
             // and if we have both email and password (indicating a login attempt)
@@ -54,27 +69,36 @@ class LoginController extends Controller
                     $request->session()->put('is_admin', true);
                     $request->session()->put('admin_id', $admin->id);
                     return redirect()->route('admin.dashboard')->with('success', 'Welcome Admin!');
+                } else {
+                    Log::info('Admin credentials check failed', [
+                        'email' => $credentials['email'],
+                        'admin_found' => $admin ? true : false
+                    ]);
                 }
             } else {
                 Log::info('Skipping admin check - appears to be registration form submission');
             }
 
             // Normal user login
+            Log::info('Attempting normal user login', ['email' => $credentials['email']]);
             if (Auth::guard('web')->attempt($credentials, $request->boolean('remember'))) {
                 $request->session()->regenerate();
                 Log::info('User login successful', [
                     'user_id' => Auth::user()->id,
-                    'session_id' => session()->getId()
+                    'user_email' => Auth::user()->email,
+                    'session_id' => session()->getId(),
+                    'remember' => $request->boolean('remember')
                 ]);
                 return redirect()->intended('/')->with('success', 'Successfully logged in! Welcome back!');
             }
 
             Log::info('Login failed - credentials do not match', [
-                'email' => $credentials['email']
+                'email' => $credentials['email'],
+                'user_exists' => \App\Models\UserData::where('email', $credentials['email'])->exists()
             ]);
             
             // If not admin or user, redirect to home
-            return redirect('/')->withErrors(['email' => 'The provided credentials do not match our records.']);
+            return redirect()->back()->withErrors(['email' => 'The provided credentials do not match our records.'])->withInput($request->except('password'));
 
         } catch (\Illuminate\Session\TokenMismatchException $e) {
             return redirect()->route('login')

@@ -17,7 +17,9 @@ class SocialiteController extends Controller
                 'google_client_id' => env('GOOGLE_CLIENT_ID') ? 'Set' : 'Not Set',
                 'google_client_secret' => env('GOOGLE_CLIENT_SECRET') ? 'Set' : 'Not Set',
                 'google_redirect_uri' => env('GOOGLE_REDIRECT_URI'),
-                'app_url' => config('app.url')
+                'app_url' => config('app.url'),
+                'current_url' => url()->current(),
+                'request_url' => request()->fullUrl(),
             ]);
             
             return Socialite::driver('google')->redirect();
@@ -26,7 +28,7 @@ class SocialiteController extends Controller
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-            return redirect('/login')->with('error', 'Something went wrong!');
+            return redirect('/login')->with('error', 'Google login failed to initialize. Please try regular login.');
         }
     }
 

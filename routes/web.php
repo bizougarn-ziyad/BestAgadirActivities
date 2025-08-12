@@ -22,6 +22,57 @@ Route::get('/test-userdata', function () {
     }
 });
 
+// Debug route for authentication testing
+Route::get('/debug-auth', function () {
+    return [
+        'auth_check' => Auth::check(),
+        'auth_user' => Auth::user(),
+        'session_id' => session()->getId(),
+        'is_admin' => session('is_admin', false),
+        'csrf_token' => csrf_token(),
+        'user_count' => UserData::count(),
+        'admin_count' => \App\Models\Admin::count(),
+        'environment' => app()->environment(),
+        'app_url' => config('app.url'),
+        'session_driver' => config('session.driver'),
+        'session_domain' => config('session.domain'),
+    ];
+});
+
+// Test login route
+Route::post('/test-login', function (Illuminate\Http\Request $request) {
+    $email = $request->input('email', 'test@example.com');
+    $password = $request->input('password', 'password');
+    
+    // Try to find user
+    $user = UserData::where('email', $email)->first();
+    
+    if (!$user) {
+        return response()->json([
+            'error' => 'User not found',
+            'email' => $email,
+            'users_in_db' => UserData::all(['id', 'email', 'name'])
+        ]);
+    }
+    
+    // Try manual auth
+    if (Hash::check($password, $user->password)) {
+        Auth::login($user);
+        return response()->json([
+            'success' => 'Manual login successful',
+            'user_id' => $user->id,
+            'auth_check' => Auth::check(),
+            'session_id' => session()->getId()
+        ]);
+    }
+    
+    return response()->json([
+        'error' => 'Password mismatch',
+        'user_exists' => true,
+        'hash_check' => 'failed'
+    ]);
+});
+
 Route::get('/login', function () {
     // Log current auth state
     Log::info('Login page accessed', [

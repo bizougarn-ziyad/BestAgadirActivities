@@ -160,21 +160,70 @@
 @vite(['resources/js/login.js'])
 
 <script>
-// Handle CSRF token refresh for forms
+// Handle form submissions and CSRF token refresh for Vercel
 document.addEventListener('DOMContentLoaded', function() {
+    // Ensure forms have proper CSRF tokens
     const forms = document.querySelectorAll('form');
-    forms.forEach(form => {
-        form.addEventListener('submit', function(e) {
-            // Get fresh CSRF token before submitting
-            const csrfToken = document.querySelector('meta[name="csrf-token"]');
-            if (csrfToken) {
-                const tokenInput = form.querySelector('input[name="_token"]');
-                if (tokenInput) {
-                    tokenInput.value = csrfToken.getAttribute('content');
-                }
+    const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+    
+    if (csrfMeta) {
+        forms.forEach(form => {
+            // Ensure CSRF token is present in form
+            let tokenInput = form.querySelector('input[name="_token"]');
+            if (!tokenInput) {
+                tokenInput = document.createElement('input');
+                tokenInput.type = 'hidden';
+                tokenInput.name = '_token';
+                form.appendChild(tokenInput);
             }
+            tokenInput.value = csrfMeta.getAttribute('content');
+            
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                // Double-check CSRF token before submission
+                const currentToken = csrfMeta.getAttribute('content');
+                if (currentToken) {
+                    tokenInput.value = currentToken;
+                }
+                
+                // Add loading state to prevent double submission
+                const submitBtn = form.querySelector('button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = 'Please wait...';
+                    
+                    // Re-enable after 3 seconds in case of issues
+                    setTimeout(() => {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalText;
+                    }, 3000);
+                }
+            });
         });
-    });
+    }
+    
+    // Handle switching between login and register forms
+    const signUpLink = document.getElementById('signUp');
+    const signInLink = document.getElementById('signIn');
+    const loginForm = document.getElementById('login-form');
+    const signUpForm = document.getElementById('sign-up-form');
+    
+    if (signUpLink && loginForm && signUpForm) {
+        signUpLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            loginForm.classList.add('hidden');
+            signUpForm.classList.remove('hidden');
+        });
+    }
+    
+    if (signInLink && loginForm && signUpForm) {
+        signInLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            signUpForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+        });
+    }
 });
 </script>
 

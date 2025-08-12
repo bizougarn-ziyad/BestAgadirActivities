@@ -81,14 +81,24 @@ class LoginController extends Controller
 
             // Normal user login
             Log::info('Attempting normal user login', ['email' => $credentials['email']]);
+            
+            // Regenerate session before attempting login for security
+            $request->session()->regenerate();
+            
             if (Auth::guard('web')->attempt($credentials, $request->boolean('remember'))) {
-                $request->session()->regenerate();
+                // Set proper session configuration for Vercel
+                if (str_contains(config('app.url'), 'vercel.app')) {
+                    $sessionId = session()->getId();
+                    Log::info('Setting Vercel session configuration', ['session_id' => $sessionId]);
+                }
+                
                 Log::info('User login successful', [
                     'user_id' => Auth::user()->id,
                     'user_email' => Auth::user()->email,
                     'session_id' => session()->getId(),
                     'remember' => $request->boolean('remember')
                 ]);
+                
                 return redirect()->intended('/')->with('success', 'Successfully logged in! Welcome back!');
             }
 
@@ -114,12 +124,20 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+        // Clear admin session data if present
+        if (session('is_admin')) {
+            $request->session()->forget('is_admin');
+            $request->session()->forget('admin_id');
+        }
+        
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        Log::info('User logged out successfully');
+        
+        return redirect('/')->with('success', 'You have been logged out successfully.');
     }
 
     public function register(Request $request)

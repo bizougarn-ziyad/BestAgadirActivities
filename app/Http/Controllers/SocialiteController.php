@@ -112,14 +112,15 @@ class SocialiteController extends Controller
             // Primary attempt: log user in (force remember)
             Auth::login($user, true);
             
+            // Regenerate session immediately for better security and session persistence
+            request()->session()->regenerate();
+            
             Log::info('User logged in successfully', [
                 'user_id' => $user->id,
                 'auth_check_after_login' => Auth::check(),
                 'auth_user_after_login' => Auth::user() ? Auth::user()->id : null,
                 'session_id' => session()->getId()
             ]);
-
-            request()->session()->regenerate();
 
             // Create a signed fallback URL in case session cookie wasn't persisted during OAuth round-trip
             $fallbackUrl = URL::temporarySignedRoute(

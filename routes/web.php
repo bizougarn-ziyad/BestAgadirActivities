@@ -36,6 +36,16 @@ Route::get('/debug-auth', function () {
         'app_url' => config('app.url'),
         'session_driver' => config('session.driver'),
         'session_domain' => config('session.domain'),
+        'session_secure' => config('session.secure'),
+        'session_same_site' => config('session.same_site'),
+        'session_http_only' => config('session.http_only'),
+        'https_forced' => \Illuminate\Support\Facades\URL::isForced(),
+        'request_secure' => request()->secure(),
+        'headers' => [
+            'host' => request()->header('host'),
+            'user-agent' => request()->header('user-agent'),
+            'x-forwarded-proto' => request()->header('x-forwarded-proto'),
+        ]
     ];
 });
 
@@ -73,11 +83,14 @@ Route::post('/test-login', function (Illuminate\Http\Request $request) {
     // Try manual auth
     if (Hash::check($password, $user->password)) {
         Auth::login($user);
+        request()->session()->regenerate();
+        
         return response()->json([
             'success' => 'Manual login successful',
             'user_id' => $user->id,
             'auth_check' => Auth::check(),
-            'session_id' => session()->getId()
+            'session_id' => session()->getId(),
+            'session_data' => session()->all()
         ]);
     }
     
@@ -85,6 +98,25 @@ Route::post('/test-login', function (Illuminate\Http\Request $request) {
         'error' => 'Password mismatch',
         'user_exists' => true,
         'hash_check' => 'failed'
+    ]);
+});
+
+// Session test route
+Route::get('/test-session', function () {
+    $counter = session('test_counter', 0);
+    session(['test_counter' => $counter + 1]);
+    
+    return response()->json([
+        'session_id' => session()->getId(),
+        'counter' => session('test_counter'),
+        'session_data' => session()->all(),
+        'session_config' => [
+            'driver' => config('session.driver'),
+            'domain' => config('session.domain'),
+            'secure' => config('session.secure'),
+            'same_site' => config('session.same_site'),
+            'http_only' => config('session.http_only'),
+        ]
     ]);
 });
 

@@ -39,6 +39,21 @@ Route::get('/debug-auth', function () {
     ];
 });
 
+Route::get('/debug-current-user', function () {
+    if (!Auth::check()) {
+        return response()->json(['logged_in' => false]);
+    }
+    $user = Auth::user();
+    return [
+        'logged_in' => true,
+        'id' => $user->id,
+        'email' => $user->email,
+        'google_id' => $user->google_id,
+        'has_avatar' => (bool)$user->avatar,
+        'session_id' => session()->getId(),
+    ];
+});
+
 // Test login route
 Route::post('/test-login', function (Illuminate\Http\Request $request) {
     $email = $request->input('email', 'test@example.com');

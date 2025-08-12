@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\UserData;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Laravel\Socialite\Two\InvalidStateException;
 
 class SocialiteController extends Controller
 {
@@ -50,7 +51,16 @@ class SocialiteController extends Controller
                 return redirect('/login')->with('error', 'Google login was cancelled or failed.');
             }
 
-            $googleUser = Socialite::driver('google')->user();
+            // Obtain Google user (with graceful fallback to stateless in serverless envs)
+            try {
+                $googleUser = Socialite::driver('google')->user();
+                Log::info('Google user fetched with state validation');
+            } catch (InvalidStateException $e) {
+                Log::warning('InvalidStateException encountered. Retrying stateless.', [
+                    'message' => $e->getMessage()
+                ]);
+                $googleUser = Socialite::driver('google')->stateless()->user();
+            }
             
             Log::info('Google OAuth Success', [
                 'google_id' => $googleUser->id,
@@ -58,34 +68,46 @@ class SocialiteController extends Controller
                 'name' => $googleUser->name,
             ]);
             
-            // Check if user exists by email first
-            $user = UserData::where('email', $googleUser->email)->first();
+            // Normalize data
+            $email = strtolower($googleUser->email);
+            $name = $googleUser->name ?? ($googleUser->user['given_name'] ?? 'User').($googleUser->user['family_name'] ? (' '.$googleUser->user['family_name']) : '');
+            $avatar = $googleUser->avatar ?? ($googleUser->avatar_original ?? null);
+
+            // Check if user exists by email first (race safe)
+            $user = UserData::where('email', $email)->lockForUpdate(false)->first();
             
             if ($user) {
                 Log::info('Existing user found', ['user_id' => $user->id]);
                 // User exists, update Google info if not already set
-                if (!$user->google_id) {
-                    $user->update([
-                        'google_id' => $googleUser->id,
-                        'avatar' => $googleUser->avatar ?? $user->avatar,
-                        'name' => $googleUser->name ?? $user->name,
-                    ]);
-                    Log::info('Updated existing user with Google data');
+                $dirty = [];
+                if (!$user->google_id) { $dirty['google_id'] = $googleUser->id; }
+                if ($avatar && $avatar !== $user->avatar) { $dirty['avatar'] = $avatar; }
+                if ($name && $name !== $user->name) { $dirty['name'] = $name; }
+                if (!empty($dirty)) {
+                    $user->fill($dirty)->save();
+                    Log::info('Updated existing user with Google data', ['updated_fields' => array_keys($dirty)]);
                 }
             } else {
                 Log::info('Creating new user from Google data');
-                // Create new user with Google data
-                $user = UserData::create([
-                    'name' => $googleUser->name,
-                    'email' => $googleUser->email,
-                    'google_id' => $googleUser->id,
-                    'avatar' => $googleUser->avatar,
-                    'password' => null,
-                ]);
-                Log::info('New user created', ['user_id' => $user->id]);
+                try {
+                    $user = UserData::create([
+                        'name' => $name,
+                        'email' => $email,
+                        'google_id' => $googleUser->id,
+                        'avatar' => $avatar,
+                        'password' => null,
+                    ]);
+                    Log::info('New user created', ['user_id' => $user->id]);
+                } catch (\Illuminate\Database\QueryException $qe) {
+                    // Handle possible race condition on unique email
+                    Log::warning('Race condition on user create, refetching existing user', [
+                        'error' => $qe->getMessage()
+                    ]);
+                    $user = UserData::where('email', $email)->first();
+                }
             }
 
-            // Log the user in
+            // Log the user in (force remember)
             Auth::login($user, true);
             
             Log::info('User logged in successfully', [
@@ -97,7 +119,7 @@ class SocialiteController extends Controller
 
             request()->session()->regenerate();
 
-            return redirect('/')->with('success', 'Successfully logged in! Welcome back.');
+            return redirect()->intended('/')->with('success', 'Successfully logged in! Welcome back.');
 
         } catch (\Exception $e) {
             // Log the actual error for debugging

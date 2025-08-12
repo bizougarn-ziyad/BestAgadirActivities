@@ -60,6 +60,39 @@ Route::get('/health', function () {
     return 'OK - Laravel is working';
 });
 
+// Bootstrap cache health check
+Route::get('/health/bootstrap', function () {
+    $bootstrapCache = app()->bootstrapPath('cache');
+    $issues = [];
+    
+    // Check if bootstrap cache directory exists
+    if (!is_dir($bootstrapCache)) {
+        $issues[] = "Bootstrap cache directory does not exist: $bootstrapCache";
+    } else {
+        // Check if it's writable
+        if (!is_writable($bootstrapCache)) {
+            $issues[] = "Bootstrap cache directory is not writable: $bootstrapCache";
+        }
+    }
+    
+    // Check for required cache files
+    $requiredFiles = ['services.php', 'packages.php'];
+    foreach ($requiredFiles as $file) {
+        $filePath = $bootstrapCache . DIRECTORY_SEPARATOR . $file;
+        if (!file_exists($filePath)) {
+            $issues[] = "Missing cache file: $filePath";
+        }
+    }
+    
+    return response()->json([
+        'bootstrap_cache_path' => $bootstrapCache,
+        'is_writable' => is_writable($bootstrapCache),
+        'exists' => is_dir($bootstrapCache),
+        'issues' => $issues,
+        'status' => empty($issues) ? 'healthy' : 'issues_detected'
+    ]);
+});
+
 // Simple test route
 Route::get('/test', function () {
     return response()->json([

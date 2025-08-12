@@ -83,12 +83,8 @@ class SocialiteController extends Controller
                 Log::info('New user created', ['user_id' => $user->id]);
             }
 
-            // Clear any existing session data before logging in
-            request()->session()->flush();
-            request()->session()->regenerate(true);
-            
             // Log the user in
-            Auth::login($user, true); // Set remember = true for persistent login
+            Auth::login($user, true);
             
             Log::info('User logged in successfully', [
                 'user_id' => $user->id,
@@ -96,6 +92,8 @@ class SocialiteController extends Controller
                 'auth_user_after_login' => Auth::user() ? Auth::user()->id : null,
                 'session_id' => session()->getId()
             ]);
+
+            request()->session()->regenerate();
 
             return redirect('/')->with('success', 'Successfully logged in! Welcome back.');
 

@@ -21,8 +21,13 @@ class VercelServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Only apply Vercel-specific configurations in production environment
+        if (!$this->app->environment('production')) {
+            return;
+        }
+
         // Force HTTPS in production
-        if ($this->app->environment('production') || config('app.force_https', false)) {
+        if (config('app.force_https', false)) {
             URL::forceScheme('https');
             
             Log::info('Forced HTTPS scheme for production environment');

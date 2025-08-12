@@ -10,7 +10,67 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 
 Route::get('/', function () {
-    return view('home');
+    try {
+        return view('home');
+    } catch (\Exception $e) {
+        // Log the error
+        \Illuminate\Support\Facades\Log::error('Home view failed to load', [
+            'error' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine()
+        ]);
+        
+        // Return a simple HTML response as fallback
+        return response('
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Agadir Activities</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #fffaf0; }
+        .container { max-width: 800px; margin: 0 auto; text-align: center; }
+        .logo { color: #f97316; font-size: 2em; font-weight: bold; margin-bottom: 20px; }
+        .message { font-size: 1.2em; margin-bottom: 30px; }
+        .button { background: #f97316; color: white; padding: 15px 30px; border: none; border-radius: 8px; font-size: 1em; cursor: pointer; text-decoration: none; display: inline-block; margin: 10px; }
+        .button:hover { background: #ea580c; }
+        .error { background: #fee2e2; color: #dc2626; padding: 15px; border-radius: 8px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🏖️ Best Agadir Activities</div>
+        <div class="message">Experience the real Morocco, Right Here in Agadir!</div>
+        <div class="error">
+            <strong>Debug Mode:</strong> View loading failed<br>
+            <small>Error: ' . htmlspecialchars($e->getMessage()) . '</small>
+        </div>
+        <a href="/login" class="button">Login</a>
+        <a href="/test" class="button">Test API</a>
+        <a href="/debug-auth" class="button">Debug</a>
+    </div>
+</body>
+</html>', 200)->header('Content-Type', 'text/html');
+    }
+});
+
+// Basic health check route
+Route::get('/health', function () {
+    return 'OK - Laravel is working';
+});
+
+// Simple test route
+Route::get('/test', function () {
+    return response()->json([
+        'status' => 'working',
+        'timestamp' => now(),
+        'environment' => app()->environment(),
+        'app_name' => config('app.name'),
+        'app_url' => config('app.url'),
+        'php_version' => PHP_VERSION,
+        'laravel_version' => app()->version(),
+    ]);
 });
 
 Route::get('/test-userdata', function () {

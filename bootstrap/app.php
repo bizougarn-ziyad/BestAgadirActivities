@@ -16,5 +16,20 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // Log exceptions for debugging on Vercel
+        $exceptions->render(function (Throwable $e, $request) {
+            if (config('app.debug')) {
+                error_log('Laravel Exception: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+                
+                // Return JSON error for debugging if requested
+                if ($request->wantsJson() || $request->is('api/*')) {
+                    return response()->json([
+                        'error' => $e->getMessage(),
+                        'file' => $e->getFile(),
+                        'line' => $e->getLine(),
+                        'trace' => $e->getTraceAsString()
+                    ], 500);
+                }
+            }
+        });
     })->create();

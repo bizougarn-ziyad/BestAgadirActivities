@@ -48,7 +48,7 @@
     ],
     "env": {
         "APP_ENV": "production",
-        "APP_DEBUG": "false",
+        "APP_DEBUG": "true",
         "APP_KEY": "base64:6UpR73Mmd0mDN2J5ITZp2hK6QVBt+eFH8uNQ0Yqb/nU=",
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie",

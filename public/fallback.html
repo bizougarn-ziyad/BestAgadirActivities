@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Agadir Activities</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #fffaf0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .logo {
+            color: #f97316;
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .button {
+            background: #f97316;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .button:hover {
+            background: #ea580c;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">🏖️ Best Agadir Activities</div>
+        <div class="message">
+            Welcome to the best activities in Agadir, Morocco!<br>
+            <small>Loading full site...</small>
+        </div>
+        <a href="/login" class="button">Get Started</a>
+        <p><small>
+                <a href="/test">Test API</a> |
+                <a href="/debug-auth">Debug Auth</a> |
+                <a href="/health">Health Check</a>
+            </small></p>
+    </div>
+
+    <script>
+        // Try to reload after a short delay to see if it's a loading issue
+        setTimeout(() => {
+            if (window.location.pathname === '/') {
+                window.location.reload();
+            }
+        }, 3000);
+    </script>
+</body>
+
+</html>

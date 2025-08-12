@@ -64,6 +64,8 @@
         "ASSET_URL": "https://vala-project-agadir.vercel.app",
         "APP_URL": "https://vala-project-agadir.vercel.app",
         "FORCE_HTTPS": "true",
-        "APP_FORCE_HTTPS": "true"
+        "APP_FORCE_HTTPS": "true",
+        "DB_CONNECTION": "sqlite",
+        "DB_DATABASE": "/tmp/database.sqlite"
     }
 }

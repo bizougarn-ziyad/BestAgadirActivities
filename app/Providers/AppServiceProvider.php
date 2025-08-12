@@ -29,5 +29,37 @@ class AppServiceProvider extends ServiceProvider
         if (config('app.force_https', false)) {
             URL::forceScheme('https');
         }
+        
+        // Ensure SQLite database exists in production
+        $this->ensureSQLiteDatabase();
+    }
+    
+    /**
+     * Ensure SQLite database file exists and is accessible
+     */
+    private function ensureSQLiteDatabase(): void
+    {
+        if (config('database.default') === 'sqlite' && config('app.env') === 'production') {
+            try {
+                // Try to run our database initialization command
+                \Illuminate\Support\Facades\Artisan::call('db:init');
+            } catch (\Exception $e) {
+                // Log error but don't break the application
+                \Illuminate\Support\Facades\Log::error('Database initialization failed: ' . $e->getMessage());
+            }
+        }
+    }
+    
+    /**
+     * Run database migrations
+     */
+    private function runMigrations(): void
+    {
+        try {
+            \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        } catch (\Exception $e) {
+            // Log error but don't break the application
+            \Illuminate\Support\Facades\Log::error('Migration failed: ' . $e->getMessage());
+        }
     }
 }

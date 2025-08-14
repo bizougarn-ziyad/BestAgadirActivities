@@ -7,6 +7,7 @@ use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\ActivityController;
 
 Route::get('/', function () {
     return view('home');
@@ -73,3 +74,17 @@ Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showRese
 Route::post('/reset-password', [ResetPasswordController::class, 'reset'])
     ->middleware(['guest', 'no.cache'])
     ->name('password.update');
+
+// Admin Activities Routes
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+    Route::get('activities', [ActivityController::class, 'index'])->name('activities.index');
+    Route::get('activities/create', [ActivityController::class, 'create'])->name('activities.create');
+    Route::post('activities', [ActivityController::class, 'store'])->name('activities.store');
+    Route::get('activities/{activity}/edit', [ActivityController::class, 'edit'])->name('activities.edit');
+    Route::put('activities/{activity}', [ActivityController::class, 'update'])->name('activities.update');
+    Route::delete('activities/{activity}', [ActivityController::class, 'destroy'])->name('activities.destroy');
+});
+
+Route::get('/addActivities', function () {
+    return view('add-activities');
+});

@@ -46,14 +46,30 @@ class SocialiteController extends Controller
                     Log::info('Updated existing user with Google data');
                 }
                 
-                // Log the user in (whether they have a password or not)
-                Auth::login($user);
-                
+                // Check if user has a password
                 if (is_null($user->password)) {
-                    Log::info('Google OAuth user logged in (no password set)', ['user_id' => $user->id]);
-                    return redirect('/')->with('success', 'Successfully logged in! You can set up a password later for additional security.');
+                    // Existing user but no password - prompt for password setup
+                    Log::info('Existing Google user needs password setup', ['user_id' => $user->id]);
+                    
+                    // Store user data in session for password setup
+                    session([
+                        'pending_google_user' => [
+                            'name' => $user->name,
+                            'email' => $user->email,
+                            'google_id' => $user->google_id ?? $googleUser->id,
+                            'avatar' => $user->avatar,
+                            'existing_user_id' => $user->id, // Mark as existing user
+                        ]
+                    ]);
+                    
+                    return redirect()->route('login')
+                        ->with('show_password_setup', true)
+                        ->with('setup_email', $user->email)
+                        ->with('info', 'Please set up a password for your account to continue.');
                 } else {
+                    // User has password, log them in directly
                     Log::info('Google OAuth user logged in (password already set)', ['user_id' => $user->id]);
+                    Auth::login($user);
                     return redirect('/')->with('success', 'Successfully logged in! Welcome back.');
                 }
             } else {

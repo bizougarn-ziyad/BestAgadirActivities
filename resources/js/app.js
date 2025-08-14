@@ -2,18 +2,22 @@ import './bootstrap';
 
 
 //------swiper-------//
-var swiper = new Swiper(".mySwiper", {
-    cssMode: true,
-    navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-    },
-    pagination: {
-        el: ".swiper-pagination",
-    },
-    mousewheel: true,
-    keyboard: true,
-});
+// Only initialize Swiper if the element exists
+const swiperElement = document.querySelector(".mySwiper");
+if (swiperElement) {
+    var swiper = new Swiper(".mySwiper", {
+        cssMode: true,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        pagination: {
+            el: ".swiper-pagination",
+        },
+        mousewheel: true,
+        keyboard: true,
+    });
+}
 
 
 //--------MobileMenu--------//
@@ -23,23 +27,26 @@ document.addEventListener('DOMContentLoaded', function () {
     const mobileMenu = document.getElementById('mobileMenu');
     const navbar = document.querySelector('nav');
 
-    const originalShadow = 'shadow-[0_1px_25px_rgba(0,0,0,0.1)]';
+    // Only run if elements exist
+    if (mobileMenuButton && mobileMenu && navbar) {
+        const originalShadow = 'shadow-[0_1px_25px_rgba(0,0,0,0.1)]';
 
-    mobileMenuButton.addEventListener('click', function () {
-        const isOpening = mobileMenu.classList.contains('hidden');
+        mobileMenuButton.addEventListener('click', function () {
+            const isOpening = mobileMenu.classList.contains('hidden');
 
-        if (isOpening) {
-            navbar.classList.remove(originalShadow);
-            navbar.classList.add('shadow-none');
-            document.body.style.overflow = 'hidden';
-        } else {
-            navbar.classList.remove('shadow-none');
-            navbar.classList.add(originalShadow);
-            document.body.style.overflow = '';
-        }
+            if (isOpening) {
+                navbar.classList.remove(originalShadow);
+                navbar.classList.add('shadow-none');
+                document.body.style.overflow = 'hidden';
+            } else {
+                navbar.classList.remove('shadow-none');
+                navbar.classList.add(originalShadow);
+                document.body.style.overflow = '';
+            }
 
-        mobileMenu.classList.toggle('hidden');
-    });
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
 });
 
 
@@ -55,6 +62,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const selectedDateDisplay = document.getElementById('selectedDateDisplay');
     const calendarDays = document.getElementById('calendarDays');
     const dateText = document.getElementById('date');
+
+    // Only run if calendar elements exist
+    if (!calendarContainer || !datePickerBtn || !selectedDateDisplay || !calendarDays || !dateText) {
+        return;
+    }
+
     let currentDate = new Date();
     let selectedDate = null;
 
@@ -88,16 +101,22 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Previous month button
-    document.getElementById('prevMonth').addEventListener('click', () => {
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        generateCalendar(currentDate);
-    });
+    const prevMonthBtn = document.getElementById('prevMonth');
+    if (prevMonthBtn) {
+        prevMonthBtn.addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            generateCalendar(currentDate);
+        });
+    }
 
     // Next month button
-    document.getElementById('nextMonth').addEventListener('click', () => {
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        generateCalendar(currentDate);
-    });
+    const nextMonthBtn = document.getElementById('nextMonth');
+    if (nextMonthBtn) {
+        nextMonthBtn.addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            generateCalendar(currentDate);
+        });
+    }
 
     function generateCalendar(date) {
         const monthYear = document.getElementById('monthYear');
@@ -181,6 +200,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const travelersCount = document.getElementById('travelersCount');
     const incrementBtns = document.querySelectorAll('.incrementBtn');
     const decrementBtns = document.querySelectorAll('.decrementBtn');
+    const applyTravelersBtn = document.getElementById('applyTravelers');
+
+    // Only run if travelers elements exist
+    if (!travelersBtn || !travelersDropdown || !travelersCount || !applyTravelersBtn) {
+        return;
+    }
 
     let counts = {
         adults: 2,
@@ -194,7 +219,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Add Apply button handler
-    const applyTravelersBtn = document.getElementById('applyTravelers');
     applyTravelersBtn.addEventListener('click', () => {
         travelersDropdown.classList.add('hidden');
     });
@@ -233,10 +257,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function updateCounts() {
-        document.getElementById('adultsCount').textContent = counts.adults;
-        document.getElementById('childrenCount').textContent = counts.children;
+        const adultsCountEl = document.getElementById('adultsCount');
+        const childrenCountEl = document.getElementById('childrenCount');
+
+        if (adultsCountEl) adultsCountEl.textContent = counts.adults;
+        if (childrenCountEl) childrenCountEl.textContent = counts.children;
+
         const total = counts.adults + counts.children;
-        travelersCount.textContent = `${total} ${total === 1 ? 'Adult' : 'Participants'}`;
+        if (travelersCount) {
+            travelersCount.textContent = `${total} ${total === 1 ? 'Adult' : 'Participants'}`;
+        }
     }
 });
 
@@ -273,6 +303,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const signUpButton = document.getElementById('signUp');
     const signInButton = document.getElementById('signIn');
     const loginError = document.querySelector('.login-error');
+
+    // Only run if login/signup elements exist
+    if (!loginForm || !signUpForm || !signUpButton || !signInButton) {
+        return;
+    }
 
     function clearFormErrors(form) {
         // Clear all error messages

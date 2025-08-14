@@ -80,17 +80,13 @@
 
                     <div class="mt-8 text-center">
                         <p class="text-gray-600 mb-4">Or continue with</p>
-                        <div class="flex justify-center space-x-4">
+                        <div class="flex justify-center">
                             <a href="{{ route('auth.google') }}" class="flex items-center px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition duration-300 cursor-pointer">
                                 <img src="{{ asset('images/google.png') }}" alt="Google" class="w-5 h-5 mr-2">
                                 Google
                             </a>
-                            <a href="/" class="flex items-center px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition duration-300 cursor-pointer">
-                                <img src="{{ asset('images/facebook2.png') }}" alt="Facebook" class="w-6 h-6 mr-2">
-                                Facebook
-                            </a>
-                </div>
-            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Right Side - Sign Up Form -->
@@ -190,6 +186,12 @@
                         <div>
                             <label class="text-gray-700 text-sm font-semibold">Email Address</label>
                             <input type="email" name="email" readonly class="w-full mt-2 px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none" value="{{ session('setup_email', old('email')) }}">
+                            <!-- Debug info (remove in production) -->
+                            @if(config('app.debug'))
+                                <small class="text-xs text-gray-500 mt-1 block">
+                                    Debug: setup_email = "{{ session('setup_email') }}", old_email = "{{ old('email') }}"
+                                </small>
+                            @endif
                         </div>
 
                         <div>

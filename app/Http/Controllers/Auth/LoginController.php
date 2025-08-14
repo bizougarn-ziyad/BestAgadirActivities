@@ -245,7 +245,7 @@ class LoginController extends Controller
         
         // Different validation rules based on user type
         if ($isNewGoogleUser) {
-            // For new Google OAuth users, don't check if email exists in database
+            // For new OAuth users, don't check if email exists in database
             $validator = Validator::make($request->all(), [
                 'email' => 'required|email',
                 'password' => 'required|string|min:8|confirmed',
@@ -256,8 +256,9 @@ class LoginController extends Controller
                 'password.confirmed' => 'Password confirmation does not match.',
             ]);
             
-            // Verify the email matches the one from Google OAuth
-            if ($request->input('email') !== $pendingGoogleUser['email']) {
+            // Verify the email matches the one from OAuth
+            $expectedEmail = $pendingGoogleUser['email'];
+            if ($request->input('email') !== $expectedEmail) {
                 return redirect()->back()
                     ->withErrors(['email' => 'Email mismatch. Please contact support.'])
                     ->with('show_password_setup', true)
@@ -289,19 +290,45 @@ class LoginController extends Controller
             $validated = $validator->validated();
             
             if ($isNewGoogleUser) {
-                // Create new user with Google data and password
-                $user = UserData::create([
-                    'name' => $pendingGoogleUser['name'],
-                    'email' => $pendingGoogleUser['email'],
-                    'google_id' => $pendingGoogleUser['google_id'],
-                    'avatar' => $pendingGoogleUser['avatar'],
-                    'password' => Hash::make($validated['password']),
-                ]);
+                // Check if this is an existing user or new user
+                if (isset($pendingGoogleUser['existing_user_id'])) {
+                    // This is an existing user who needs to set up a password
+                    $user = UserData::find($pendingGoogleUser['existing_user_id']);
+                    
+                    if (!$user) {
+                        return redirect()->back()
+                            ->withErrors(['email' => 'User not found.'])
+                            ->with('show_password_setup', true)
+                            ->with('setup_email', $request->input('email'));
+                    }
+                    
+                    if (!is_null($user->password)) {
+                        return redirect()->back()
+                            ->withErrors(['general' => 'This account already has a password. Please use the regular login form.'])
+                            ->withInput(['email' => $validated['email']]);
+                    }
+                    
+                    // Set the password for the existing Google user
+                    $user->update([
+                        'password' => Hash::make($validated['password']),
+                    ]);
+                    
+                    Log::info('Password set for existing Google user', ['user_id' => $user->id, 'email' => $user->email]);
+                } else {
+                    // Create new user with Google data and password
+                    $user = UserData::create([
+                        'name' => $pendingGoogleUser['name'],
+                        'email' => $pendingGoogleUser['email'],
+                        'google_id' => $pendingGoogleUser['google_id'],
+                        'avatar' => $pendingGoogleUser['avatar'],
+                        'password' => Hash::make($validated['password']),
+                    ]);
+                    
+                    Log::info('New Google OAuth user created with password', ['user_id' => $user->id, 'email' => $user->email]);
+                }
                 
                 // Clear the pending Google user data from session
                 session()->forget('pending_google_user');
-                
-                Log::info('New Google OAuth user created with password', ['user_id' => $user->id, 'email' => $user->email]);
             } else {
                 // Find existing user and set password
                 $user = UserData::where('email', $validated['email'])->first();
@@ -319,12 +346,12 @@ class LoginController extends Controller
                         ->withInput(['email' => $validated['email']]);
                 }
 
-                // Set the password for the existing Google OAuth user
+                // Set the password for the existing OAuth user
                 $user->update([
                     'password' => Hash::make($validated['password']),
                 ]);
                 
-                Log::info('Password set for existing Google OAuth user', ['user_id' => $user->id, 'email' => $user->email]);
+                Log::info('Password set for existing OAuth user', ['user_id' => $user->id, 'email' => $user->email]);
             }
 
             // Log the user in automatically

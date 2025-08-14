@@ -16,9 +16,11 @@
                     <p class="text-blue-600">Manage admin accounts</p>
                 </div>
                 
-                <div class="bg-green-100 p-6 rounded-lg cursor-pointer">
-                    <h3 class="text-xl font-semibold text-green-800 mb-2">Activities</h3>
-                    <p class="text-green-600">Manage activities</p>
+                <div class="bg-orange-200 p-6 rounded-lg cursor-pointer  transition-colors duration-200">
+                    <a href="{{ route('admin.activities.index') }}" class="block">
+                        <h3 class="text-xl font-semibold text-orange-600 mb-2">Activities</h3>
+                        <p class="text-orange-500">Manage activities</p>
+                    </a>
                 </div>
                 
                 <div class="bg-purple-100 p-6 rounded-lg cursor-pointer">

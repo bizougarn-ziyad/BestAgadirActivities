@@ -35,6 +35,7 @@ class SocialiteController extends Controller
             
             if ($user) {
                 Log::info('Existing user found', ['user_id' => $user->id]);
+                
                 // User exists, update Google info if not already set
                 if (!$user->google_id) {
                     $user->update([
@@ -44,24 +45,36 @@ class SocialiteController extends Controller
                     ]);
                     Log::info('Updated existing user with Google data');
                 }
+                
+                // Log the user in (whether they have a password or not)
+                Auth::login($user);
+                
+                if (is_null($user->password)) {
+                    Log::info('Google OAuth user logged in (no password set)', ['user_id' => $user->id]);
+                    return redirect('/')->with('success', 'Successfully logged in! You can set up a password later for additional security.');
+                } else {
+                    Log::info('Google OAuth user logged in (password already set)', ['user_id' => $user->id]);
+                    return redirect('/')->with('success', 'Successfully logged in! Welcome back.');
+                }
             } else {
-                Log::info('Creating new user from Google data');
-                // Create new user with Google data
-                $user = UserData::create([
-                    'name' => $googleUser->name,
-                    'email' => $googleUser->email,
-                    'google_id' => $googleUser->id,
-                    'avatar' => $googleUser->avatar,
-                    'password' => null,
+                Log::info('New Google OAuth user - storing data in session for password setup');
+                
+                // Store Google user data in session instead of creating user immediately
+                session([
+                    'pending_google_user' => [
+                        'name' => $googleUser->name,
+                        'email' => $googleUser->email,
+                        'google_id' => $googleUser->id,
+                        'avatar' => $googleUser->avatar,
+                    ]
                 ]);
-                Log::info('New user created', ['user_id' => $user->id]);
+                
+                // Redirect to password setup form
+                return redirect()->route('login')
+                    ->with('show_password_setup', true)
+                    ->with('setup_email', $googleUser->email)
+                    ->with('info', 'Welcome! Please set up a password for your account to complete the registration process.');
             }
-
-            // Log the user in
-            Auth::login($user);
-            Log::info('User logged in successfully', ['user_id' => $user->id]);
-
-            return redirect('/')->with('success', 'Successfully logged in! Welcome back.');
 
         } catch (\Exception $e) {
             // Log the actual error for debugging

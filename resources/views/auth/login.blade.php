@@ -5,17 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     @vite('resources/css/app.css')
     <title>Login</title>
 </head>
-<body class="bg-[#fffaf0]">
+<body class="bg-[#fffaf0]" data-password-setup="{{ session('show_password_setup') ? 'true' : 'false' }}">
     <div class="min-h-screen flex items-center justify-center  px-4">
         <div class="max-w-[1200px] w-full ">
             <!-- Login/Signup Container -->
             <div class="flex flex-col md:flex-row gap-8 items-center justify-center ">
                 
                 <!-- Left Side - Login Form -->
-                <div class="bg-white p-8 w-full max-w-[450px] transition-all duration-300 border border-gray-200 rounded-lg shadow-lg {{ (isset($show_register) && $show_register) || session('show_register') || $errors->has('first_name') || $errors->has('last_name') || $errors->has('password_confirmation') ? 'hidden' : '' }}" id="login-form">
+                <div class="bg-white p-8 w-full max-w-[450px] transition-all duration-300 border border-gray-200 rounded-lg shadow-lg 
+                     {{ session('show_password_setup') ? 'hidden' : 
+                        (((isset($show_register) && $show_register) || session('show_register') || $errors->has('first_name') || $errors->has('last_name') || $errors->has('password_confirmation')) ? 'hidden' : '') }}" id="login-form">
                     
                     @if(session('success'))
                         <div class="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-[12px]">
@@ -89,7 +94,9 @@
                 </div>
 
                 <!-- Right Side - Sign Up Form -->
-                <div class="bg-white p-8 w-full max-w-[450px] transition-all duration-300 {{ (isset($show_register) && $show_register) || session('show_register') || $errors->has('first_name') || $errors->has('last_name') || $errors->has('password_confirmation') || $errors->has('email') || $errors->has('password') || $errors->has('general') ? '' : 'hidden' }} mt-5 border border-gray-200 rounded-lg shadow-lg" id="sign-up-form">
+                <div class="bg-white p-8 w-full max-w-[450px] transition-all duration-300 border border-gray-200 rounded-lg shadow-lg mt-5
+                     {{ session('show_password_setup') ? 'hidden' : 
+                        (((isset($show_register) && $show_register) || session('show_register') || $errors->has('first_name') || $errors->has('last_name') || $errors->has('password_confirmation') || ($errors->has('general') && !session('show_password_setup'))) ? '' : 'hidden') }}" id="sign-up-form">
                     
                     @if($errors->any())
                         <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-[12px]">
@@ -152,31 +159,64 @@
                     </div>
                 </div>
 
+                <!-- Password Setup Form for Google OAuth users -->
+                                <!-- Password Setup Form for Google OAuth users -->
+                <div class="bg-white p-8 w-full max-w-[450px] transition-all duration-300 {{ session('show_password_setup') ? '' : 'hidden' }} mt-5 border border-gray-200 rounded-lg shadow-lg" id="password-setup-form">
+                    
+                    @if($errors->any() && session('show_password_setup'))
+                        <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-[12px]">
+                            @if($errors->has('general'))
+                                {{ $errors->first('general') }}
+                            @elseif($errors->count() == 1)
+                                {{ $errors->first() }}
+                            @else
+                                <ul class="list-disc list-inside space-y-1">
+                                    @foreach($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </div>
+                    @endif
+
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-bold text-gray-800">Set Your Password</h2>
+                        <p class="text-gray-600 mt-2">Complete your account setup by creating a password</p>
+                    </div>
+
+                    <form class="space-y-6" method="POST" action="{{ route('setup.password') }}">
+                        @csrf
+                        
+                        <div>
+                            <label class="text-gray-700 text-sm font-semibold">Email Address</label>
+                            <input type="email" name="email" readonly class="w-full mt-2 px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none" value="{{ session('setup_email', old('email')) }}">
+                        </div>
+
+                        <div>
+                            <label class="text-gray-700 text-sm font-semibold">New Password</label>
+                            <input type="password" name="password" required minlength="8" class="w-full mt-2 px-4 py-3 border {{ $errors->has('password') ? 'border-red-500' : 'border-gray-300' }} rounded-lg focus:outline-none focus:border-orange-500 transition-colors" placeholder="Create a password">
+                            @error('password')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label class="text-gray-700 text-sm font-semibold">Confirm Password</label>
+                            <input type="password" name="password_confirmation" required minlength="8" class="w-full mt-2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 transition-colors" placeholder="Confirm your password">
+                        </div>
+
+                        <button type="submit" class="w-full bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-400 transition duration-300 font-semibold">
+                            Set Password & Continue
+                        </button>
+                    </form>
+                </div>
+
             </div>
             
         </div>
     </div>
 
 @vite(['resources/js/login.js'])
-
-<script>
-// Handle CSRF token refresh for forms
-document.addEventListener('DOMContentLoaded', function() {
-    const forms = document.querySelectorAll('form');
-    forms.forEach(form => {
-        form.addEventListener('submit', function(e) {
-            // Get fresh CSRF token before submitting
-            const csrfToken = document.querySelector('meta[name="csrf-token"]');
-            if (csrfToken) {
-                const tokenInput = form.querySelector('input[name="_token"]');
-                if (tokenInput) {
-                    tokenInput.value = csrfToken.getAttribute('content');
-                }
-            }
-        });
-    });
-});
-</script>
 
 </body>
 </html>

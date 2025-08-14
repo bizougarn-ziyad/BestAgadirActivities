@@ -101,6 +101,7 @@
                     </div>
                 </div>
                 <div class="swiper-button-prev after:text-black"></div>
+                <div class="swiper-button-next after:text-black"></div>
                 <div class="swiper-pagination"></div>
             </div>
         </div>
@@ -201,7 +202,7 @@
 </div>
 
 <div class="bg-orange-500  h-[300px] mt-[200px] w-full flex flex-col justify-between items-center">
-    <div class="max-w-[650px] mx-auto min-w-[300px] px-5 flex justify-around items-center py-10">
+    <div class="w-full px-5 flex justify-center items-center py-10 sm:gap-6 gap-4">
         <img src="{{ asset('images/facebook.png') }}" alt="" class="w-[40px] cursor-pointer">
         <img src="{{ asset('images/x.png') }}" alt="" class="w-[40px] cursor-pointer">
         <img src="{{ asset('images/instagram.png') }}" alt="" class="w-[40px] cursor-pointer">

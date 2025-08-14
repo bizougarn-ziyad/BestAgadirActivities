@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     @vite('resources/css/app.css')
     <title>Forgot Password</title>
 </head>
@@ -46,5 +49,50 @@
             </div>
         </div>
     </div>
+
+<script>
+// Check authentication status on page load and redirect if authenticated
+document.addEventListener('DOMContentLoaded', function() {
+    // Check authentication status
+    fetch('/auth-status', {
+        method: 'GET',
+        headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+        },
+        cache: 'no-store'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.authenticated && data.redirect_url) {
+            window.location.replace(data.redirect_url);
+        }
+    })
+    .catch(error => {
+        console.error('Auth status check failed:', error);
+    });
+
+    // Handle browser back/forward navigation
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            fetch('/auth-status', {
+                method: 'GET',
+                headers: {
+                    'Cache-Control': 'no-cache',
+                    'Pragma': 'no-cache'
+                },
+                cache: 'no-store'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.authenticated && data.redirect_url) {
+                    window.location.replace(data.redirect_url);
+                }
+            });
+        }
+    });
+});
+</script>
+
 </body>
 </html>

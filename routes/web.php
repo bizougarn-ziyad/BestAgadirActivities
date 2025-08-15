@@ -83,6 +83,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('activities/{activity}/edit', [ActivityController::class, 'edit'])->name('activities.edit');
     Route::put('activities/{activity}', [ActivityController::class, 'update'])->name('activities.update');
     Route::delete('activities/{activity}', [ActivityController::class, 'destroy'])->name('activities.destroy');
+    
+    // Admin Management Routes
+    Route::resource('admins', \App\Http\Controllers\AdminController::class);
 });
 
 Route::get('/addActivities', function () {

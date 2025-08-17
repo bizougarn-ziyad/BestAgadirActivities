@@ -1,0 +1,197 @@
+<x-layout>
+    @if (session('success'))
+        <div id="successAlert" class="alert alert-success text-green-500 pt-[120px] m-0 p                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 515.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 919.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>0 absolute left-[50%] transform -translate-x-1/2 text-[13px] w-full flex justify-center">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div id="errorAlert" class="alert alert-danger text-red-500 pt-[120px] m-0 pb-0 absolute left-[50%] transform -translate-x-1/2 w-full">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    <!-- Hero Section -->
+    <div class="relative pt-[135px] pb-20 bg-gradient-to-br from-orange-50 via-white to-blue-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full mb-8">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                </svg>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6">
+                Premium <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-orange-500">Activities</span>
+            </h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+                Discover the most exclusive and luxurious experiences Agadir has to offer. From desert safaris to coastal adventures, every activity is carefully curated for unforgettable memories.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 text-sm text-gray-500">
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Professional Guides</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Small Groups</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Premium Service</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Best Prices</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activities Section -->
+    <div class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            @if($activities->count() > 0)
+                <!-- Filter and Sort Section -->
+                <div class="flex flex-wrap justify-between items-center mb-12">
+                    <div class="flex items-center gap-4 mb-4 md:mb-0">
+                        <h2 class="text-2xl font-bold text-gray-800">{{ $activities->total() }} Activities Found</h2>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <select class="bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer">
+                            <option>Sort by Popular</option>
+                            <option>Price: Low to High</option>
+                            <option>Price: High to Low</option>
+                            <option>Newest First</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Activities Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-16">
+                    @foreach($activities as $activity)
+                        <div class="group relative bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 flex flex-col h-full">
+                            <!-- Image Container -->
+                            <div class="relative h-64 overflow-hidden flex-shrink-0">
+                                @if($activity->hasImageData())
+                                    <img src="{{ $activity->image_data_url }}" alt="{{ $activity->name }}" class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full bg-gradient-to-br from-orange-200 to-orange-300 flex items-center justify-center">
+                                        <svg class="w-12 h-12 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                    </div>
+                                @endif
+                                
+                                <!-- Price Badge -->
+                                <div class="absolute top-3 right-3">
+                                    <div class="bg-gradient-to-r from-green-500 to-green-600 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                                        {{ number_format($activity->price, 0) }}€
+                                    </div>
+                                </div>
+                                
+                                <!-- Rating Badge -->
+                                <div class="absolute top-3 left-3">
+                                    <div class="bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full flex items-center gap-1 shadow-md">
+                                        <svg class="w-3 h-3 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                                            <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                        </svg>
+                                        <span class="text-xs font-semibold text-gray-800">{{ $activity->average_rating }}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Wishlist Button -->
+                                <button class="absolute bottom-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md cursor-pointer">
+                                    <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- Content -->
+                            <div class="p-5 flex flex-col flex-grow">
+                                <h3 class="text-lg font-bold text-gray-800 mb-4 line-clamp-2">
+                                    {{ $activity->name }}
+                                </h3>
+                                
+                                <!-- Activity Features -->
+                                <div class="flex items-center gap-3 mb-4 text-xs text-gray-500 flex-grow">
+                                    <div class="flex items-center gap-1">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span>Full Day</span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                        </svg>
+                                        <span>Small Group</span>
+                                    </div>
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="flex gap-2 mt-auto">
+                                    <a href="{{ route('activity.detail', $activity->id) }}" class="flex-1 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 font-semibold py-2 px-3 rounded-xl shadow-md text-sm cursor-pointer text-center">
+                                        Details
+                                    </a>
+                                    <button class="flex-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold py-2 px-3 rounded-xl shadow-md text-sm cursor-pointer">
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <!-- Pagination -->
+                @if($activities->hasPages())
+                    <div class="flex justify-center">
+                        <div class="bg-white rounded-xl shadow-lg p-4">
+                            {{ $activities->links() }}
+                        </div>
+                    </div>
+                @endif
+
+            @else
+                <!-- No Activities Placeholder -->
+                <div class="text-center py-20">
+                    <div class="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-orange-100 to-orange-200 rounded-full mb-8">
+                        <svg class="w-12 h-12 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M19 10a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-4">No Activities Available Yet</h3>
+                    <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-8">We're working on bringing you the most amazing experiences in Agadir. Check back soon for exciting new activities!</p>
+                    <a href="/" class="inline-flex items-center bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                        Back to Home
+                    </a>
+                </div>
+            @endif
+        </div>
+    </div>
+
+    <!-- Newsletter Section -->
+    <div class="bg-gradient-to-r from-orange-500 to-orange-600 py-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h3 class="text-3xl font-bold text-white mb-4">Stay Updated</h3>
+            <p class="text-orange-100 text-lg mb-8">Get notified about new activities and exclusive offers in Agadir</p>
+            <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto  ">
+                <input type="email" placeholder="Enter your email" class="flex-1 px-4 py-3  focus:outline-none focus:ring-2 focus:ring-white/50 text-white border rounded-2xl">
+                <button class="bg-white text-orange-600 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-300 cursor-pointer">
+                    Subscribe
+                </button>
+            </div>
+        </div>
+    </div>
+</x-layout>

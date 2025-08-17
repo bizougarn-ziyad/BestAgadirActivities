@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('google_id')->nullable()->after('email');
-            $table->string('avatar')->nullable()->after('google_id');
-            $table->string('password')->nullable()->change();
-        });
+        // This migration is not needed as the user_data table already has these columns
+        // Schema::table('user_data', function (Blueprint $table) {
+        //     $table->string('google_id')->nullable()->after('email');
+        //     $table->string('avatar')->nullable()->after('google_id');
+        //     $table->string('password')->nullable()->change();
+        // });
     }
 
     /**
@@ -23,9 +24,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['google_id', 'avatar']);
-            $table->string('password')->nullable(false)->change();
-        });
+        // This migration is not needed as the user_data table already has these columns
+        // Schema::table('user_data', function (Blueprint $table) {
+        //     $table->dropColumn(['google_id', 'avatar']);
+        //     $table->string('password')->nullable(false)->change();
+        // });
     }
 };

@@ -17,20 +17,79 @@
         .swiper-pagination-bullet {
             background-color: #f97316; 
         }
+        
+        /* Custom styles for activities */
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        /* Luxury gradient background animation */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .luxury-gradient {
+            background: linear-gradient(-45deg, #f97316, #ea580c, #fb923c, #fdba74);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        /* Glass morphism effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        /* Universal cursor pointer for interactive elements */
+        button, a, .cursor-pointer, 
+        input[type="submit"], input[type="button"], input[type="reset"],
+        .swiper-button-prev, .swiper-button-next, .swiper-pagination-bullet,
+        select, [role="button"], [onclick], 
+        img[onclick], img[data-clickable],
+        .clickable, .interactive,
+        form button, form input[type="submit"],
+        .nav-link, .menu-item,
+        [data-toggle], [data-dismiss] {
+            cursor: pointer !important;
+        }
+        
+        /* Ensure links and buttons always have pointer cursor */
+        a:not([disabled]), button:not([disabled]) {
+            cursor: pointer !important;
+        }
+        
+        /* Special case for images that look clickable */
+        img[alt*="icon"], img[alt*="logo"], img[src*="icon"], 
+        .social-icon, .logo-img {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="font-[Outfit] bg-[#fffaf0]">
 <!-- Responsive Navbar -->
-<nav class="flex md:flex-row justify-between items-center mx-auto gap-2 bg-white px-2 lg:px-5 md:w-[770px] lg:w-[1000px] shadow-[0_1px_25px_rgba(0,0,0,0.1)] md:rounded-[35px] fixed top-0 left-1/2 -translate-x-1/2 w-full z-50 transition-all duration-300 ease-in-out">
-    <x-navbar href="/" class="">
-        <img src="{{ asset('images/logoAgadir.png') }}" alt="Logo Agadir" class="w-[220px]">
+<nav class="flex md:flex-row justify-between items-center mx-auto gap-2 bg-white px-2 lg:px-5 md:w-[770px] lg:w-[1000px] shadow-[0_1px_25px_rgba(0,0,0,0.1)] md:rounded-[35px] fixed top-0 left-1/2 -translate-x-1/2 w-full z-50 transition-all duration-300 ease-in-out md:mt-5">
+    <x-navbar href="/" class="cursor-pointer">
+        <img src="{{ asset('images/logoAgadir1.png') }}" alt="Logo Agadir" class="w-[220px] py-4 md:py-0 cursor-pointer">
     </x-navbar>
 
     <!-- Navigation Links - Hidden on mobile, shown on medium+ -->
     <div class="hidden md:flex justify-center items-center space-x-2">
-        <x-navbar href="/" class="text-base md:hover:bg-gray-100 no-underline px-4 py-2 rounded-[20px]">Activities</x-navbar>
-        <x-navbar href="/about" class="text-base md:hover:bg-gray-100 no-underline px-4 py-2 rounded-[20px]">About</x-navbar>
-        <x-navbar href="/contact" class="text-base md:hover:bg-gray-100 no-underline px-4 py-2 rounded-[20px]">Contact</x-navbar>
+        <x-navbar href="{{ route('activities') }}" class="text-base md:hover:bg-gray-100 no-underline px-4 py-2 rounded-[20px] cursor-pointer">Activities</x-navbar>
+        <x-navbar href="/about" class="text-base md:hover:bg-gray-100 no-underline px-4 py-2 rounded-[20px] cursor-pointer">About</x-navbar>
+        <x-navbar href="/contact" class="text-base md:hover:bg-gray-100 no-underline px-4 py-2 rounded-[20px] cursor-pointer">Contact</x-navbar>
     </div>
 
     <!-- Mobile Menu Button (Hamburger) -->
@@ -79,9 +138,9 @@
 <!-- Mobile Menu (Hidden by default) - Now fixed position overlay -->
 <div class="items-top fixed w-full mx-auto pb-7 bg-white bg-opacity-95 hidden z-40 pt-10 shadow-[0_10px_35px_rgba(0,0,0,0.15)] px-4" id="mobileMenu">
     <div class="container flex  flex-col mx-auto mt-18 px-4 gap-2">
-        <x-navbar href="/" class="block py-3 px-4 md:hover:bg-gray-100 rounded-[20px] text-xl text-center shadow-lg bg-orange-400 text-white">Activities</x-navbar>
-        <x-navbar href="/about" class="block py-3 px-4 md:hover:bg-gray-100 rounded-[20px] text-xl text-center shadow-lg bg-orange-400 text-white">About</x-navbar>
-        <x-navbar href="/contact" class="block py-3 px-4 md:hover:bg-gray-100 rounded-[20px] text-xl text-center shadow-lg  bg-orange-400 text-white">Contact</x-navbar>
+        <x-navbar href="{{ route('activities') }}" class="block py-3 px-4 md:hover:bg-gray-100 rounded-[20px] text-xl text-center shadow-lg bg-orange-400 text-white cursor-pointer">Activities</x-navbar>
+        <x-navbar href="/about" class="block py-3 px-4 md:hover:bg-gray-100 rounded-[20px] text-xl text-center shadow-lg bg-orange-400 text-white cursor-pointer">About</x-navbar>
+        <x-navbar href="/contact" class="block py-3 px-4 md:hover:bg-gray-100 rounded-[20px] text-xl text-center shadow-lg  bg-orange-400 text-white cursor-pointer">Contact</x-navbar>
         <div class="space-y-2">
             @if(Auth::check() || session('is_admin'))
                 <!-- Dashboard link for admins (mobile) -->

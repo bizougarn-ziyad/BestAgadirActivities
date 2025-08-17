@@ -16,12 +16,18 @@ class Activity extends Model
         'image_mime_type',
         'image_original_name',
         'price',
-        'is_active'
+        'is_active',
+        'average_rating',
+        'review_count',
+        'reviews'
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
+        'average_rating' => 'decimal:2',
+        'review_count' => 'integer',
+        'reviews' => 'array'
     ];
 
     /**
@@ -41,5 +47,29 @@ class Activity extends Model
     public function hasImageData()
     {
         return !empty($this->image_data) && !empty($this->image_mime_type);
+    }
+
+    /**
+     * Get a limited number of reviews for display
+     */
+    public function getDisplayReviews($limit = 3)
+    {
+        if (!$this->reviews) {
+            return [];
+        }
+        
+        return array_slice($this->reviews, 0, $limit);
+    }
+
+    /**
+     * Get formatted rating with star display
+     */
+    public function getStarRating()
+    {
+        return [
+            'full_stars' => floor($this->average_rating),
+            'has_half_star' => ($this->average_rating - floor($this->average_rating)) >= 0.5,
+            'empty_stars' => 5 - ceil($this->average_rating)
+        ];
     }
 }

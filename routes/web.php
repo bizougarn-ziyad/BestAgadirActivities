@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\UserData;
+use App\Models\Activity;
 use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -10,8 +11,19 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\ActivityController;
 
 Route::get('/', function () {
-    return view('home');
+    $activities = Activity::where('is_active', true)->orderBy('created_at', 'desc')->take(6)->get();
+    return view('home', compact('activities'));
 });
+
+Route::get('/activities', function () {
+    $activities = Activity::where('is_active', true)->orderBy('created_at', 'desc')->paginate(12);
+    return view('activities', compact('activities'));
+})->name('activities');
+
+Route::get('/activity/{id}', function ($id) {
+    $activity = Activity::where('is_active', true)->findOrFail($id);
+    return view('activity-detail', compact('activity'));
+})->name('activity.detail');
 
 // API route to check authentication status
 Route::get('/auth-status', function () {

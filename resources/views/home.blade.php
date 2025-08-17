@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="flex items-center justify-center md:justify-start mt-15">
-                    <button class="bg-orange-500 text-white px-6 py-2 sm:py-4 sm:px-7 rounded-[10px] hover:bg-orange-400 transition duration-300 cursor-pointer">Our Activities &#10230;</button>
+                    <a href="{{ route('activities') }}" class="bg-orange-500 text-white px-6 py-2 sm:py-4 sm:px-7 rounded-[10px] hover:bg-orange-400 transition duration-300 cursor-pointer">Our Activities &#10230;</a>
                 </div>
             </div>
         </div>
@@ -43,17 +43,21 @@
             <div class="swiper mySwiper w-[320px] h-[500px] lg:w-[350px] xl:w-[380px] xl:h-[583px] shadow-[0_1px_25px_rgba(0,0,0,0.1)] rounded-lg">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
-                        <p class="rounded-2xl w-10 h-5.2 text-center text-white  bg-green-400 absolute right-4 top-2 z-100 text-[13px] xl:text-[17px] ">25€</p>
-                        <img src="{{ asset('images/activity1.jpg') }} " alt="Activity 1" class="h-[213px] lg:w-full xl:h-[250px] lg:h-[240px]">
+                        <p class="rounded-2xl w-10 h-5.2 text-center text-white bg-green-400 absolute right-4 top-2 z-100 text-[13px] xl:text-[17px]">25€</p>
+                        <img src="{{ asset('images/activity1.jpg') }}" alt="Activity 1" class="h-[213px] lg:w-full xl:h-[250px] lg:h-[240px]">
                         
                         <div class="mt-5 flex justify-center items-center gap-2">
                             <img src="{{ asset('images/secondstar.png') }}" alt="ratings" class="w-[15px] ">
-                            <p class="text-[13px] xl:text-[17px]  font-bold m-0 p-0">4.7 <span class="text-gray-400 font-normal">(52 ratings)</span></p>
+                            @php
+                                $rating1 = ['4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9'][array_rand(['4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9'])];
+                                $reviews1 = rand(15, 95);
+                            @endphp
+                            <p class="text-[13px] xl:text-[17px] font-bold m-0 p-0">{{ $rating1 }} <span class="text-gray-400 font-normal">({{ $reviews1 }} ratings)</span></p>
                         </div>
                         
                         <div class="flex flex-col px-4 mt-7 gap-2">
-                            <p class="text-[13px] xl:text-[17px] font-bold">1h Sand Surf + Camel Ride + Moroccan Mint Tea + Dinner + Show .</p>
-                            <p class="text-[13px] xl:text-[17px]  text-gray-600">Enjoy sand surfing, a camel ride, Moroccan mint tea, a tasty dinner, and a lively traditional show. All in one unforgettable experience.</p>
+                            <p class="text-[13px] xl:text-[17px] font-bold">1h Sand Surf + Camel Ride + Moroccan Mint Tea + Dinner + Show</p>
+                            <p class="text-[13px] xl:text-[17px] text-gray-600">Enjoy sand surfing, a camel ride, Moroccan mint tea, a tasty dinner, and a lively traditional show. All in one unforgettable experience.</p>
                         </div>
                         
                         <div class="flex justify-between items-center px-4 mt-5 gap-3">
@@ -62,16 +66,20 @@
                         </div>
                     </div>
                     <div class="swiper-slide">
-                        <p class="rounded-2xl w-10 h-5.2 text-center text-white  bg-green-400 absolute right-4 top-2 z-100 text-[13px] xl:text-[17px] ">65€</p>      
+                        <p class="rounded-2xl w-10 h-5.2 text-center text-white bg-green-400 absolute right-4 top-2 z-100 text-[13px] xl:text-[17px]">65€</p>      
                         <img src="{{ asset('images/activity3.jpg') }}" alt="Activity 3" class="h-[213px] lg:w-full xl:h-[250px] lg:h-[240px]">
                         
                         <div class="mt-5 flex justify-center items-center gap-2">
                             <img src="{{ asset('images/secondstar.png') }}" alt="ratings" class="w-[15px] ">
-                            <p class="text-[13px] xl:text-[17px] font-bold m-0 p-0">4.9 <span class="text-gray-400 font-normal">(19 ratings)</span></p>
+                            @php
+                                $rating2 = ['4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9'][array_rand(['4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9'])];
+                                $reviews2 = rand(15, 95);
+                            @endphp
+                            <p class="text-[13px] xl:text-[17px] font-bold m-0 p-0">{{ $rating2 }} <span class="text-gray-400 font-normal">({{ $reviews2 }} ratings)</span></p>
                         </div>
                         
                         <div class="flex flex-col px-4 mt-7 gap-2">
-                            <p class="text-[13px] xl:text-[17px] font-bold">Buggy Adventure + 30min horse ride + Dinner + Crocodile park tour.</p>
+                            <p class="text-[13px] xl:text-[17px] font-bold">Buggy Adventure + 30min horse ride + Dinner + Crocodile park tour</p>
                             <p class="text-[13px] xl:text-[17px] text-gray-600">Experience the thrill of driving a buggy through the stunning Moroccan desert. Enjoy a 30-minute horse ride, followed by a delicious dinner under the stars.</p>
                         </div>
                         
@@ -82,15 +90,19 @@
                     </div>
                     
                     <div class="swiper-slide">
-                        <p class="rounded-2xl w-10 h-5.2 text-center text-white  bg-green-400 absolute right-4 top-2 z-100 text-[13px] xl:text-[17px] ">45€</p>
+                        <p class="rounded-2xl w-10 h-5.2 text-center text-white bg-green-400 absolute right-4 top-2 z-100 text-[13px] xl:text-[17px]">45€</p>
                         <img src="{{ asset('images/activity2.jpg') }}" alt="Activity 2" class="h-[213px] lg:w-full xl:h-[250px] lg:h-[240px]">
                         <div class="mt-5 flex justify-center items-center gap-2">
                             <img src="{{ asset('images/secondstar.png') }}" alt="ratings" class="w-[15px] ">
-                            <p class="text-[13px] xl:text-[17px] font-bold m-0 p-0">4.5 <span class="text-gray-400 font-normal">(27 ratings)</span></p>
+                            @php
+                                $rating3 = ['4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9'][array_rand(['4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9'])];
+                                $reviews3 = rand(15, 95);
+                            @endphp
+                            <p class="text-[13px] xl:text-[17px] font-bold m-0 p-0">{{ $rating3 }} <span class="text-gray-400 font-normal">({{ $reviews3 }} ratings)</span></p>
                         </div>
                         
                         <div class="flex flex-col px-4 mt-7 gap-2">
-                            <p class="text-[13px] xl:text-[17px] font-bold">Surf lessons with professional + Breakfast + Bus ride from your hotel.</p>
+                            <p class="text-[13px] xl:text-[17px] font-bold">Surf lessons with professional + Breakfast + Bus ride from your hotel</p>
                             <p class="text-[13px] xl:text-[17px] text-gray-600">Join us for an unforgettable surfing experience in the beautiful Moroccan waves. Our professional instructors will guide you every step of the way.</p>
                         </div>
                         
@@ -116,7 +128,7 @@
     <div class="relative flex justify-center gap-2 lg:gap-5 max-w-[1200px] mx-auto">
         <!-- Date Selection Button -->
         <div>
-            <button id="datePickerBtn" class="bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700 hover:border-gray-400 focus:outline-none h-[80px] sm:w-[150px] text-left md:w-[200px] lg:w-[270px]">
+            <button id="datePickerBtn" class="bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700 hover:border-gray-400 focus:outline-none h-[80px] sm:w-[150px] text-left md:w-[200px] lg:w-[270px] cursor-pointer">
                 <span id="date" class="text-[17px] lg:text-[20px]">Select a date</span>
                 <span id="selectedDateDisplay" class="block text-gray-500 text-[13px] lg:text-[15px]"></span>
             </button>
@@ -124,9 +136,9 @@
             <div id="calendarContainer" class="hidden absolute left-[50%] top-[100%] translate-x-[-50%] mt-2 z-50 bg-white rounded-xl shadow-lg p-4 w-80">
                 <!-- Header -->
                 <div class="flex justify-between items-center mb-4">
-                    <button id="prevMonth" class="text-gray-500 hover:text-black text-xl">&larr;</button>
+                    <button id="prevMonth" class="text-gray-500 hover:text-black text-xl cursor-pointer">&larr;</button>
                     <h2 id="monthYear" class="text-lg font-semibold"></h2>
-                    <button id="nextMonth" class="text-gray-500 hover:text-black text-xl">&rarr;</button>
+                    <button id="nextMonth" class="text-gray-500 hover:text-black text-xl cursor-pointer">&rarr;</button>
                 </div>
 
                 <!-- Days of Week -->
@@ -147,7 +159,7 @@
 
         <!-- Travelers Selection Button -->
         <div class="relative">
-            <button id="travelersBtn" class="bg-white border border-gray-300 rounded-lg px-2 text-gray-700 hover:border-gray-400 focus:outline-none h-[80px] w-[110px] sm:w-[150px] text-left md:w-[200px] lg:w-[270px]">
+            <button id="travelersBtn" class="bg-white border border-gray-300 rounded-lg px-2 text-gray-700 hover:border-gray-400 focus:outline-none h-[80px] w-[110px] sm:w-[150px] text-left md:w-[200px] lg:w-[270px] cursor-pointer">
                 <span id="Title" class="text-[17px] lg:text-[20px]">Participants</span>
                 <span id="travelersCount" class="text-gray-500 block  text-[13px] lg:text-[15px]">1 Adult</span>
             </button>
@@ -161,9 +173,9 @@
                             <p class="text-sm text-gray-500">Aged 18+</p>
                         </div>
                         <div class="flex items-center gap-3">
-                            <button class="decrementBtn bg-gray-100 hover:bg-gray-200 p-2 rounded-full w-8 h-8 flex items-center justify-center" data-type="adults">-</button>
+                            <button class="decrementBtn bg-gray-100 hover:bg-gray-200 p-2 rounded-full w-8 h-8 flex items-center justify-center cursor-pointer" data-type="adults">-</button>
                             <span class="w-6 text-center" id="adultsCount">2</span>
-                            <button class="incrementBtn bg-gray-100 hover:bg-gray-200 p-2 rounded-full w-8 h-8 flex items-center justify-center" data-type="adults">+</button>
+                            <button class="incrementBtn bg-gray-100 hover:bg-gray-200 p-2 rounded-full w-8 h-8 flex items-center justify-center cursor-pointer" data-type="adults">+</button>
                         </div>
                     </div>
                     
@@ -174,14 +186,14 @@
                             <p class="text-sm text-gray-500">Aged 0-17</p>
                         </div>
                         <div class="flex items-center gap-3">
-                            <button class="decrementBtn bg-gray-100 hover:bg-gray-200 p-2 rounded-full w-8 h-8 flex items-center justify-center" data-type="children">-</button>
+                            <button class="decrementBtn bg-gray-100 hover:bg-gray-200 p-2 rounded-full w-8 h-8 flex items-center justify-center cursor-pointer" data-type="children">-</button>
                             <span class="w-6 text-center" id="childrenCount">0</span>
-                            <button class="incrementBtn bg-gray-100 hover:bg-gray-200 p-2 rounded-full w-8 h-8 flex items-center justify-center" data-type="children">+</button>
+                            <button class="incrementBtn bg-gray-100 hover:bg-gray-200 p-2 rounded-full w-8 h-8 flex items-center justify-center cursor-pointer" data-type="children">+</button>
                         </div>
                     </div>
                     <!-- Apply Button - Now inside the dropdown -->
                     <div class="pt-4 border-t border-gray-200">
-                        <button id="applyTravelers" class="w-full bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition duration-300 sm:w-[100px]">
+                        <button id="applyTravelers" class="w-full bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition duration-300 sm:w-[100px] cursor-pointer">
                             Apply
                         </button>
                     </div>
@@ -190,14 +202,130 @@
         </div>
 
         <!-- Search Button -->
-        <button id="searchBtn" class="bg-orange-500 text-white px-3 py-2 rounded-lg hover:bg-orange-400 transition duration-300 w-[80px] sm:w-[120px] md:w-[200px] lg:w-[220px] text-left">
+        <button id="searchBtn" class="bg-orange-500 text-white px-3 py-2 rounded-lg hover:bg-orange-400 transition duration-300 w-[80px] sm:w-[120px] md:w-[200px] lg:w-[220px] text-left cursor-pointer">
             Search
         </button>    
     </div>
     <div class="max-w-[1200px] mx-auto px-5 relative">
         <img src="{{ asset('images/marina_agadir.avif') }}" alt="Marina Agadir" class="w-full h-[400px] xl:h-[500px] object-cover mt-[70px] rounded-lg shadow-lg blur-[2px]">
         <p class="font-bold absolute left-10 lg:left-15 top-20 lg:top-30 text-white bg-transparent text-[17px] sm:text-[25px] lg:text-[30px]">Can't decide ? <br>Explore every activity in the city</p>
-        <button class="bg-orange-500 text-white px-2 py-3 rounded-lg hover:bg-orange-400 transition duration-300 absolute left-10 lg:left-15 top-60 sm:text-[22px] text-[15px]">Search activities all over Agadir &rarr;</button>
+        <a href="{{ route('activities') }}" class="bg-orange-500 text-white px-2 py-3 rounded-lg hover:bg-orange-400 transition duration-300 absolute left-10 lg:left-15 top-60 sm:text-[22px] text-[15px]">Search activities all over Agadir &rarr;</a>
+    </div>
+</div>
+
+<!-- Luxurious Activities Showcase Section - Hidden on mobile -->
+<div class="bg-gradient-to-br from-orange-50 via-white to-blue-50 py-20 mt-[200px] hidden md:block">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full mb-6">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                </svg>
+            </div>
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                Discover <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-orange-500">Luxurious</span> Experiences
+            </h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">Immerse yourself in the finest activities Agadir has to offer. From desert adventures to coastal escapes, every moment is crafted for unforgettable memories.</p>
+        </div>
+
+        @if($activities->count() > 0)
+            <!-- Activities Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach($activities as $activity)
+                    <div class="group relative bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+                        <!-- Image Container -->
+                        <div class="relative h-64 overflow-hidden">
+                            @if($activity->hasImageData())
+                                <img src="{{ $activity->image_data_url }}" alt="{{ $activity->name }}" class="w-full h-full object-cover">
+                            @else
+                                <div class="w-full h-full bg-gradient-to-br from-orange-200 to-orange-300 flex items-center justify-center">
+                                    <svg class="w-16 h-16 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                            @endif
+                            
+                            <!-- Price Badge -->
+                            <div class="absolute top-4 right-4">
+                                <div class="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                                    {{ number_format($activity->price, 0) }}€
+                                </div>
+                            </div>
+                            
+                            <!-- Rating Badge -->
+                            <div class="absolute top-4 left-4">
+                                <div class="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1 shadow-md">
+                                    <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                                        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                    </svg>
+                                    <span class="text-sm font-semibold text-gray-800">4.{{ rand(7, 9) }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">
+                                {{ $activity->name }}
+                            </h3>
+                            <p class="text-gray-600 text-sm leading-relaxed mb-6">
+                                {{ Str::limit($activity->bio, 120) }}
+                            </p>
+                            
+                            <!-- Activity Features -->
+                            <div class="flex items-center gap-4 mb-6 text-sm text-gray-500">
+                                <div class="flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>Full Day</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                    </svg>
+                                    <span>Small Group</span>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="flex gap-3">
+                                <button class="flex-1 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 font-semibold py-3 px-4 rounded-xl shadow-md cursor-pointer">
+                                    View Details
+                                </button>
+                                <button class="flex-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold py-3 px-4 rounded-xl shadow-md cursor-pointer">
+                                    Book Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <!-- Call to Action -->
+            <div class="text-center mt-16">
+                <div class="inline-flex items-center justify-center">
+                    <a href="{{ route('activities') }}" class="bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold py-4 px-8 rounded-full shadow-xl flex items-center gap-3 cursor-pointer">
+                        <span>Explore All Activities</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        @else
+            <!-- No Activities Placeholder -->
+            <div class="text-center py-20">
+                <div class="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-orange-100 to-orange-200 rounded-full mb-8">
+                    <svg class="w-12 h-12 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M19 10a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-3xl font-bold text-gray-800 mb-4">Amazing Activities Coming Soon</h3>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">We're curating the most extraordinary experiences in Agadir. Stay tuned for luxury adventures that will take your breath away.</p>
+            </div>
+        @endif
     </div>
 </div>
 

@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     @vite('resources/css/app.css')
@@ -31,6 +32,17 @@
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
+        }
+        
+        /* Smooth hover effects for activity cards */
+        .activity-card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+        
+        .activity-card-hover:hover {
+            transform: scale(1.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
         
         /* Luxury gradient background animation */
@@ -111,13 +123,15 @@
                 </a>
             @endif
             
-            <!-- Heart icon for authenticated users -->
-            <button class="bg-red-100 hover:bg-red-200 px-4 py-2 rounded-[20px] cursor-pointer transition duration-300 flex items-center gap-2" id="likeButton">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
-                <span class="text-red-500">Favorites</span>
-            </button>
+            <!-- Heart icon for authenticated users only -->
+            @if(Auth::check() || session('is_admin'))
+                <a href="{{ route('favorites.index') }}" class="bg-red-100 hover:bg-red-200 px-4 py-2 rounded-[20px] cursor-pointer transition duration-300 flex items-center gap-2" id="likeButton">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                    <span class="text-red-500">Favorites</span>
+                </a>
+            @endif
             <!-- Logout for regular users -->
             @if (!session('is_admin'))
                 <form action="{{ route('logout') }}" method="POST" class="inline">
@@ -156,12 +170,12 @@
                 <button class="w-full bg-orange-500 hover:bg-orange-400 px-4 py-3 rounded-[20px] text-white text-lg cursor-pointer transition duration-300">Book Now</button>
 
                 <!-- Heart icon for authenticated users -->
-                <button class="w-full bg-red-100 hover:bg-red-200 px-4 py-3 rounded-[20px] text-lg cursor-pointe40shadow-lg text-center flex items-center justify-center gap-2" id="mobileLikeButton">
+                <a href="{{ route('favorites.index') }}" class="w-full bg-red-100 hover:bg-red-200 px-4 py-3 rounded-[20px] text-lg cursor-pointer shadow-lg text-center flex items-center justify-center gap-2" id="mobileLikeButton">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                     </svg>
                     <span class="text-red-500">Favorites</span>
-                </button>
+                </a>
                 
                 
             @else
@@ -194,23 +208,6 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 <script>
-    // Handle favorites button click
-    document.addEventListener('DOMContentLoaded', function() {
-        const likeButton = document.getElementById('likeButton');
-        const mobileLikeButton = document.getElementById('mobileLikeButton');
-        
-        if (likeButton) {
-            likeButton.addEventListener('click', function() {
-                alert('Favorites functionality coming soon!');
-            });
-        }
-        
-        if (mobileLikeButton) {
-            mobileLikeButton.addEventListener('click', function() {
-                alert('Favorites functionality coming soon!');
-            });
-        }
-    });
 </script>
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])

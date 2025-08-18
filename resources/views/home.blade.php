@@ -42,22 +42,51 @@
             <h2 class="text-[18px] font-bold text-center mb-5 text-orange-500 md:hidden">Best Selling Activities</h2>
             <div class="swiper mySwiper w-[320px] h-[500px] lg:w-[350px] xl:w-[380px] xl:h-[583px] shadow-[0_1px_25px_rgba(0,0,0,0.1)] rounded-lg">
                 <div class="swiper-wrapper">
+                    @if(isset($sliderActivities) && $sliderActivities->count() > 0)
+                        @foreach($sliderActivities as $index => $activity)
+                        <div class="swiper-slide">
+                            <div class="rounded-2xl px-3 py-1 text-center text-white bg-green-400 absolute right-4 top-2 z-10 text-[13px] xl:text-[17px] font-semibold min-w-[60px]">{{ number_format($activity->price, 0) }}€</div>
+                            
+                            @if($activity->hasImageData())
+                                <img src="{{ $activity->image_data_url }}" alt="{{ $activity->name }}" class="h-[213px] lg:w-full xl:h-[250px] lg:h-[240px] w-full">
+                            @else
+                                @php
+                                    $images = ['activity1.jpg', 'activity2.jpg', 'activity3.jpg'];
+                                    $currentImage = $images[$index % count($images)];
+                                @endphp
+                                <img src="{{ asset('images/' . $currentImage) }}" alt="{{ $activity->name }}" class="h-[213px] lg:w-full xl:h-[250px] lg:h-[240px]">
+                            @endif
+                            
+                            <div class="mt-5 flex justify-center items-center gap-2">
+                                <img src="{{ asset('images/secondstar.png') }}" alt="ratings" class="w-[15px] ">
+                                <p class="text-[13px] xl:text-[17px] font-bold m-0 p-0">{{ $activity->average_rating }} <span class="text-gray-400 font-normal">({{ $activity->review_count }} ratings)</span></p>
+                            </div>
+                            
+                            <div class="flex flex-col px-4 mt-7 gap-2">
+                                <p class="text-[13px] xl:text-[17px] font-bold">{{ $activity->name }}</p>
+                                <p class="text-[13px] xl:text-[17px] text-gray-600">{{ $activity->bio }}</p>
+                            </div>
+                            
+                            <div class="flex justify-between items-center px-4 mt-5 gap-3">
+                                <a href="{{ route('activity.detail', $activity->id) }}" class="bg-white text-black border border-gray-500 px-6 py-1 rounded-[20px] hover:bg-gray-200 transition duration-300 text-[13px] xl:text-[17px] w-[50%] cursor-pointer text-center">Details</a>
+                                <button class="bg-orange-500 text-white px-4 py-1 rounded-[20px] hover:bg-orange-400 transition duration-300 text-[13px] xl:text-[17px] cursor-pointer w-[50%]">Book Now</button>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <!-- Fallback static slides if no activities found -->
                     <div class="swiper-slide">
-                        <p class="rounded-2xl w-10 h-5.2 text-center text-white bg-green-400 absolute right-4 top-2 z-100 text-[13px] xl:text-[17px]">25€</p>
+                        <div class="rounded-2xl px-3 py-1 text-center text-white bg-green-400 absolute right-4 top-2 z-10 text-[13px] xl:text-[17px] font-semibold min-w-[60px]">25€</div>
                         <img src="{{ asset('images/activity1.jpg') }}" alt="Activity 1" class="h-[213px] lg:w-full xl:h-[250px] lg:h-[240px]">
                         
                         <div class="mt-5 flex justify-center items-center gap-2">
                             <img src="{{ asset('images/secondstar.png') }}" alt="ratings" class="w-[15px] ">
-                            @php
-                                $rating1 = ['4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9'][array_rand(['4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9'])];
-                                $reviews1 = rand(15, 95);
-                            @endphp
-                            <p class="text-[13px] xl:text-[17px] font-bold m-0 p-0">{{ $rating1 }} <span class="text-gray-400 font-normal">({{ $reviews1 }} ratings)</span></p>
+                            <p class="text-[13px] xl:text-[17px] font-bold m-0 p-0">4.3 <span class="text-gray-400 font-normal">(45 ratings)</span></p>
                         </div>
                         
                         <div class="flex flex-col px-4 mt-7 gap-2">
-                            <p class="text-[13px] xl:text-[17px] font-bold">1h Sand Surf + Camel Ride + Moroccan Mint Tea + Dinner + Show</p>
-                            <p class="text-[13px] xl:text-[17px] text-gray-600">Enjoy sand surfing, a camel ride, Moroccan mint tea, a tasty dinner, and a lively traditional show. All in one unforgettable experience.</p>
+                            <p class="text-[13px] xl:text-[17px] font-bold">Desert Adventure Experience</p>
+                            <p class="text-[13px] xl:text-[17px] text-gray-600">Enjoy an amazing desert adventure with multiple activities.</p>
                         </div>
                         
                         <div class="flex justify-between items-center px-4 mt-5 gap-3">
@@ -65,52 +94,7 @@
                             <button class="bg-orange-500 text-white px-4 py-1 rounded-[20px] hover:bg-orange-400 transition duration-300 text-[13px] xl:text-[17px] cursor-pointer w-[50%]">Book Now</button>
                         </div>
                     </div>
-                    <div class="swiper-slide">
-                        <p class="rounded-2xl w-10 h-5.2 text-center text-white bg-green-400 absolute right-4 top-2 z-100 text-[13px] xl:text-[17px]">65€</p>      
-                        <img src="{{ asset('images/activity3.jpg') }}" alt="Activity 3" class="h-[213px] lg:w-full xl:h-[250px] lg:h-[240px]">
-                        
-                        <div class="mt-5 flex justify-center items-center gap-2">
-                            <img src="{{ asset('images/secondstar.png') }}" alt="ratings" class="w-[15px] ">
-                            @php
-                                $rating2 = ['4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9'][array_rand(['4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9'])];
-                                $reviews2 = rand(15, 95);
-                            @endphp
-                            <p class="text-[13px] xl:text-[17px] font-bold m-0 p-0">{{ $rating2 }} <span class="text-gray-400 font-normal">({{ $reviews2 }} ratings)</span></p>
-                        </div>
-                        
-                        <div class="flex flex-col px-4 mt-7 gap-2">
-                            <p class="text-[13px] xl:text-[17px] font-bold">Buggy Adventure + 30min horse ride + Dinner + Crocodile park tour</p>
-                            <p class="text-[13px] xl:text-[17px] text-gray-600">Experience the thrill of driving a buggy through the stunning Moroccan desert. Enjoy a 30-minute horse ride, followed by a delicious dinner under the stars.</p>
-                        </div>
-                        
-                        <div class="flex justify-between items-center px-4 mt-5 gap-3">
-                            <button class="bg-white text-black border border-gray-500 px-6 py-1 rounded-[20px] hover:bg-orange-500 hover:text-white transition duration-300 text-[13px] xl:text-[17px] w-[50%] cursor-pointer">Details</button>
-                            <button class="bg-orange-500 text-white px-4 py-1 rounded-[20px] hover:bg-orange-400 transition duration-300 text-[13px] xl:text-[17px] w-[50%] cursor-pointer">Book Now</button>
-                        </div>
-                    </div>
-                    
-                    <div class="swiper-slide">
-                        <p class="rounded-2xl w-10 h-5.2 text-center text-white bg-green-400 absolute right-4 top-2 z-100 text-[13px] xl:text-[17px]">45€</p>
-                        <img src="{{ asset('images/activity2.jpg') }}" alt="Activity 2" class="h-[213px] lg:w-full xl:h-[250px] lg:h-[240px]">
-                        <div class="mt-5 flex justify-center items-center gap-2">
-                            <img src="{{ asset('images/secondstar.png') }}" alt="ratings" class="w-[15px] ">
-                            @php
-                                $rating3 = ['4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9'][array_rand(['4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9'])];
-                                $reviews3 = rand(15, 95);
-                            @endphp
-                            <p class="text-[13px] xl:text-[17px] font-bold m-0 p-0">{{ $rating3 }} <span class="text-gray-400 font-normal">({{ $reviews3 }} ratings)</span></p>
-                        </div>
-                        
-                        <div class="flex flex-col px-4 mt-7 gap-2">
-                            <p class="text-[13px] xl:text-[17px] font-bold">Surf lessons with professional + Breakfast + Bus ride from your hotel</p>
-                            <p class="text-[13px] xl:text-[17px] text-gray-600">Join us for an unforgettable surfing experience in the beautiful Moroccan waves. Our professional instructors will guide you every step of the way.</p>
-                        </div>
-                        
-                        <div class="flex justify-between items-center px-4 mt-5 gap-3">
-                            <button class="bg-white text-black border border-gray-500 px-6 py-1 rounded-[20px] hover:bg-orange-500 hover:text-white transition duration-300 text-[13px] xl:text-[17px] w-[50%] cursor-pointer">Details</button>
-                            <button class="bg-orange-500 text-white px-4 py-1 rounded-[20px] hover:bg-orange-400 transition duration-300 text-[13px] xl:text-[17px] w-[50%] cursor-pointer">Book Now</button>
-                        </div>
-                    </div>
+                @endif
                 </div>
                 <div class="swiper-button-prev after:text-black"></div>
                 <div class="swiper-button-next after:text-black"></div>
@@ -233,7 +217,7 @@
             <!-- Activities Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach($activities as $activity)
-                    <div class="group relative bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+                    <div class="group relative bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl cursor-pointer">
                         <!-- Image Container -->
                         <div class="relative h-64 overflow-hidden">
                             @if($activity->hasImageData())
@@ -262,6 +246,13 @@
                                     <span class="text-sm font-semibold text-gray-800">4.{{ rand(7, 9) }}</span>
                                 </div>
                             </div>
+
+                            <!-- Favorite Button -->
+                            <button class="absolute bottom-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md cursor-pointer favorite-btn transition-all duration-300 hover:scale-110" data-activity-id="{{ $activity->id }}">
+                                <svg class="w-5 h-5 heart-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                            </button>
                         </div>
 
                         <!-- Content -->
@@ -291,9 +282,9 @@
 
                             <!-- Action Buttons -->
                             <div class="flex gap-3">
-                                <button class="flex-1 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 font-semibold py-3 px-4 rounded-xl shadow-md cursor-pointer">
+                                <a href="{{ route('activity.detail', $activity->id) }}" class="flex-1 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 font-semibold py-3 px-4 rounded-xl shadow-md cursor-pointer text-center">
                                     View Details
-                                </button>
+                                </a>
                                 <button class="flex-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold py-3 px-4 rounded-xl shadow-md cursor-pointer">
                                     Book Now
                                 </button>
@@ -346,4 +337,121 @@
     </div>
 </div>
 <script src="{{ asset('js/app.js') }}"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Load favorite status for all activities when page loads
+    loadFavoriteStatuses();
+    
+    // Handle favorite button clicks
+    const favoriteButtons = document.querySelectorAll('.favorite-btn');
+    
+    favoriteButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const activityId = this.dataset.activityId;
+            const heartIcon = this.querySelector('.heart-icon');
+            
+            // First check if user is authenticated
+            fetch('/auth-status')
+                .then(response => response.json())
+                .then(authData => {
+                    if (!authData.authenticated) {
+                        // User is not authenticated, redirect to login
+                        window.location.href = '{{ route("login") }}';
+                        return;
+                    }
+                    
+                    // User is authenticated, proceed with toggle
+                    this.disabled = true;
+                    
+                    fetch(`/favorites/toggle/${activityId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            updateHeartIcon(heartIcon, data.is_favorited);
+                            
+                            // Show success message
+                            showToast(data.message);
+                        } else if (data.redirect) {
+                            // User is not authenticated, redirect to login
+                            window.location.href = data.redirect;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showToast('An error occurred. Please try again.', 'error');
+                    })
+                    .finally(() => {
+                        // Re-enable button
+                        this.disabled = false;
+                    });
+                })
+                .catch(error => {
+                    console.error('Auth check error:', error);
+                    // On error, redirect to login to be safe
+                    window.location.href = '{{ route("login") }}';
+                });
+        });
+    });
+});
+
+function loadFavoriteStatuses() {
+    const favoriteButtons = document.querySelectorAll('.favorite-btn');
+    
+    favoriteButtons.forEach(button => {
+        const activityId = button.dataset.activityId;
+        const heartIcon = button.querySelector('.heart-icon');
+        
+        fetch(`/favorites/check/${activityId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.authenticated) {
+                    updateHeartIcon(heartIcon, data.is_favorited);
+                } else {
+                    // User is not authenticated, show gray heart
+                    heartIcon.classList.remove('text-red-500');
+                    heartIcon.classList.add('text-gray-600');
+                    heartIcon.setAttribute('fill', 'none');
+                }
+            })
+            .catch(error => {
+                console.error('Error loading favorite status:', error);
+            });
+    });
+}
+
+function updateHeartIcon(heartIcon, isFavorited) {
+    if (isFavorited) {
+        heartIcon.classList.remove('text-gray-600');
+        heartIcon.classList.add('text-red-500');
+        heartIcon.setAttribute('fill', 'currentColor');
+    } else {
+        heartIcon.classList.remove('text-red-500');
+        heartIcon.classList.add('text-gray-600');
+        heartIcon.setAttribute('fill', 'none');
+    }
+}
+
+function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
+    toast.className = `fixed top-[120px] right-4 ${bgColor} text-white px-4 py-2 rounded-lg shadow-lg z-50 transition-all duration-300`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => document.body.removeChild(toast), 300);
+    }, 2000);
+}
+</script>
 </x-layout>

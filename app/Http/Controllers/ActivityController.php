@@ -17,8 +17,9 @@ class ActivityController extends Controller
             return redirect('/')->withErrors(['error' => 'Access denied.']);
         }
         
-        $activities = Activity::orderBy('created_at', 'desc')->paginate(10);
-        return view('admin.activities.index', compact('activities'));
+        $activities = Activity::orderBy('created_at', 'desc')->paginate(9);
+        $totalActivities = Activity::count();
+        return view('admin.activities.index', compact('activities', 'totalActivities'));
     }
 
     public function create()

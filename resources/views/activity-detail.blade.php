@@ -59,8 +59,8 @@
                         </div>
 
                         <!-- Add to Favorites Button -->
-                        <button class="absolute top-6 right-6 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:bg-white transition-colors duration-200 cursor-pointer group">
-                            <svg class="w-5 h-5 text-gray-600 group-hover:text-red-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button class="absolute top-6 right-6 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:bg-white transition-all duration-300 cursor-pointer group favorite-btn" data-activity-id="{{ $activity->id }}">
+                            <svg class="w-5 h-5 heart-icon transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                             </svg>
                         </button>
@@ -160,36 +160,17 @@
                         What's Included
                     </h3>
                     <ul class="space-y-3">
-                        <li class="flex items-center gap-3">
-                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700">Professional local guide</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700">Transportation included</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700">All entrance fees</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700">Lunch and refreshments</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700">Small group experience</span>
-                        </li>
+                        @php
+                            $whatsIncluded = \App\Services\ActivityContentService::getWhatsIncluded($activity->name);
+                        @endphp
+                        @foreach($whatsIncluded as $item)
+                            <li class="flex items-center gap-3">
+                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span class="text-gray-700">{{ $item }}</span>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
 
@@ -204,37 +185,44 @@
                         Good to Know
                     </h3>
                     <ul class="space-y-3">
-                        <li class="flex items-start gap-3">
-                            <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span class="text-gray-700">Duration: 8-10 hours</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            </svg>
-                            <span class="text-gray-700">Meeting point: Agadir Marina</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
-                            </svg>
-                            <span class="text-gray-700">Operates in all weather conditions</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span class="text-gray-700">Free cancellation up to 24 hours</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                            </svg>
-                            <span class="text-gray-700">Maximum 12 participants</span>
-                        </li>
+                        @php
+                            $goodToKnow = \App\Services\ActivityContentService::getGoodToKnow($activity->name, $activity->price);
+                            $iconTypes = ['clock', 'location', 'weather', 'cancel', 'users', 'info'];
+                        @endphp
+                        @foreach($goodToKnow as $index => $item)
+                            <li class="flex items-start gap-3">
+                                @php
+                                    $iconType = $iconTypes[$index % count($iconTypes)];
+                                @endphp
+                                @if($iconType == 'clock')
+                                    <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                @elseif($iconType == 'location')
+                                    <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                @elseif($iconType == 'weather')
+                                    <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+                                    </svg>
+                                @elseif($iconType == 'cancel')
+                                    <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                @elseif($iconType == 'users')
+                                    <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                    </svg>
+                                @else
+                                    <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                @endif
+                                <span class="text-gray-700">{{ $item }}</span>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -302,3 +290,120 @@
         </div>
     </div>
 </x-layout>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Load favorite status for the activity when page loads
+    loadFavoriteStatus();
+    
+    // Handle favorite button click
+    const favoriteButton = document.querySelector('.favorite-btn');
+    
+    if (favoriteButton) {
+        favoriteButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const activityId = this.dataset.activityId;
+            const heartIcon = this.querySelector('.heart-icon');
+            
+            // First check if user is authenticated
+            fetch('/auth-status')
+                .then(response => response.json())
+                .then(authData => {
+                    if (!authData.authenticated) {
+                        // User is not authenticated, redirect to login
+                        window.location.href = '{{ route("login") }}';
+                        return;
+                    }
+                    
+                    // User is authenticated, proceed with toggle
+                    this.disabled = true;
+                    
+                    fetch(`/favorites/toggle/${activityId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            updateHeartIcon(heartIcon, data.is_favorited);
+                            
+                            // Show success message
+                            showToast(data.message);
+                        } else if (data.redirect) {
+                            // User is not authenticated, redirect to login
+                            window.location.href = data.redirect;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showToast('An error occurred. Please try again.', 'error');
+                    })
+                    .finally(() => {
+                        // Re-enable button
+                        this.disabled = false;
+                    });
+                })
+                .catch(error => {
+                    console.error('Auth check error:', error);
+                    // On error, redirect to login to be safe
+                    window.location.href = '{{ route("login") }}';
+                });
+        });
+    }
+});
+
+function loadFavoriteStatus() {
+    const favoriteButton = document.querySelector('.favorite-btn');
+    
+    if (favoriteButton) {
+        const activityId = favoriteButton.dataset.activityId;
+        const heartIcon = favoriteButton.querySelector('.heart-icon');
+        
+        fetch(`/favorites/check/${activityId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.authenticated) {
+                    updateHeartIcon(heartIcon, data.is_favorited);
+                } else {
+                    // User is not authenticated, show gray heart
+                    heartIcon.classList.remove('text-red-500');
+                    heartIcon.classList.add('text-gray-600');
+                    heartIcon.setAttribute('fill', 'none');
+                }
+            })
+            .catch(error => {
+                console.error('Error loading favorite status:', error);
+            });
+    }
+}
+
+function updateHeartIcon(heartIcon, isFavorited) {
+    if (isFavorited) {
+        heartIcon.classList.remove('text-gray-600');
+        heartIcon.classList.add('text-red-500');
+        heartIcon.setAttribute('fill', 'currentColor');
+    } else {
+        heartIcon.classList.remove('text-red-500');
+        heartIcon.classList.add('text-gray-600');
+        heartIcon.setAttribute('fill', 'none');
+    }
+}
+
+function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
+    toast.className = `fixed top-[120px] right-4 ${bgColor} text-white px-4 py-2 rounded-lg shadow-lg z-50 transition-all duration-300`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => document.body.removeChild(toast), 300);
+    }, 2000);
+}
+</script>

@@ -58,7 +58,49 @@ class Activity extends Model
             return [];
         }
         
-        return array_slice($this->reviews, 0, $limit);
+        $colors = [
+            'from-blue-400 to-blue-500',
+            'from-green-400 to-green-500',
+            'from-purple-400 to-purple-500',
+            'from-pink-400 to-pink-500',
+            'from-indigo-400 to-indigo-500',
+            'from-red-400 to-red-500',
+            'from-yellow-400 to-yellow-500',
+            'from-teal-400 to-teal-500'
+        ];
+        
+        $defaultNames = [
+            'Alex Johnson', 'Maria Garcia', 'David Chen', 'Sarah Wilson', 'Michael Brown',
+            'Emily Davis', 'James Martinez', 'Lisa Anderson', 'Ryan Taylor', 'Jessica Lee'
+        ];
+        
+        $reviews = array_slice($this->reviews, 0, $limit);
+        
+        // Ensure each review has required fields
+        foreach ($reviews as $index => &$review) {
+            // Generate name if not present
+            if (!isset($review['name'])) {
+                $review['name'] = $defaultNames[$index % count($defaultNames)];
+            }
+            
+            // Generate initial from name
+            if (!isset($review['initial'])) {
+                $review['initial'] = strtoupper(substr($review['name'], 0, 1));
+            }
+            
+            // Generate color if not present
+            if (!isset($review['color'])) {
+                $review['color'] = $colors[$index % count($colors)];
+            }
+            
+            // Set default time_ago if not present
+            if (!isset($review['time_ago'])) {
+                $timePeriods = ['3 days ago', '1 week ago', '2 weeks ago', '1 month ago', '2 months ago'];
+                $review['time_ago'] = $timePeriods[$index % count($timePeriods)];
+            }
+        }
+        
+        return $reviews;
     }
 
     /**
@@ -71,5 +113,29 @@ class Activity extends Model
             'has_half_star' => ($this->average_rating - floor($this->average_rating)) >= 0.5,
             'empty_stars' => 5 - ceil($this->average_rating)
         ];
+    }
+
+    /**
+     * Get the favorites for this activity.
+     */
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
+    /**
+     * Get the users who have favorited this activity.
+     */
+    public function favoritedByUsers()
+    {
+        return $this->belongsToMany(UserData::class, 'favorites', 'activity_id', 'user_id')->withTimestamps();
+    }
+
+    /**
+     * Get the total number of favorites for this activity.
+     */
+    public function getFavoritesCountAttribute()
+    {
+        return $this->favorites()->count();
     }
 }

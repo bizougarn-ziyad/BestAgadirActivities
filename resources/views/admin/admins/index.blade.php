@@ -7,7 +7,7 @@
 
     <div class="container mx-auto px-4 pt-[120px]">
         <div class="bg-white rounded-xl shadow-[0_1px_25px_rgba(0,0,0,0.1)] p-8 max-w-7xl mx-auto">
-            <div class="flex justify-between items-center mb-8">
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
                 <div>
                     <h1 class="text-4xl font-bold text-orange-500 flex items-center gap-3">
                         👥 Admin Management
@@ -15,7 +15,7 @@
                     <p class="text-gray-600 mt-2">Manage administrator accounts for your platform</p>
                 </div>
                 <div>
-                    <a href="{{ route('admin.admins.create') }}" class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-3 rounded-xl transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-2">
+                    <a href="{{ route('admin.admins.create') }}" class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-3 rounded-xl transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 w-full sm:w-auto">
                         ✨ <span>Add New Admin</span>
                     </a>
                 </div>
@@ -23,15 +23,12 @@
 
             @if($admins->count() > 0)
                 <div class="bg-gradient-to-r from-orange-50 to-blue-50 rounded-xl p-6 mb-6">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="text-2xl">📊</div>
-                            <div>
-                                <h3 class="text-lg font-semibold text-gray-800">Total Administrators</h3>
-                                <p class="text-gray-600">{{ $admins->count() }} admin{{ $admins->count() !== 1 ? 's' : '' }} managing the platform</p>
-                            </div>
+                    <div class="flex items-center gap-3">
+                        <div class="text-2xl">📊</div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">Total Administrators</h3>
+                            <p class="text-gray-600">{{ $admins->count() }} admin{{ $admins->count() !== 1 ? 's' : '' }} managing the platform</p>
                         </div>
-                        <div class="text-3xl font-bold text-orange-500">{{ $admins->count() }}</div>
                     </div>
                 </div>
 

@@ -46,4 +46,28 @@ class UserData extends Authenticatable implements CanResetPassword
         // You can customize this or use the default Laravel implementation
         $this->notify(new \Illuminate\Auth\Notifications\ResetPassword($token));
     }
+
+    /**
+     * Get the favorites for the user.
+     */
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class, 'user_id');
+    }
+
+    /**
+     * Get the activities that the user has favorited.
+     */
+    public function favoriteActivities()
+    {
+        return $this->belongsToMany(Activity::class, 'favorites', 'user_id', 'activity_id')->withTimestamps();
+    }
+
+    /**
+     * Check if the user has favorited a specific activity.
+     */
+    public function hasFavorited($activityId)
+    {
+        return $this->favorites()->where('activity_id', $activityId)->exists();
+    }
 }

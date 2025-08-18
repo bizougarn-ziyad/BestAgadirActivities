@@ -77,7 +77,7 @@
                 <!-- Activities Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-16">
                     @foreach($activities as $activity)
-                        <div class="group relative bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 flex flex-col h-full">
+                        <div class="group relative bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 flex flex-col h-full transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl cursor-pointer">
                             <!-- Image Container -->
                             <div class="relative h-64 overflow-hidden flex-shrink-0">
                                 @if($activity->hasImageData())
@@ -107,9 +107,9 @@
                                     </div>
                                 </div>
 
-                                <!-- Wishlist Button -->
-                                <button class="absolute bottom-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md cursor-pointer">
-                                    <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <!-- Favorite Button -->
+                                <button class="absolute bottom-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md cursor-pointer favorite-btn transition-all duration-300 hover:scale-110" data-activity-id="{{ $activity->id }}">
+                                    <svg class="w-4 h-4 heart-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                     </svg>
                                 </button>
@@ -153,12 +153,51 @@
 
                 <!-- Pagination -->
                 @if($activities->hasPages())
-                    <div class="flex justify-center">
-                        <div class="bg-white rounded-xl shadow-lg p-4">
-                            {{ $activities->links() }}
+                    <div class="flex justify-center mt-16">
+                        <div class="bg-gradient-to-br from-white via-orange-50 to-blue-50 rounded-2xl shadow-xl border border-gray-100 px-8 pt-8 pb-4">
+                            <div class="flex flex-col items-center space-y-4">
+                                <!-- Pagination Links -->
+                                <div class="pagination-wrapper">
+                                    {{ $activities->links('pagination.custom') }}
+                                </div>
+                                
+                                <!-- Page Info at Bottom - Desktop -->
+                                <div class="hidden sm:block text-sm text-gray-600 font-medium">
+                                    Page {{ $activities->currentPage() }} of {{ $activities->lastPage() }}
+                                </div>
+                                
+                                <!-- Page Info for Mobile -->
+                                <div class="sm:hidden text-xs text-gray-500">
+                                    Page {{ $activities->currentPage() }} of {{ $activities->lastPage() }}
+                                </div>
+                            </div>
+                            </div>
                         </div>
                     </div>
                 @endif
+
+    <style>
+        /* Custom pagination styles */
+        .pagination-wrapper nav > div:first-child {
+            @apply hidden;
+        }
+        
+        .pagination-wrapper .relative.z-0.inline-flex {
+            @apply shadow-2xl;
+        }
+        
+        .pagination-wrapper .relative.z-0.inline-flex > * {
+            @apply transition-all duration-200 ease-in-out;
+        }
+        
+        .pagination-wrapper .relative.z-0.inline-flex > *:hover {
+            @apply transform scale-105;
+        }
+        
+        .pagination-wrapper .relative.z-0.inline-flex > span[aria-current="page"] span {
+            @apply shadow-lg ring-2 ring-blue-300 ring-opacity-50;
+        }
+    </style>
 
             @else
                 <!-- No Activities Placeholder -->
@@ -186,12 +225,202 @@
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h3 class="text-3xl font-bold text-white mb-4">Stay Updated</h3>
             <p class="text-orange-100 text-lg mb-8">Get notified about new activities and exclusive offers in Agadir</p>
-            <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto  ">
-                <input type="email" placeholder="Enter your email" class="flex-1 px-4 py-3  focus:outline-none focus:ring-2 focus:ring-white/50 text-white border rounded-2xl">
-                <button class="bg-white text-orange-600 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-300 cursor-pointer">
+            
+            <!-- Newsletter Form -->
+            <form id="newsletterForm" class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                @csrf
+                <input type="email" 
+                       id="newsletterEmail"
+                       name="email" 
+                       placeholder="Enter your email" 
+                       class="flex-1 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-white/50 text-white border rounded-2xl"
+                       required>
+                <button type="submit" 
+                        id="subscribeBtn"
+                        class="bg-white text-orange-600 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
                     Subscribe
                 </button>
+            </form>
+            
+            <!-- Message Display -->
+            <div id="newsletterMessage" class="mt-4 hidden">
+                <p id="messageText" class="text-white text-sm"></p>
             </div>
         </div>
     </div>
 </x-layout>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Load favorite status for all activities when page loads
+    loadFavoriteStatuses();
+    
+    // Handle favorite button clicks
+    const favoriteButtons = document.querySelectorAll('.favorite-btn');
+    
+    favoriteButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const activityId = this.dataset.activityId;
+            const heartIcon = this.querySelector('.heart-icon');
+            
+            // First check if user is authenticated
+            fetch('/auth-status')
+                .then(response => response.json())
+                .then(authData => {
+                    if (!authData.authenticated) {
+                        // User is not authenticated, redirect to login
+                        window.location.href = '{{ route("login") }}';
+                        return;
+                    }
+                    
+                    // User is authenticated, proceed with toggle
+                    this.disabled = true;
+                    
+                    fetch(`/favorites/toggle/${activityId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            updateHeartIcon(heartIcon, data.is_favorited);
+                            
+                            // Show success message
+                            showToast(data.message);
+                        } else if (data.redirect) {
+                            // User is not authenticated, redirect to login
+                            window.location.href = data.redirect;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showToast('An error occurred. Please try again.', 'error');
+                    })
+                    .finally(() => {
+                        // Re-enable button
+                        this.disabled = false;
+                    });
+                })
+                .catch(error => {
+                    console.error('Auth check error:', error);
+                    // On error, redirect to login to be safe
+                    window.location.href = '{{ route("login") }}';
+                });
+        });
+    });
+});
+
+function loadFavoriteStatuses() {
+    const favoriteButtons = document.querySelectorAll('.favorite-btn');
+    
+    favoriteButtons.forEach(button => {
+        const activityId = button.dataset.activityId;
+        const heartIcon = button.querySelector('.heart-icon');
+        
+        fetch(`/favorites/check/${activityId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.authenticated) {
+                    updateHeartIcon(heartIcon, data.is_favorited);
+                } else {
+                    // User is not authenticated, show gray heart
+                    heartIcon.classList.remove('text-red-500');
+                    heartIcon.classList.add('text-gray-600');
+                    heartIcon.setAttribute('fill', 'none');
+                }
+            })
+            .catch(error => {
+                console.error('Error loading favorite status:', error);
+            });
+    });
+}
+
+function updateHeartIcon(heartIcon, isFavorited) {
+    if (isFavorited) {
+        heartIcon.classList.remove('text-gray-600');
+        heartIcon.classList.add('text-red-500');
+        heartIcon.setAttribute('fill', 'currentColor');
+    } else {
+        heartIcon.classList.remove('text-red-500');
+        heartIcon.classList.add('text-gray-600');
+        heartIcon.setAttribute('fill', 'none');
+    }
+}
+
+function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
+    toast.className = `fixed top-[120px] right-4 ${bgColor} text-white px-4 py-2 rounded-lg shadow-lg z-50 transition-all duration-300`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => document.body.removeChild(toast), 300);
+    }, 2000);
+}
+
+// Newsletter subscription functionality
+document.getElementById('newsletterForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const form = this;
+    const emailInput = document.getElementById('newsletterEmail');
+    const submitBtn = document.getElementById('subscribeBtn');
+    const messageDiv = document.getElementById('newsletterMessage');
+    const messageText = document.getElementById('messageText');
+    
+    // Disable form and show loading state
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Subscribing...';
+    messageDiv.classList.add('hidden');
+    
+    try {
+        const formData = new FormData(form);
+        
+        const response = await fetch('{{ route("newsletter.subscribe") }}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                               document.querySelector('input[name="_token"]')?.value
+            }
+        });
+        
+        const data = await response.json();
+        
+        // Show message
+        messageText.textContent = data.message;
+        messageDiv.classList.remove('hidden');
+        
+        if (data.success) {
+            // Clear form on success
+            emailInput.value = '';
+            showToast(data.message, 'success');
+        } else {
+            showToast(data.message, 'error');
+        }
+        
+    } catch (error) {
+        console.error('Newsletter subscription error:', error);
+        messageText.textContent = 'An error occurred. Please try again later.';
+        messageDiv.classList.remove('hidden');
+        showToast('An error occurred. Please try again later.', 'error');
+    } finally {
+        // Re-enable form
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+        
+        // Hide message after 5 seconds
+        setTimeout(() => {
+            messageDiv.classList.add('hidden');
+        }, 5000);
+    }
+});
+</script>

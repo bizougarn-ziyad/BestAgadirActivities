@@ -9,10 +9,34 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\NewsletterController;
 
 Route::get('/', function () {
-    $activities = Activity::where('is_active', true)->orderBy('created_at', 'desc')->take(6)->get();
-    return view('home', compact('activities'));
+    // Get specific activities for the slider
+    $sliderActivityNames = [
+        'Jet Ski Adventure',
+        'Parasailing Over Agadir Bay', 
+        'Horseback Beach Riding'
+    ];
+    
+    $sliderActivities = Activity::where('is_active', true)
+        ->whereIn('name', $sliderActivityNames)
+        ->get()
+        ->sortBy(function($activity) use ($sliderActivityNames) {
+            return array_search($activity->name, $sliderActivityNames);
+        })
+        ->values();
+    
+    // Get additional activities for the bottom section (excluding slider activities)
+    $sliderActivityIds = $sliderActivities->pluck('id')->toArray();
+    $activities = Activity::where('is_active', true)
+        ->whereNotIn('id', $sliderActivityIds)
+        ->orderBy('created_at', 'desc')
+        ->take(6)
+        ->get();
+    
+    return view('home', compact('activities', 'sliderActivities'));
 });
 
 Route::get('/activities', function () {
@@ -62,6 +86,15 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.post')->mi
 Route::post('/setup-password', [LoginController::class, 'setupPassword'])->name('setup.password')->middleware(['guest', 'no.cache']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
+// Favorite Routes
+Route::middleware('auth')->group(function () {
+    Route::post('/favorites/toggle/{activityId}', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
+    Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
+});
+
+// Public favorite route to check favorite status
+Route::get('/favorites/check/{activityId}', [FavoriteController::class, 'check'])->name('favorites.check');
+
 Route::get('/admin/dashboard', function () {
     // Check if user is authenticated as admin
     if (!Auth::guard('admin')->check() && !session('is_admin')) {
@@ -103,3 +136,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 Route::get('/addActivities', function () {
     return view('add-activities');
 });
+
+// Newsletter Routes
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
+Route::post('/newsletter/unsubscribe', [NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');

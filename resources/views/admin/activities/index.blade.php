@@ -13,7 +13,7 @@
 
     <div class="container mx-auto px-4 pt-[120px]">
         <div class="bg-white rounded-xl shadow-[0_1px_25px_rgba(0,0,0,0.1)] p-8 max-w-7xl mx-auto">
-            <div class="flex justify-between items-center mb-8">
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
                 <div>
                     <h1 class="text-4xl font-bold text-orange-500 flex items-center gap-3">
                         🏄‍♂️ Activities Management
@@ -21,7 +21,7 @@
                     <p class="text-gray-600 mt-2">Manage all exciting Agadir activities and experiences</p>
                 </div>
                 <div>
-                    <a href="{{ route('admin.activities.create') }}" class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-3 rounded-xl transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-2">
+                    <a href="{{ route('admin.activities.create') }}" class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-3 rounded-xl transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 w-full sm:w-auto">
                         ✨ <span>Add New Activity</span>
                     </a>
                 </div>
@@ -29,15 +29,12 @@
 
             @if($activities->count() > 0)
                 <div class="bg-gradient-to-r from-orange-50 to-blue-50 rounded-xl p-6 mb-6">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="text-2xl">📊</div>
-                            <div>
-                                <h3 class="text-lg font-semibold text-gray-800">Total Activities</h3>
-                                <p class="text-gray-600">{{ $activities->count() }} activit{{ $activities->count() !== 1 ? 'ies' : 'y' }} available</p>
-                            </div>
+                    <div class="flex items-center gap-3">
+                        <div class="text-2xl">📊</div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">Total Activities</h3>
+                            <p class="text-gray-600">{{ $totalActivities }} activit{{ $totalActivities !== 1 ? 'ies' : 'y' }} available</p>
                         </div>
-                        <div class="text-3xl font-bold text-orange-500">{{ $activities->count() }}</div>
                     </div>
                 </div>
 
@@ -103,9 +100,24 @@
 
                 <!-- Pagination -->
                 @if($activities->hasPages())
-                    <div class="bg-gradient-to-r from-orange-50 to-blue-50 rounded-xl p-6">
-                        <div class="flex justify-center">
-                            {{ $activities->links() }}
+                    <div class="flex justify-center mt-16">
+                        <div class="bg-gradient-to-br from-white via-orange-50 to-blue-50 rounded-2xl shadow-xl border border-gray-100 px-8 pt-8 pb-4">
+                            <div class="flex flex-col items-center space-y-4">
+                                <!-- Pagination Links -->
+                                <div class="pagination-wrapper">
+                                    {{ $activities->links('pagination.custom') }}
+                                </div>
+                                
+                                <!-- Page Info at Bottom - Desktop -->
+                                <div class="hidden sm:block text-sm text-gray-600 font-medium">
+                                    Page {{ $activities->currentPage() }} of {{ $activities->lastPage() }}
+                                </div>
+                                
+                                <!-- Page Info for Mobile -->
+                                <div class="sm:hidden text-xs text-gray-500">
+                                    Page {{ $activities->currentPage() }} of {{ $activities->lastPage() }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 @endif
@@ -190,4 +202,27 @@
             }
         });
     </script>
+
+    <style>
+        /* Custom pagination styles */
+        .pagination-wrapper nav > div:first-child {
+            @apply hidden;
+        }
+        
+        .pagination-wrapper .relative.z-0.inline-flex {
+            @apply shadow-2xl;
+        }
+        
+        .pagination-wrapper .relative.z-0.inline-flex > * {
+            @apply transition-all duration-200 ease-in-out;
+        }
+        
+        .pagination-wrapper .relative.z-0.inline-flex > *:hover {
+            @apply transform scale-105;
+        }
+        
+        .pagination-wrapper .relative.z-0.inline-flex > span[aria-current="page"] span {
+            @apply shadow-lg ring-2 ring-blue-300 ring-opacity-50;
+        }
+    </style>
 </x-layout>

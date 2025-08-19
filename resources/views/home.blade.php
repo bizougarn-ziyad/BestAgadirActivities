@@ -69,7 +69,11 @@
                             
                             <div class="flex justify-between items-center px-4 mt-5 gap-3">
                                 <a href="{{ route('activity.detail', $activity->id) }}" class="bg-white text-black border border-gray-500 px-6 py-1 rounded-[20px] hover:bg-gray-200 transition duration-300 text-[13px] xl:text-[17px] w-[50%] cursor-pointer text-center">Details</a>
-                                <button class="bg-orange-500 text-white px-4 py-1 rounded-[20px] hover:bg-orange-400 transition duration-300 text-[13px] xl:text-[17px] cursor-pointer w-[50%]">Book Now</button>
+                                @auth
+                                    <a href="{{ route('activity.booking.form', $activity->id) }}" class="bg-orange-500 text-white px-4 py-1 rounded-[20px] hover:bg-orange-400 transition duration-300 text-[13px] xl:text-[17px] cursor-pointer w-[50%] text-center">Book Now</a>
+                                @else
+                                    <a href="{{ route('login') }}" class="bg-orange-500 text-white px-4 py-1 rounded-[20px] hover:bg-orange-400 transition duration-300 text-[13px] xl:text-[17px] cursor-pointer w-[50%] text-center">Login to Book</a>
+                                @endauth
                             </div>
                         </div>
                     @endforeach
@@ -90,8 +94,8 @@
                         </div>
                         
                         <div class="flex justify-between items-center px-4 mt-5 gap-3">
-                            <button class="bg-white text-black border border-gray-500 px-6 py-1 rounded-[20px] hover:bg-gray-200 transition duration-300 text-[13px] xl:text-[17px] w-[50%] cursor-pointer">Details</button>
-                            <button class="bg-orange-500 text-white px-4 py-1 rounded-[20px] hover:bg-orange-400 transition duration-300 text-[13px] xl:text-[17px] cursor-pointer w-[50%]">Book Now</button>
+                            <a href="{{ route('activities') }}" class="bg-white text-black border border-gray-500 px-6 py-1 rounded-[20px] hover:bg-gray-200 transition duration-300 text-[13px] xl:text-[17px] w-[50%] cursor-pointer text-center">Details</a>
+                            <a href="{{ route('activities') }}" class="bg-orange-500 text-white px-4 py-1 rounded-[20px] hover:bg-orange-400 transition duration-300 text-[13px] xl:text-[17px] cursor-pointer w-[50%] text-center">Book Now</a>
                         </div>
                     </div>
                 @endif
@@ -285,9 +289,15 @@
                                 <a href="{{ route('activity.detail', $activity->id) }}" class="flex-1 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 font-semibold py-3 px-4 rounded-xl shadow-md cursor-pointer text-center">
                                     View Details
                                 </a>
-                                <button class="flex-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold py-3 px-4 rounded-xl shadow-md cursor-pointer">
-                                    Book Now
-                                </button>
+                                @auth
+                                    <a href="{{ route('activity.booking.form', $activity->id) }}" class="flex-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold py-3 px-4 rounded-xl shadow-md cursor-pointer text-center">
+                                        Book Now
+                                    </a>
+                                @else
+                                    <a href="{{ route('login') }}" class="flex-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold py-3 px-4 rounded-xl shadow-md cursor-pointer text-center">
+                                        Login to Book
+                                    </a>
+                                @endauth
                             </div>
                         </div>
                     </div>

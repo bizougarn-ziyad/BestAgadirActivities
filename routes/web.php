@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\BookingController;
 
 Route::get('/', function () {
     // Get specific activities for the slider
@@ -43,6 +44,10 @@ Route::get('/activities', function () {
     $activities = Activity::where('is_active', true)->orderBy('created_at', 'desc')->paginate(12);
     return view('activities', compact('activities'));
 })->name('activities');
+
+// Availability checking routes (must be before /activity/{id} route)
+Route::get('/activity/check-availability', [ActivityController::class, 'checkAvailability'])->name('activity.check.availability');
+Route::get('/activity/check-month-availability', [ActivityController::class, 'checkMonthAvailability'])->name('activity.check.month.availability');
 
 Route::get('/activity/{id}', function ($id) {
     $activity = Activity::where('is_active', true)->findOrFail($id);
@@ -92,6 +97,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
 });
 
+// Booking Routes (for authenticated users)
+Route::middleware('auth')->group(function () {
+    Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
+    Route::get('/bookings/{id}', [BookingController::class, 'show'])->name('bookings.show');
+});
+
 // Public favorite route to check favorite status
 Route::get('/favorites/check/{activityId}', [FavoriteController::class, 'check'])->name('favorites.check');
 
@@ -125,9 +136,16 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('activities', [ActivityController::class, 'index'])->name('activities.index');
     Route::get('activities/create', [ActivityController::class, 'create'])->name('activities.create');
     Route::post('activities', [ActivityController::class, 'store'])->name('activities.store');
+    Route::get('activities/{activity}', [ActivityController::class, 'show'])->name('activities.show');
     Route::get('activities/{activity}/edit', [ActivityController::class, 'edit'])->name('activities.edit');
     Route::put('activities/{activity}', [ActivityController::class, 'update'])->name('activities.update');
     Route::delete('activities/{activity}', [ActivityController::class, 'destroy'])->name('activities.destroy');
+    
+    // Booking Management Routes
+    Route::get('bookings', [\App\Http\Controllers\AdminBookingController::class, 'index'])->name('bookings.index');
+    Route::get('bookings/{id}', [\App\Http\Controllers\AdminBookingController::class, 'show'])->name('bookings.show');
+    Route::get('bookings-availability', [\App\Http\Controllers\AdminBookingController::class, 'availability'])->name('bookings.availability');
+    Route::get('check-availability', [\App\Http\Controllers\AdminBookingController::class, 'getAvailability'])->name('bookings.check-availability');
     
     // Admin Management Routes
     Route::resource('admins', \App\Http\Controllers\AdminController::class);
@@ -140,3 +158,19 @@ Route::get('/addActivities', function () {
 // Newsletter Routes
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 Route::post('/newsletter/unsubscribe', [NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
+
+//checkout
+Route::post('/checkout', [ActivityController::class, 'checkout'])->name('checkout');
+Route::get('/success', [ActivityController::class, 'success'])->name('checkout.success');
+Route::get('/cancel', [ActivityController::class, 'cancel'])->name('checkout.cancel');
+
+// Individual Activity Booking Routes (require authentication)
+Route::middleware('auth')->group(function () {
+    Route::get('/activity/{id}/book', [ActivityController::class, 'showBookingForm'])->name('activity.booking.form');
+    Route::post('/activity/{id}/book', [ActivityController::class, 'bookActivity'])->name('activity.book');
+});
+Route::get('/booking/success', [ActivityController::class, 'bookingSuccess'])->name('booking.success');
+Route::get('/booking/cancel', [ActivityController::class, 'bookingCancel'])->name('booking.cancel');
+
+// Public availability check for booking form
+Route::get('/admin/check-availability', [\App\Http\Controllers\AdminBookingController::class, 'getAvailability'])->name('admin.check.availability');

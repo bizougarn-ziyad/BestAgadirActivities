@@ -123,6 +123,16 @@
                 </a>
             @endif
             
+            <!-- Bookings for authenticated users -->
+            @if(Auth::check())
+                <a href="{{ route('bookings.index') }}" class="bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded-[20px] cursor-pointer transition duration-300 flex items-center gap-2 text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                    <span>Bookings</span>
+                </a>
+            @endif
+            
             <!-- Heart icon for authenticated users only -->
             @if(Auth::check() || session('is_admin'))
                 <a href="{{ route('favorites.index') }}" class="bg-red-100 hover:bg-red-200 px-4 py-2 rounded-[20px] cursor-pointer transition duration-300 flex items-center gap-2" id="likeButton">
@@ -144,8 +154,14 @@
         @else
             <!-- Login button for guests -->
             <a href="{{ route('login') }}" class="bg-gray-100 px-4 py-2 rounded-[20px] cursor-pointer hover:bg-gray-200 transition duration-300">Login</a>
+            <!-- Bookings button that redirects to login for guests -->
+            <a href="{{ route('login') }}" class="bg-orange-500 px-4 py-2 rounded-[20px] text-white cursor-pointer hover:bg-orange-400 transition duration-300 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                </svg>
+                <span>Bookings</span>
+            </a>
         @endif
-        <button class="bg-orange-500 px-4 py-2 rounded-[20px] text-white cursor-pointer hover:bg-orange-400 transition duration-300">Book Now</button>
     </div>
 </nav>
 
@@ -166,9 +182,17 @@
                         <span class="text-blue-600">Dashboard</span>
                     </a>
                 @endif
-                
-                <button class="w-full bg-orange-500 hover:bg-orange-400 px-4 py-3 rounded-[20px] text-white text-lg cursor-pointer transition duration-300">Book Now</button>
 
+                <!-- Bookings for authenticated users (mobile) -->
+                @if(Auth::check())
+                    <a href="{{ route('bookings.index') }}" class="w-full bg-orange-500 hover:bg-orange-600 px-4 py-3 rounded-[20px] text-lg cursor-pointer border shadow-lg text-center flex items-center justify-center gap-2 text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                        <span>Bookings</span>
+                    </a>
+                @endif
+                
                 <!-- Heart icon for authenticated users -->
                 <a href="{{ route('favorites.index') }}" class="w-full bg-red-100 hover:bg-red-200 px-4 py-3 rounded-[20px] text-lg cursor-pointer shadow-lg text-center flex items-center justify-center gap-2" id="mobileLikeButton">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 24 24" fill="currentColor">
@@ -179,10 +203,15 @@
                 
                 
             @else
-                <!-- For guests - keep login and book now in same row -->
-                <div class="flex gap-3">
-                    <a href="{{ route('login') }}" class="flex-1 bg-gray-100 px-4 py-3 rounded-[20px] text-lg cursor-pointer border shadow-lg text-center hover:bg-gray-200 transition duration-300">Login</a>
-                    <button class="flex-1 bg-orange-500 px-4 py-3 rounded-[20px] text-white text-lg cursor-pointer hover:bg-orange-400 transition duration-300">Book Now</button>
+                <!-- For guests - login and bookings buttons -->
+                <div class="space-y-2">
+                    <a href="{{ route('login') }}" class="w-full bg-gray-100 px-4 py-3 rounded-[20px] text-lg cursor-pointer border shadow-lg text-center hover:bg-gray-200 transition duration-300">Login</a>
+                    <a href="{{ route('login') }}" class="w-full bg-orange-500 px-4 py-3 rounded-[20px] text-white text-lg cursor-pointer hover:bg-orange-400 transition duration-300 flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                        <span>Bookings</span>
+                    </a>
                 </div>
             @endif
         </div>

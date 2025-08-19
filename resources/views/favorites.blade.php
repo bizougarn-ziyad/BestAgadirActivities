@@ -81,9 +81,9 @@
                                     <a href="{{ route('activity.detail', $activity->id) }}" class="flex-1 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 font-semibold py-2 px-3 rounded-xl shadow-md text-sm hover:shadow-lg transition-all duration-300 text-center">
                                         Details
                                     </a>
-                                    <button class="flex-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold py-2 px-3 rounded-xl shadow-md text-sm hover:shadow-lg transition-all duration-300">
+                                    <a href="{{ route('activity.booking.form', $activity->id) }}" class="flex-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold py-2 px-3 rounded-xl shadow-md text-sm hover:shadow-lg transition-all duration-300 text-center">
                                         Book Now
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>

@@ -44,7 +44,7 @@
                 
                 <!-- Bookings Management Card -->
                 <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-xl cursor-pointer hover:from-purple-100 hover:to-purple-200 transform hover:scale-105 transition-all duration-300 shadow-lg border border-purple-200">
-                    <a href="#" class="block text-center">
+                    <a href="{{ route('admin.bookings.index') }}" class="block text-center">
                         <div class="text-6xl mb-4">📅</div>
                         <h3 class="text-2xl font-bold text-purple-800 mb-3">Booking Control</h3>
                         <p class="text-purple-600 text-sm leading-relaxed">Monitor reservations, manage schedules, and handle customer bookings</p>

@@ -70,4 +70,12 @@ class UserData extends Authenticatable implements CanResetPassword
     {
         return $this->favorites()->where('activity_id', $activityId)->exists();
     }
+
+    /**
+     * Get the user's bookings (orders).
+     */
+    public function bookings()
+    {
+        return $this->hasMany(Order::class, 'user_id');
+    }
 }

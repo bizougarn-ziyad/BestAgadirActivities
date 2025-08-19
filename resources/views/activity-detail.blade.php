@@ -132,11 +132,17 @@
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
                                 <span class="text-lg text-gray-600">Price per person</span>
-                                <span class="text-3xl font-bold text-orange-600">{{ number_format($activity->price, 0) }}€</span>
+                                <span class="text-3xl font-bold text-orange-600">${{ number_format($activity->price, 2) }}</span>
                             </div>
-                            <button class="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-4 px-6 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer">
-                                Book Now
-                            </button>
+                            @auth
+                                <a href="{{ route('activity.booking.form', $activity->id) }}" class="block w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-4 px-6 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer text-center">
+                                    Book Now
+                                </a>
+                            @else
+                                <a href="{{ route('login') }}" class="block w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-4 px-6 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer text-center">
+                                    Login to Book
+                                </a>
+                            @endauth
                             <p class="text-sm text-gray-500 text-center">Free cancellation up to 24 hours before the activity</p>
                         </div>
                     </div>

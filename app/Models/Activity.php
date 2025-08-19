@@ -16,6 +16,7 @@ class Activity extends Model
         'image_mime_type',
         'image_original_name',
         'price',
+        'max_participants',
         'is_active',
         'average_rating',
         'review_count',
@@ -137,5 +138,72 @@ class Activity extends Model
     public function getFavoritesCountAttribute()
     {
         return $this->favorites()->count();
+    }
+
+    /**
+     * Get the orders for this activity.
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
+     * Get the paid orders for this activity.
+     */
+    public function paidOrders()
+    {
+        return $this->hasMany(Order::class)->where('status', 'paid');
+    }
+
+    /**
+     * Check availability for a specific date
+     */
+    public function isAvailableForDate($date, $requestedParticipants = 1)
+    {
+        if (!$this->is_active) {
+            return false;
+        }
+
+        $bookedParticipants = $this->paidOrders()
+            ->whereDate('booking_date', $date)
+            ->sum('participants');
+
+        $availableSlots = $this->max_participants - $bookedParticipants;
+        
+        return $availableSlots >= $requestedParticipants;
+    }
+
+    /**
+     * Get available spots for a specific date
+     */
+    public function getAvailableSpotsForDate($date)
+    {
+        $bookedParticipants = $this->paidOrders()
+            ->whereDate('booking_date', $date)
+            ->sum('participants');
+
+        return max(0, $this->max_participants - $bookedParticipants);
+    }
+
+    /**
+     * Get booking statistics for a date range
+     */
+    public function getBookingStats($startDate = null, $endDate = null)
+    {
+        $query = $this->paidOrders();
+        
+        if ($startDate) {
+            $query->where('booking_date', '>=', $startDate);
+        }
+        
+        if ($endDate) {
+            $query->where('booking_date', '<=', $endDate);
+        }
+        
+        return $query->selectRaw('booking_date, COUNT(*) as total_bookings, SUM(participants) as total_participants, SUM(total_price) as total_revenue')
+            ->groupBy('booking_date')
+            ->orderBy('booking_date', 'desc')
+            ->get();
     }
 }

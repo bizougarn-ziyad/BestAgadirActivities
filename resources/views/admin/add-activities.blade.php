@@ -86,6 +86,30 @@
                             </p>
                         @enderror
                     </div>
+
+                    <!-- Max Participants -->
+                    <div>
+                        <label for="max_participants" class="text-lg font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                            👥 <span>Maximum Participants</span> <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" 
+                               id="max_participants" 
+                               name="max_participants" 
+                               value="{{ old('max_participants', 15) }}"
+                               min="1"
+                               max="50"
+                               placeholder="15"
+                               required
+                               class="w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 {{ $errors->has('max_participants') ? 'border-red-400' : 'border-gray-200' }}">
+                        <p class="text-gray-500 text-sm mt-2 flex items-center gap-1">
+                            📋 <span>Maximum number of participants allowed per booking date (default: 15)</span>
+                        </p>
+                        @error('max_participants')
+                            <p class="text-red-500 text-sm mt-2 flex items-center gap-1">
+                                ⚠️ {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
                 </div>
 
                 <!-- Activity Description -->

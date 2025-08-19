@@ -115,8 +115,8 @@
                             @enderror
                         </div>
 
-                        <!-- Price and Image Row -->
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Price, Max Participants and Image Row -->
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                             <!-- Price -->
                             <div class="space-y-2">
                                 <label for="price" class="block text-sm font-medium text-gray-700">
@@ -138,6 +138,26 @@
                                            required>
                                 </div>
                                 @error('price')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Max Participants -->
+                            <div class="space-y-2">
+                                <label for="max_participants" class="block text-sm font-medium text-gray-700">
+                                    <i class="fas fa-users mr-2"></i>Max Participants
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                <input type="number" 
+                                       id="max_participants" 
+                                       name="max_participants" 
+                                       value="{{ old('max_participants', $activity->max_participants) }}"
+                                       min="1"
+                                       max="50"
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 @error('max_participants') border-red-500 @enderror" 
+                                       placeholder="15"
+                                       required>
+                                @error('max_participants')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
                             </div>

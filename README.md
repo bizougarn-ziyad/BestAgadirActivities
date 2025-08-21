@@ -46,3 +46,21 @@ A Laravel-based web application for discovering and booking exciting activities 
 - CSRF protection
 
 Built with Laravel and modern web technologies to provide a seamless experience for both visitors and administrators.
+
+## Screenshots
+
+### Home Page
+![Home Page](public/images/screenshots/1.png)
+*Browse featured activities and discover exciting experiences in Agadir*
+
+### Booking System
+![Booking Process](public/images/screenshots/booking.png)
+*Easy booking process with date selection and payment*
+
+### Admin Dashboard
+![Admin Dashboard](public/images/screenshots/admin.png)
+*Comprehensive admin panel for managing activities and bookings*
+
+### Favorite Page
+![Favorite Page](public/images/screenshots/favorite.png)
+*Save and visit your liked activities*

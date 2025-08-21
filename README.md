@@ -2,6 +2,12 @@
 
 A Laravel-based web application for discovering and booking exciting activities in Agadir, Morocco.
 
+## To use admin panel login using these credentials : 
+Email : admin123@admin.com
+Password : admin123
+
+## To use user features of the website login with google auth or create new account 
+
 ### Home Page
 ![Home Page](public/images/screenshots/1.png)
 

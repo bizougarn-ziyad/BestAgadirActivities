@@ -138,14 +138,14 @@
 <?php endif; ?>
         <?php if (isset($component)) { $__componentOriginala591787d01fe92c5706972626cdf7231 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginala591787d01fe92c5706972626cdf7231 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.navbar','data' => ['href' => '/about','class' => 'text-base md:hover:bg-gray-100 no-underline px-4 py-2 rounded-[20px] cursor-pointer']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.navbar','data' => ['href' => ''.e(route('about')).'','class' => 'text-base md:hover:bg-gray-100 no-underline px-4 py-2 rounded-[20px] cursor-pointer']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('navbar'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['href' => '/about','class' => 'text-base md:hover:bg-gray-100 no-underline px-4 py-2 rounded-[20px] cursor-pointer']); ?>About <?php echo $__env->renderComponent(); ?>
+<?php $component->withAttributes(['href' => ''.e(route('about')).'','class' => 'text-base md:hover:bg-gray-100 no-underline px-4 py-2 rounded-[20px] cursor-pointer']); ?>About <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginala591787d01fe92c5706972626cdf7231)): ?>
 <?php $attributes = $__attributesOriginala591787d01fe92c5706972626cdf7231; ?>
@@ -157,14 +157,14 @@
 <?php endif; ?>
         <?php if (isset($component)) { $__componentOriginala591787d01fe92c5706972626cdf7231 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginala591787d01fe92c5706972626cdf7231 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.navbar','data' => ['href' => '/contact','class' => 'text-base md:hover:bg-gray-100 no-underline px-4 py-2 rounded-[20px] cursor-pointer']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.navbar','data' => ['href' => ''.e(route('contact')).'','class' => 'text-base md:hover:bg-gray-100 no-underline px-4 py-2 rounded-[20px] cursor-pointer']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('navbar'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['href' => '/contact','class' => 'text-base md:hover:bg-gray-100 no-underline px-4 py-2 rounded-[20px] cursor-pointer']); ?>Contact <?php echo $__env->renderComponent(); ?>
+<?php $component->withAttributes(['href' => ''.e(route('contact')).'','class' => 'text-base md:hover:bg-gray-100 no-underline px-4 py-2 rounded-[20px] cursor-pointer']); ?>Contact <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginala591787d01fe92c5706972626cdf7231)): ?>
 <?php $attributes = $__attributesOriginala591787d01fe92c5706972626cdf7231; ?>
@@ -261,14 +261,14 @@
 <?php endif; ?>
         <?php if (isset($component)) { $__componentOriginala591787d01fe92c5706972626cdf7231 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginala591787d01fe92c5706972626cdf7231 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.navbar','data' => ['href' => '/about','class' => 'block py-3 px-4 md:hover:bg-gray-100 rounded-[20px] text-xl text-center shadow-lg bg-orange-400 text-white cursor-pointer']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.navbar','data' => ['href' => ''.e(route('about')).'','class' => 'block py-3 px-4 md:hover:bg-gray-100 rounded-[20px] text-xl text-center shadow-lg bg-orange-400 text-white cursor-pointer']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('navbar'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['href' => '/about','class' => 'block py-3 px-4 md:hover:bg-gray-100 rounded-[20px] text-xl text-center shadow-lg bg-orange-400 text-white cursor-pointer']); ?>About <?php echo $__env->renderComponent(); ?>
+<?php $component->withAttributes(['href' => ''.e(route('about')).'','class' => 'block py-3 px-4 md:hover:bg-gray-100 rounded-[20px] text-xl text-center shadow-lg bg-orange-400 text-white cursor-pointer']); ?>About <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginala591787d01fe92c5706972626cdf7231)): ?>
 <?php $attributes = $__attributesOriginala591787d01fe92c5706972626cdf7231; ?>
@@ -280,14 +280,14 @@
 <?php endif; ?>
         <?php if (isset($component)) { $__componentOriginala591787d01fe92c5706972626cdf7231 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginala591787d01fe92c5706972626cdf7231 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.navbar','data' => ['href' => '/contact','class' => 'block py-3 px-4 md:hover:bg-gray-100 rounded-[20px] text-xl text-center shadow-lg  bg-orange-400 text-white cursor-pointer']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.navbar','data' => ['href' => ''.e(route('contact')).'','class' => 'block py-3 px-4 md:hover:bg-gray-100 rounded-[20px] text-xl text-center shadow-lg  bg-orange-400 text-white cursor-pointer']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('navbar'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['href' => '/contact','class' => 'block py-3 px-4 md:hover:bg-gray-100 rounded-[20px] text-xl text-center shadow-lg  bg-orange-400 text-white cursor-pointer']); ?>Contact <?php echo $__env->renderComponent(); ?>
+<?php $component->withAttributes(['href' => ''.e(route('contact')).'','class' => 'block py-3 px-4 md:hover:bg-gray-100 rounded-[20px] text-xl text-center shadow-lg  bg-orange-400 text-white cursor-pointer']); ?>Contact <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginala591787d01fe92c5706972626cdf7231)): ?>
 <?php $attributes = $__attributesOriginala591787d01fe92c5706972626cdf7231; ?>

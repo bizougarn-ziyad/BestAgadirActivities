@@ -25,7 +25,7 @@
             </div>
             
             <!-- Management Cards Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <!-- Admin Management Card -->
                 <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-xl cursor-pointer hover:from-blue-100 hover:to-blue-200 transform hover:scale-105 transition-all duration-300 shadow-lg border border-blue-200">
                     <a href="<?php echo e(route('admin.admins.index')); ?>" class="block text-center">
@@ -62,6 +62,33 @@
                             <span>View Bookings</span>
                             <span class="ml-2">→</span>
                         </div>
+                    </a>
+                </div>
+
+                <!-- Contact Messages Card -->
+                <div class="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-xl cursor-pointer hover:from-green-100 hover:to-green-200 transform hover:scale-105 transition-all duration-300 shadow-lg border border-green-200">
+                    <a href="<?php echo e(route('admin.contact-messages.index')); ?>" class="block text-center">
+                        <div class="text-6xl mb-4">💬</div>
+                        <h3 class="text-2xl font-bold text-green-800 mb-3">Contact Messages</h3>
+                        <p class="text-green-600 text-sm leading-relaxed">View and respond to customer inquiries and contact form submissions</p>
+                        <div class="mt-4 flex items-center justify-center text-green-700 text-sm font-semibold">
+                            <span>View Messages</span>
+                            <span class="ml-2">→</span>
+                        </div>
+                        <?php
+                            $newMessagesCount = \App\Models\ContactMessage::where('status', 'new')->count();
+                        ?>
+                        <?php if($newMessagesCount > 0): ?>
+                            <div class="mt-2">
+                                <span class="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+                                    <?php echo e($newMessagesCount); ?> new
+                                </span>
+                            </div>
+                        <?php endif; ?>
+                    </a>
+                </div>
+            </div>
+                    
                     </a>
                 </div>
             </div>

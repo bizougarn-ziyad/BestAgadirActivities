@@ -9,11 +9,11 @@
 <?php endif; ?>
 <?php $component->withAttributes([]); ?>
     <!-- Booking Form Hero Section -->
-    <div class="relative pt-[107px] pb-20 bg-gradient-to-br from-orange-50 via-white to-blue-50">
+    <div class="relative pt-[107px] pb-12 bg-gradient-to-br from-orange-50 via-white to-blue-50">
         <!-- Breadcrumb -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 md:mb-8">
             <nav class="flex" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3 text-sm md:text-base">
                     <li class="inline-flex items-center">
                         <a href="/" class="text-gray-700 hover:text-orange-600 cursor-pointer">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -23,23 +23,23 @@
                     </li>
                     <li>
                         <div class="flex items-center">
-                            <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-4 h-4 md:w-6 md:h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                             </svg>
-                            <a href="<?php echo e(route('activities')); ?>" class="ml-1 text-gray-700 hover:text-orange-600 cursor-pointer md:ml-2">Activities</a>
+                            <a href="<?php echo e(route('activities')); ?>" class="ml-1 text-gray-700 hover:text-orange-600 cursor-pointer md:ml-2 breadcrumb-text">Activities</a>
                         </div>
                     </li>
-                    <li>
+                    <li class="hidden sm:block">
                         <div class="flex items-center">
-                            <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-4 h-4 md:w-6 md:h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                             </svg>
-                            <a href="<?php echo e(route('activity.detail', $activity->id)); ?>" class="ml-1 text-gray-700 hover:text-orange-600 cursor-pointer md:ml-2"><?php echo e($activity->name); ?></a>
+                            <a href="<?php echo e(route('activity.detail', $activity->id)); ?>" class="ml-1 text-gray-700 hover:text-orange-600 cursor-pointer md:ml-2 breadcrumb-text"><?php echo e($activity->name); ?></a>
                         </div>
                     </li>
                     <li aria-current="page">
                         <div class="flex items-center">
-                            <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-4 h-4 md:w-6 md:h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             <span class="ml-1 text-orange-600 font-medium md:ml-2">Book Now</span>
@@ -49,478 +49,438 @@
             </nav>
         </div>
 
-        <!-- Booking Content -->
-        <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start max-w-4xl md:max-w-2xl lg:max-w-none mx-auto">
-                
-                <!-- Left Column - Activity Image & Info -->
-                <div class="relative">
-                    <div class="relative h-80 md:h-[500px] lg:h-[600px] rounded-3xl overflow-hidden shadow-2xl mb-8">
-                        <?php if($activity->hasImageData()): ?>
-                            <img src="<?php echo e($activity->image_data_url); ?>" alt="<?php echo e($activity->name); ?>" class="w-full h-full object-cover">
-                        <?php else: ?>
-                            <div class="w-full h-full bg-gradient-to-br from-orange-200 to-orange-300 flex items-center justify-center">
-                                <svg class="w-20 h-20 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                </svg>
-                            </div>
-                        <?php endif; ?>
-                        
-                        <!-- Overlay with activity info -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent">
-                            <div class="absolute bottom-0 left-0 right-0 p-8">
-                                <h1 class="text-3xl md:text-4xl font-bold text-white mb-3"><?php echo e($activity->name); ?></h1>
-                                <div class="flex items-center gap-4 text-white/90">
-                                    <div class="flex items-center gap-2">
-                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/>
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/>
-                                        </svg>
-                                        <span class="text-2xl font-bold">$<?php echo e(number_format($activity->price, 2)); ?></span>
-                                        <span class="text-lg opacity-80">per person</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Activity Description Card -->
-                    <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
-                        <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-                            <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                            </div>
-                            About This Activity
-                        </h3>
-                        <p class="text-gray-600 leading-relaxed"><?php echo e($activity->bio); ?></p>
-                        
-                        <!-- Activity Features -->
-                        <div class="mt-6 grid grid-cols-2 gap-4">
-                            <div class="flex items-center gap-3 text-green-600">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                </svg>
-                                <span class="text-sm font-medium">Free Cancellation</span>
-                            </div>
-                            <div class="flex items-center gap-3 text-green-600">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                </svg>
-                                <span class="text-sm font-medium">Instant Confirmation</span>
-                            </div>
-                            <div class="flex items-center gap-3 text-green-600">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                </svg>
-                                <span class="text-sm font-medium">Mobile Tickets</span>
-                            </div>
-                            <div class="flex items-center gap-3 text-green-600">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                </svg>
-                                <span class="text-sm font-medium">Small Groups</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right Column - Booking Form -->
-                <div class="lg:sticky lg:top-8">
-                    <!-- Error Messages -->
-                    <?php if($errors->any()): ?>
-                        <div class="bg-red-50 border border-red-200 rounded-2xl p-6 mb-8">
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                                    </svg>
-                                </div>
-                                <h3 class="text-lg font-semibold text-red-800">Please fix the following issues:</h3>
-                            </div>
-                            <ul class="text-red-700 space-y-2">
-                                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <li class="flex items-center gap-2">
-                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                                        </svg>
-                                        <?php echo e($error); ?>
-
-                                    </li>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            </ul>
-                        </div>
-                    <?php endif; ?>
-
-                    <?php if(session('error')): ?>
-                        <div class="bg-red-50 border border-red-200 rounded-2xl p-6 mb-8">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                                    </svg>
-                                </div>
-                                <p class="text-red-800 font-medium"><?php echo e(session('error')); ?></p>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-
-                    <!-- Booking Form Card -->
-                    <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
-                        <!-- Form Header -->
-                        <div class="bg-gradient-to-r from-orange-500 to-orange-600 p-8 text-white">
-                            <h2 class="text-3xl font-bold mb-2">Book Your Experience</h2>
-                            <p class="text-orange-100">Select your preferences and secure your spot</p>
-                        </div>
-
-                        <!-- Form Content -->
-                        <form action="<?php echo e(route('activity.book', $activity->id)); ?>" method="POST" id="bookingForm" class="p-8">
-                            <?php echo csrf_field(); ?>
-                            
-                            <!-- Participants Selection -->
-                            <div class="mb-8">
-                                <label for="participants" class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-3">
-                                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
-                                        </svg>
-                                    </div>
-                                    Number of Participants
-                                </label>
-                                
-                                <!-- Custom Participants Picker Container -->
-                                <div class="relative">
-                                    <!-- Hidden Select Input -->
-                                    <select id="participants" name="participants" required onchange="updatePrice()" class="hidden">
-                                        <?php for($i = 1; $i <= min(20, $activity->max_participants); $i++): ?>
-                                            <option value="<?php echo e($i); ?>" <?php echo e(old('participants', 1) == $i ? 'selected' : ''); ?>>
-                                                <?php echo e($i); ?> <?php echo e($i == 1 ? 'Person' : 'People'); ?>
-
-                                            </option>
-                                        <?php endfor; ?>
-                                    </select>
-                                    
-                                    <!-- Custom Participants Display -->
-                                    <div id="participantsDisplay" class="w-full px-6 py-4 text-lg border-2 border-gray-200 rounded-2xl focus-within:border-orange-500 focus-within:ring-4 focus-within:ring-orange-100 transition-all duration-300 bg-gradient-to-r from-gray-50 to-white hover:from-white hover:to-gray-50 cursor-pointer group">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center gap-4">
-                                                <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
-                                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
-                                                    </svg>
-                                                </div>
-                                                <div>
-                                                    <div id="selectedParticipantsText" class="text-lg font-semibold text-gray-700">
-                                                        1 Person
-                                                    </div>
-                                                    <div id="selectedParticipantsSubtext" class="text-sm text-gray-500">
-                                                        Choose number of participants
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="text-orange-500 group-hover:text-orange-600 transition-colors duration-300">
-                                                <svg class="w-6 h-6 transform group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Custom Participants Dropdown -->
-                                    <div id="participantsDropdown" class="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-2xl border border-gray-100 opacity-0 invisible transform scale-95 transition-all duration-300 z-50 max-h-40 overflow-y-auto">
-                                        <div class="p-2">
-                                            <!-- Participants Grid -->
-                                            <div class="grid grid-cols-3 gap-2 mb-2">
-                                                <?php for($i = 1; $i <= min(20, $activity->max_participants); $i++): ?>
-                                                    <button type="button" 
-                                                            class="participant-option w-full px-3 py-3 text-sm font-medium border-2 border-gray-200 rounded-lg hover:border-orange-300 hover:bg-orange-50 transition-all duration-300 text-gray-700 hover:text-orange-700 <?php echo e($i == 1 ? 'border-orange-500 bg-orange-100 text-orange-700' : ''); ?>"
-                                                            data-value="<?php echo e($i); ?>"
-                                                            onclick="selectParticipants(<?php echo e($i); ?>)">
-                                                        <div class="flex flex-col items-center gap-1">
-                                                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                                                <?php if($i == 1): ?>
-                                                                    <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
-                                                                <?php else: ?>
-                                                                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
-                                                                <?php endif; ?>
-                                                            </svg>
-                                                            <span class="text-xs font-bold"><?php echo e($i); ?></span>
-                                                            <span class="text-xs opacity-75"><?php echo e($i == 1 ? 'Person' : 'People'); ?></span>
-                                                        </div>
-                                                    </button>
-                                                <?php endfor; ?>
-                                            </div>
-                                            
-                                            <!-- Popular Choices -->
-                                            <div class="pt-2 border-t border-gray-200">
-                                                <p class="text-xs text-gray-500 mb-2 text-center">Popular choices</p>
-                                                <div class="flex justify-center gap-2">
-                                                    <button type="button" class="popular-choice-btn px-3 py-1 text-xs font-medium bg-blue-50 text-blue-700 rounded-md hover:bg-blue-100 transition-all duration-300" onclick="selectParticipants(2)">2 People</button>
-                                                    <button type="button" class="popular-choice-btn px-3 py-1 text-xs font-medium bg-green-50 text-green-700 rounded-md hover:bg-green-100 transition-all duration-300" onclick="selectParticipants(4)">4 People</button>
-                                                    <button type="button" class="popular-choice-btn px-3 py-1 text-xs font-medium bg-purple-50 text-purple-700 rounded-md hover:bg-purple-100 transition-all duration-300" onclick="selectParticipants(6)">6 People</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <?php $__errorArgs = ['participants'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                    <p class="text-red-500 text-sm mt-2 flex items-center gap-2">
-                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                                        </svg>
-                                        <?php echo e($message); ?>
-
-                                    </p>
-                                <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                            </div>
-
-                            <!-- Date Selection -->
-                            <div class="mb-8">
-                                <label for="booking_date" class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-3">
-                                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
-                                        </svg>
-                                    </div>
-                                    Select Your Date
-                                </label>
-                                
-                                <!-- Custom Date Picker Container -->
-                                <div class="relative">
-                                    <!-- Date Input (Hidden) -->
-                                    <input type="date" id="booking_date" name="booking_date" 
-                                           value="<?php echo e(old('booking_date')); ?>" 
-                                           min="<?php echo e(date('Y-m-d')); ?>" required class="hidden">
-                                    
-                                    <!-- Custom Date Display -->
-                                    <div id="dateDisplay" class="w-full px-6 py-4 text-lg border-2 border-gray-200 rounded-2xl focus-within:border-orange-500 focus-within:ring-4 focus-within:ring-orange-100 transition-all duration-300 bg-gradient-to-r from-gray-50 to-white hover:from-white hover:to-gray-50 cursor-pointer group">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center gap-4">
-                                                <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
-                                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
-                                                    </svg>
-                                                </div>
-                                                <div>
-                                                    <div id="selectedDateText" class="text-lg font-semibold text-gray-700">
-                                                        Choose your preferred date
-                                                    </div>
-                                                    <div id="selectedDateSubtext" class="text-sm text-gray-500">
-                                                        Select from available dates
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="text-orange-500 group-hover:text-orange-600 transition-colors duration-300">
-                                                <svg class="w-6 h-6 transform group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Custom Calendar Dropdown -->
-                                    <div id="calendarDropdown" class="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-2xl border border-gray-100 opacity-0 invisible transform scale-95 transition-all duration-300 z-50">
-                                        <div class="p-2">
-                                            <!-- Calendar Header -->
-                                            <div class="flex items-center justify-between mb-1">
-                                                <button type="button" id="prevMonth" class="w-6 h-6 rounded-md bg-gray-100 hover:bg-orange-100 flex items-center justify-center transition-all duration-300">
-                                                    <svg class="w-3 h-3 text-gray-600 hover:text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                                                    </svg>
-                                                </button>
-                                                <div class="text-center">
-                                                    <h3 id="calendarMonth" class="text-xs font-bold text-gray-800"></h3>
-                                                    <p id="calendarYear" class="text-xs text-gray-600"></p>
-                                                </div>
-                                                <button type="button" id="nextMonth" class="w-6 h-6 rounded-md bg-gray-100 hover:bg-orange-100 flex items-center justify-center transition-all duration-300">
-                                                    <svg class="w-3 h-3 text-gray-600 hover:text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                            
-                                            <!-- Days of Week -->
-                                            <div class="grid grid-cols-7 gap-1 mb-1">
-                                                <div class="text-center py-1 text-xs font-medium text-gray-500">S</div>
-                                                <div class="text-center py-1 text-xs font-medium text-gray-500">M</div>
-                                                <div class="text-center py-1 text-xs font-medium text-gray-500">T</div>
-                                                <div class="text-center py-1 text-xs font-medium text-gray-500">W</div>
-                                                <div class="text-center py-1 text-xs font-medium text-gray-500">T</div>
-                                                <div class="text-center py-1 text-xs font-medium text-gray-500">F</div>
-                                                <div class="text-center py-1 text-xs font-medium text-gray-500">S</div>
-                                            </div>
-                                            
-                                            <!-- Calendar Days -->
-                                            <div id="calendarDays" class="grid grid-cols-7 gap-1 mb-2">
-                                                <!-- Days will be populated by JavaScript -->
-                                            </div>
-                                            
-                                            <!-- Quick Select Options -->
-                                            <div class="pt-1 border-t border-gray-200">
-                                                <div class="flex justify-center gap-1">
-                                                    <button type="button" class="quick-select-btn px-2 py-1 text-xs font-medium bg-blue-50 text-blue-700 rounded-md hover:bg-blue-100 transition-all duration-300" data-days="0">Today</button>
-                                                    <button type="button" class="quick-select-btn px-2 py-1 text-xs font-medium bg-green-50 text-green-700 rounded-md hover:bg-green-100 transition-all duration-300" data-days="1">Tomorrow</button>
-                                                    <button type="button" class="quick-select-btn px-2 py-1 text-xs font-medium bg-purple-50 text-purple-700 rounded-md hover:bg-purple-100 transition-all duration-300" data-days="7">Next Week</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <?php $__errorArgs = ['booking_date'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                    <p class="text-red-500 text-sm mt-2 flex items-center gap-2">
-                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                                        </svg>
-                                        <?php echo e($message); ?>
-
-                                    </p>
-                                <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                            </div>
-
-                            <!-- Availability Information -->
-                            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl mb-8 border-2 border-blue-200" id="availabilitySection">
-                                <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-3">
-                                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
-                                        </svg>
-                                    </div>
-                                    Availability Information
-                                </h4>
-                                <div class="space-y-3 text-gray-700" id="availabilityContent">
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-sm">Maximum participants per day:</span>
-                                        <span class="text-sm font-semibold"><?php echo e($activity->max_participants); ?></span>
-                                    </div>
-                                    <div class="bg-white p-3 rounded-lg border border-blue-200" id="availabilityStatus">
-                                        <div class="flex items-center gap-2 text-blue-700 text-sm">
-                                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-                                            </svg>
-                                            <span>Once you select a date, we'll show real-time availability for that specific day.</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Price Summary -->
-                            <div class="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-2xl mb-8 border-2 border-orange-200">
-                                <h4 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-                                    <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-                                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/>
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/>
-                                        </svg>
-                                    </div>
-                                    Booking Summary
-                                </h4>
-                                <div class="space-y-3 text-gray-700">
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-lg">Price per person:</span>
-                                        <span class="text-lg font-semibold">$<?php echo e(number_format($activity->price, 2)); ?></span>
-                                    </div>
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-lg">Number of participants:</span>
-                                        <span class="text-lg font-semibold" id="participantCount">1</span>
-                                    </div>
-                                    <div class="border-t border-orange-300 pt-3">
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-xl font-bold text-gray-800">Total Amount:</span>
-                                            <span class="text-2xl font-bold text-orange-600" id="totalPrice">$<?php echo e(number_format($activity->price, 2)); ?></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Submit Button -->
-                            <button type="submit" class="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-6 px-8 rounded-2xl text-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-2xl flex items-center justify-center gap-3">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                                </svg>
-                                Book Now & Pay Securely
-                            </button>
-
-                            <!-- Security Notice -->
-                            <p class="text-center text-gray-500 text-sm mt-4 flex items-center justify-center gap-2">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                </svg>
-                                Secure payment powered by Stripe
-                            </p>
-                        </form>
-                    </div>
-
-                    <!-- Cancellation Policy -->
-                    <div class="bg-gray-50 rounded-2xl p-6 mt-8">
-                        <h4 class="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                            <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                            </svg>
-                            Cancellation Policy
-                        </h4>
-                        <p class="text-gray-600 text-sm leading-relaxed">
-                            Free cancellation up to 24 hours before the activity starts. For cancellations within 24 hours, no refund will be provided.
-                        </p>
-                    </div>
-                </div>
-            </div>
+        <!-- Page Header -->
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center md:pt-15">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-orange-500 mb-2 md:mb-4">Complete Your Booking</h1>
+            <p class="text-base sm:text-lg md:text-xl text-orange-400 px-2">Follow the steps below to secure your spot for an amazing experience</p>
         </div>
     </div>
 
-    <style>
-        /* Custom participants dropdown styling */
-        .participant-option.selected {
-            border-color: #f97316;
-            background-color: #fed7aa;
-            color: #ea580c;
-        }
-        
-        .participant-option:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Scrollbar styling for participants dropdown */
-        #participantsDropdown::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        #participantsDropdown::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 3px;
-        }
-        
-        #participantsDropdown::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
-        }
-        
-        #participantsDropdown::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-        
-        /* Animation for dropdown arrow */
-        .group:hover .transform {
-            transform: rotate(180deg) scale(1.1);
-        }
-    </style>
+    <!-- Main Booking Container -->
+    <div class="bg-white py-8 md:py-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Progress Steps -->
+            <div class="mb-8 md:mb-16">
+                <!-- Mobile Progress Steps (Vertical) -->
+                <div class="block md:hidden mb-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                            <div class="ml-3 flex-1">
+                                <span class="text-orange-600 font-semibold text-sm">Activity Info</span>
+                                <div class="w-full h-0.5 bg-orange-200 mt-1"></div>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-sm">2</div>
+                            <div class="ml-3 flex-1">
+                                <span class="text-orange-600 font-semibold text-sm">Booking Details</span>
+                                <div class="w-full h-0.5 bg-orange-200 mt-1"></div>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center font-bold text-sm">3</div>
+                            <div class="ml-3 flex-1">
+                                <span class="text-gray-500 font-semibold text-sm">Confirmation</span>
+                                <div class="w-full h-0.5 bg-gray-200 mt-1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Desktop Progress Steps (Horizontal) -->
+                <div class="hidden md:flex justify-center items-center space-x-4 mb-8">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold">1</div>
+                        <span class="ml-2 text-orange-600 font-semibold">Activity Info</span>
+                    </div>
+                    <div class="w-12 h-0.5 bg-orange-200"></div>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold">2</div>
+                        <span class="ml-2 text-orange-600 font-semibold">Booking Details</span>
+                    </div>
+                    <div class="w-12 h-0.5 bg-orange-200"></div>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center font-bold">3</div>
+                        <span class="ml-2 text-gray-500 font-semibold">Confirmation</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Overview Card -->
+            <div class="bg-gradient-to-r from-blue-50 to-orange-50 rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-8 mb-8 md:mb-12 shadow-lg border border-gray-100">
+                <div class="space-y-4 md:space-y-6">
+                    <!-- Activity Details -->
+                    <div class="text-center">
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-2 md:mb-4"><?php echo e($activity->name); ?></h2>
+                        <p class="text-gray-600 leading-relaxed text-sm sm:text-base md:text-lg px-2"><?php echo e($activity->bio); ?></p>
+                    </div>
+                    
+                    <!-- Mobile Layout (Stacked) -->
+                    <div class="block md:hidden space-y-4">
+                        <div class="flex justify-center">
+                            <div class="flex items-center gap-2 text-orange-600 bg-white px-4 py-2 rounded-xl shadow-sm">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/>
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/>
+                                </svg>
+                                <span class="text-xl sm:text-2xl font-bold">$<?php echo e(number_format($activity->price, 2)); ?></span>
+                                <span class="text-sm sm:text-base opacity-80">per person</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col sm:flex-row justify-center gap-3 sm:gap-6">
+                            <div class="flex items-center justify-center gap-2 text-green-600 bg-white px-3 py-2 rounded-lg shadow-sm">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                <span class="font-medium text-sm">Free Cancellation</span>
+                            </div>
+                            <div class="flex items-center justify-center gap-2 text-green-600 bg-white px-3 py-2 rounded-lg shadow-sm">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                <span class="font-medium text-sm">Instant Confirmation</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Desktop Layout (Original) -->
+                    <div class="hidden md:flex flex-wrap justify-center gap-8">
+                        <div class="flex items-center gap-2 text-orange-600">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/>
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-2xl font-bold">$<?php echo e(number_format($activity->price, 2)); ?></span>
+                            <span class="text-lg opacity-80">per person</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-6">
+                            <div class="flex items-center gap-2 text-green-600">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                <span class="font-medium">Free Cancellation</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-green-600">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                <span class="font-medium">Instant Confirmation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Messages -->
+            <?php if($errors->any()): ?>
+                <div class="bg-red-50 border border-red-200 rounded-2xl p-6 mb-8">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-red-800">Please fix the following issues:</h3>
+                    </div>
+                    <ul class="text-red-700 space-y-2">
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li class="flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                </svg>
+                                <?php echo e($error); ?>
+
+                            </li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+
+            <?php if(session('error')): ?>
+                <div class="bg-red-50 border border-red-200 rounded-2xl p-6 mb-8">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <p class="text-red-800 font-medium"><?php echo e(session('error')); ?></p>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <!-- Booking Form -->
+            <form action="<?php echo e(route('activity.book', $activity->id)); ?>" method="POST" id="bookingForm" class="space-y-8">
+                <?php echo csrf_field(); ?>
+                
+                <!-- Step 1: Number of Participants -->
+                <div class="bg-white rounded-2xl md:rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+                    <div class="bg-gradient-to-r from-orange-500 to-orange-600 p-4 md:p-6 text-white">
+                        <div class="flex items-center gap-3">
+                            <div class="w-6 h-6 md:w-8 md:h-8 bg-white/20 rounded-full flex items-center justify-center">
+                                <span class="font-bold text-xs md:text-sm">1</span>
+                            </div>
+                            <h3 class="text-lg md:text-xl font-bold">Select Number of Participants</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 md:p-8">
+                        <!-- Hidden Select Input -->
+                        <select id="participants" name="participants" required onchange="updatePrice()" class="hidden">
+                            <?php for($i = 1; $i <= min(20, $activity->max_participants); $i++): ?>
+                                <option value="<?php echo e($i); ?>" <?php echo e(old('participants', 1) == $i ? 'selected' : ''); ?>>
+                                    <?php echo e($i); ?> <?php echo e($i == 1 ? 'Person' : 'People'); ?>
+
+                                </option>
+                            <?php endfor; ?>
+                        </select>
+                        
+                        <!-- Participants Grid -->
+                        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4" id="participantsGrid">
+                            <?php for($i = 1; $i <= min(20, $activity->max_participants); $i++): ?>
+                                <div class="participant-option border-2 border-gray-200 rounded-xl md:rounded-2xl p-3 md:p-4 text-center hover:border-orange-300 hover:bg-orange-50 transition-all duration-300 cursor-pointer <?php echo e(old('participants', 1) == $i ? 'border-orange-500 bg-orange-50' : ''); ?>" 
+                                     data-value="<?php echo e($i); ?>" onclick="selectParticipants(<?php echo e($i); ?>)">
+                                    <div class="w-6 h-6 md:w-8 md:h-8 mx-auto mb-1 md:mb-2 bg-blue-500 rounded-full flex items-center justify-center">
+                                        <svg class="w-3 h-3 md:w-4 md:h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="text-sm md:text-lg font-bold text-gray-800"><?php echo e($i); ?></div>
+                                    <div class="text-xs md:text-sm text-gray-600"><?php echo e($i == 1 ? 'Person' : 'People'); ?></div>
+                                </div>
+                            <?php endfor; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Select Date -->
+                <div class="bg-white rounded-2xl md:rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+                    <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-4 md:p-6 text-white">
+                        <div class="flex items-center gap-3">
+                            <div class="w-6 h-6 md:w-8 md:h-8 bg-white/20 rounded-full flex items-center justify-center">
+                                <span class="font-bold text-xs md:text-sm">2</span>
+                            </div>
+                            <h3 class="text-lg md:text-xl font-bold">Choose Your Date</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 md:p-8">
+                        <!-- Quick Date Selection -->
+                        <div class="mb-6">
+                            <h4 class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">Quick Select</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
+                                <button type="button" class="quick-select-btn bg-orange-100 hover:bg-orange-200 text-orange-700 px-3 py-2 md:px-4 md:py-3 rounded-lg md:rounded-xl font-medium transition-all duration-300 text-sm md:text-base" data-days="0">
+                                    Today
+                                </button>
+                                <button type="button" class="quick-select-btn bg-orange-100 hover:bg-orange-200 text-orange-700 px-3 py-2 md:px-4 md:py-3 rounded-lg md:rounded-xl font-medium transition-all duration-300 text-sm md:text-base" data-days="1">
+                                    Tomorrow
+                                </button>
+                                <button type="button" class="quick-select-btn bg-orange-100 hover:bg-orange-200 text-orange-700 px-3 py-2 md:px-4 md:py-3 rounded-lg md:rounded-xl font-medium transition-all duration-300 text-sm md:text-base" data-days="7">
+                                    Next Week
+                                </button>
+                                <button type="button" class="quick-select-btn bg-orange-100 hover:bg-orange-200 text-orange-700 px-3 py-2 md:px-4 md:py-3 rounded-lg md:rounded-xl font-medium transition-all duration-300 text-sm md:text-base" data-days="14">
+                                    In 2 Weeks
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Date Display -->
+                        <div class="mb-6">
+                            <label class="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4 block">Or Select Custom Date</label>
+                            <input type="hidden" id="booking_date" name="booking_date" value="<?php echo e(old('booking_date')); ?>" required>
+                            <div id="dateDisplay" class="w-full px-4 py-3 md:px-6 md:py-4 text-base md:text-lg border-2 border-gray-200 rounded-xl md:rounded-2xl cursor-pointer hover:border-blue-300 transition-all duration-300 bg-gradient-to-r from-gray-50 to-white">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3 md:gap-4">
+                                        <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg">
+                                            <svg class="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <div class="text-base md:text-lg font-bold text-gray-800" id="selectedDateText">Select a date</div>
+                                            <div class="text-xs md:text-sm text-gray-600">Click to open calendar</div>
+                                        </div>
+                                    </div>
+                                    <svg class="w-4 h-4 md:w-5 md:h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Calendar Container -->
+                        <div id="calendarDropdown" class="hidden mt-4 bg-white rounded-xl shadow-lg border border-gray-200 p-3 md:p-4">
+                            <!-- Calendar Header -->
+                            <div class="flex items-center justify-between mb-3 md:mb-4">
+                                <button type="button" id="prevMonth" class="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gray-100 hover:bg-orange-100 flex items-center justify-center transition-all duration-300">
+                                    <svg class="w-4 h-4 md:w-5 md:h-5 text-gray-600 hover:text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                                    </svg>
+                                </button>
+                                <div class="text-center">
+                                    <h3 id="calendarMonth" class="text-base md:text-lg font-bold text-gray-800"></h3>
+                                    <p id="calendarYear" class="text-xs md:text-sm text-gray-600"></p>
+                                </div>
+                                <button type="button" id="nextMonth" class="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gray-100 hover:bg-orange-100 flex items-center justify-center transition-all duration-300">
+                                    <svg class="w-4 h-4 md:w-5 md:h-5 text-gray-600 hover:text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            <!-- Days of Week -->
+                            <div class="grid grid-cols-7 gap-1 mb-2">
+                                <div class="text-center py-2 text-sm font-medium text-gray-500">Sun</div>
+                                <div class="text-center py-2 text-sm font-medium text-gray-500">Mon</div>
+                                <div class="text-center py-2 text-sm font-medium text-gray-500">Tue</div>
+                                <div class="text-center py-2 text-sm font-medium text-gray-500">Wed</div>
+                                <div class="text-center py-2 text-sm font-medium text-gray-500">Thu</div>
+                                <div class="text-center py-2 text-sm font-medium text-gray-500">Fri</div>
+                                <div class="text-center py-2 text-sm font-medium text-gray-500">Sat</div>
+                            </div>
+                            
+                            <!-- Calendar Days -->
+                            <div id="calendarDays" class="grid grid-cols-7 gap-1"></div>
+                        </div>
+
+                        <!-- Availability Information Display -->
+                        <div id="availabilityDisplay" class="mt-4 md:mt-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl md:rounded-2xl p-4 md:p-6 border border-blue-200 hidden">
+                            <h4 class="text-base md:text-lg font-bold text-gray-800 mb-3 md:mb-4 flex items-center gap-2 md:gap-3">
+                                <div class="w-6 h-6 md:w-8 md:h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                                    <svg class="w-3 h-3 md:w-4 md:h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                    </svg>
+                                </div>
+                                <span class="text-sm md:text-base">Daily Availability Information</span>
+                            </h4>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mb-3 md:mb-4">
+                                <div class="bg-white rounded-lg md:rounded-xl p-3 md:p-4 border border-blue-100">
+                                    <div class="text-xs md:text-sm text-gray-600 mb-1">Max Capacity</div>
+                                    <div class="text-xl md:text-2xl font-bold text-blue-600" id="maxCapacity"><?php echo e($activity->max_participants); ?></div>
+                                </div>
+                                <div class="bg-white rounded-lg md:rounded-xl p-3 md:p-4 border border-blue-100">
+                                    <div class="text-xs md:text-sm text-gray-600 mb-1">Already Booked</div>
+                                    <div class="text-xl md:text-2xl font-bold text-orange-600" id="bookedSpots">-</div>
+                                </div>
+                                <div class="bg-white rounded-lg md:rounded-xl p-3 md:p-4 border border-blue-100">
+                                    <div class="text-xs md:text-sm text-gray-600 mb-1">Still Available</div>
+                                    <div class="text-xl md:text-2xl font-bold text-green-600" id="availableSpots">-</div>
+                                </div>
+                            </div>
+
+                            <!-- Availability Status Bar -->
+                            <div class="bg-white rounded-lg md:rounded-xl p-3 md:p-4 border border-blue-100">
+                                <div class="flex justify-between items-center mb-2 md:mb-3">
+                                    <span class="text-xs md:text-sm font-semibold text-gray-700">Booking Status</span>
+                                    <span class="text-xs md:text-sm font-bold" id="bookingPercentage">0%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2 md:h-3 mb-2 md:mb-3">
+                                    <div id="progressBar" class="h-2 md:h-3 rounded-full transition-all duration-500 bg-green-500" style="width: 0%"></div>
+                                </div>
+                                <div id="availabilityStatus" class="text-center">
+                                    <div class="flex items-center justify-center gap-2 text-blue-700 text-xs md:text-sm">
+                                        <svg class="w-3 h-3 md:w-4 md:h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                        </svg>
+                                        <span>Select a date to see availability</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Booking Summary & Confirmation -->
+                <div class="bg-white rounded-2xl md:rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+                    <div class="bg-gradient-to-r from-green-500 to-green-600 p-4 md:p-6 text-white">
+                        <div class="flex items-center gap-3">
+                            <div class="w-6 h-6 md:w-8 md:h-8 bg-white/20 rounded-full flex items-center justify-center">
+                                <span class="font-bold text-xs md:text-sm">3</span>
+                            </div>
+                            <h3 class="text-lg md:text-xl font-bold">Review Booking & Confirm</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 md:p-8">
+                        <!-- Booking Summary -->
+                        <div class="bg-gradient-to-br from-orange-50 to-blue-50 rounded-xl md:rounded-2xl p-4 md:p-6 mb-6 md:mb-8">
+                            <h4 class="text-base md:text-lg font-bold text-gray-800 mb-3 md:mb-4 flex items-center gap-2">
+                                <svg class="w-4 h-4 md:w-5 md:h-5 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                </svg>
+                                Booking Summary
+                            </h4>
+                            
+                            <div class="space-y-3 md:space-y-4">
+                                <div class="flex justify-between items-center py-2 md:py-3 border-b border-gray-200">
+                                    <span class="text-sm md:text-base text-gray-600">Activity</span>
+                                    <span class="font-semibold text-gray-800 text-sm md:text-base text-right"><?php echo e($activity->name); ?></span>
+                                </div>
+                                
+                                <div class="flex justify-between items-center py-2 md:py-3 border-b border-gray-200">
+                                    <span class="text-sm md:text-base text-gray-600">Participants</span>
+                                    <span class="font-semibold text-gray-800 text-sm md:text-base" id="summaryParticipants">1 Person</span>
+                                </div>
+                                
+                                <div class="flex justify-between items-center py-2 md:py-3 border-b border-gray-200">
+                                    <span class="text-sm md:text-base text-gray-600">Date</span>
+                                    <span class="font-semibold text-gray-800 text-sm md:text-base text-right" id="summaryDate">Not selected</span>
+                                </div>
+                                
+                                <div class="flex justify-between items-center py-2 md:py-3 border-b border-gray-200">
+                                    <span class="text-sm md:text-base text-gray-600">Price per person</span>
+                                    <span class="font-semibold text-gray-800 text-sm md:text-base">$<?php echo e(number_format($activity->price, 2)); ?></span>
+                                </div>
+                                
+                                <div class="flex justify-between items-center py-3 md:py-4 bg-white rounded-lg md:rounded-xl px-3 md:px-4 border-2 border-orange-200">
+                                    <span class="text-base md:text-lg font-bold text-gray-800">Total Amount</span>
+                                    <span class="text-xl md:text-2xl font-bold text-orange-600" id="totalPrice">$<?php echo e(number_format($activity->price, 2)); ?></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Terms and Submit -->
+                        <div class="space-y-4 md:space-y-6">
+                            <div class="flex items-start gap-3">
+                                <input type="checkbox" id="terms" name="terms" required class="w-4 h-4 md:w-5 md:h-5 text-orange-500 border-2 border-gray-300 rounded focus:ring-orange-500 mt-0.5">
+                                <label for="terms" class="text-xs md:text-sm text-gray-600 leading-relaxed">
+                                    I agree to the <a href="#" class="text-orange-600 hover:text-orange-700 font-medium">Terms and Conditions</a> and <a href="#" class="text-orange-600 hover:text-orange-700 font-medium">Privacy Policy</a>
+                                </label>
+                            </div>
+                            
+                            <button type="submit" 
+                                    class="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-xl md:rounded-2xl transition-all duration-300 transform hover:scale-105 focus:ring-4 focus:ring-orange-200 shadow-lg hover:shadow-xl">
+                                <!-- Mobile Layout (Stacked) -->
+                                <div class="flex flex-col items-center gap-1 md:hidden">
+                                    <div class="flex items-center gap-2">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                        </svg>
+                                        <span class="text-base font-bold">Secure Your Booking Now</span>
+                                    </div>
+                                    <span class="text-lg font-bold" id="submitButtonPrice">$<?php echo e(number_format($activity->price, 2)); ?></span>
+                                </div>
+                                
+                                <!-- Desktop Layout (Inline) -->
+                                <div class="hidden md:flex items-center justify-center gap-3">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                    </svg>
+                                    <span class="text-lg">Secure Your Booking Now</span>
+                                    <span class="text-lg font-bold" id="submitButtonPriceDesktop">$<?php echo e(number_format($activity->price, 2)); ?></span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script>
         // Calendar variables
@@ -539,82 +499,39 @@ unset($__errorArgs, $__bag); ?>
             const pricePerPerson = <?php echo e($activity->price); ?>;
             const totalPrice = participants * pricePerPerson;
             
-            document.getElementById('participantCount').textContent = participants;
+            // Update summary section
+            document.getElementById('summaryParticipants').textContent = participants == 1 ? '1 Person' : `${participants} People`;
             document.getElementById('totalPrice').textContent = '$' + totalPrice.toFixed(2);
+            document.getElementById('submitButtonPrice').textContent = '$' + totalPrice.toFixed(2);
+            document.getElementById('submitButtonPriceDesktop').textContent = '$' + totalPrice.toFixed(2);
         }
 
-        // Custom Participants Functions
-        function toggleParticipantsDropdown() {
-            const dropdown = document.getElementById('participantsDropdown');
-            const isVisible = dropdown.classList.contains('opacity-100');
-            
-            if (isVisible) {
-                hideParticipantsDropdown();
-            } else {
-                showParticipantsDropdown();
-            }
-        }
-
-        function showParticipantsDropdown() {
-            const dropdown = document.getElementById('participantsDropdown');
-            dropdown.classList.remove('opacity-0', 'invisible', 'scale-95');
-            dropdown.classList.add('opacity-100', 'visible', 'scale-100');
-        }
-
-        function hideParticipantsDropdown() {
-            const dropdown = document.getElementById('participantsDropdown');
-            dropdown.classList.add('opacity-0', 'invisible', 'scale-95');
-            dropdown.classList.remove('opacity-100', 'visible', 'scale-100');
-        }
-
+        // Participants selection function
         function selectParticipants(count) {
             // Update hidden select
             document.getElementById('participants').value = count;
             
-            // Update display text
-            const text = count === 1 ? '1 Person' : `${count} People`;
-            document.getElementById('selectedParticipantsText').textContent = text;
-            
-            // Update subtext with helpful message
-            let subtextMessage = '';
-            if (count === 1) {
-                subtextMessage = 'Solo adventure - Perfect for self-discovery!';
-            } else if (count === 2) {
-                subtextMessage = 'Couples experience - Romantic and intimate!';
-            } else if (count <= 4) {
-                subtextMessage = 'Small group - Great for friends and family!';
-            } else if (count <= 8) {
-                subtextMessage = 'Medium group - Perfect for team building!';
-            } else {
-                subtextMessage = 'Large group - Amazing group experience!';
-            }
-            
-            document.getElementById('selectedParticipantsSubtext').textContent = subtextMessage;
-            
-            // Update button states
-            document.querySelectorAll('.participant-option').forEach(btn => {
-                btn.classList.remove('selected', 'border-orange-500', 'bg-orange-100', 'text-orange-700');
-                btn.classList.add('border-gray-200', 'text-gray-700');
+            // Update UI - remove selected class from all options
+            document.querySelectorAll('.participant-option').forEach(option => {
+                option.classList.remove('border-orange-500', 'bg-orange-50');
+                option.classList.add('border-gray-200');
             });
             
-            // Highlight selected option
-            const selectedBtn = document.querySelector(`[data-value="${count}"]`);
-            if (selectedBtn) {
-                selectedBtn.classList.add('selected', 'border-orange-500', 'bg-orange-100', 'text-orange-700');
-                selectedBtn.classList.remove('border-gray-200', 'text-gray-700');
+            // Add selected class to clicked option
+            const selectedOption = document.querySelector(`[data-value="${count}"]`);
+            if (selectedOption) {
+                selectedOption.classList.add('border-orange-500', 'bg-orange-50');
+                selectedOption.classList.remove('border-gray-200');
             }
             
             // Update price
             updatePrice();
-            
-            // Hide dropdown after selection
-            setTimeout(hideParticipantsDropdown, 300);
         }
 
-        // Custom Calendar Functions
+        // Calendar Functions
         function toggleCalendar() {
             const dropdown = document.getElementById('calendarDropdown');
-            const isVisible = dropdown.classList.contains('opacity-100');
+            const isVisible = !dropdown.classList.contains('hidden');
             
             if (isVisible) {
                 hideCalendar();
@@ -625,15 +542,13 @@ unset($__errorArgs, $__bag); ?>
 
         function showCalendar() {
             const dropdown = document.getElementById('calendarDropdown');
-            dropdown.classList.remove('opacity-0', 'invisible', 'scale-95');
-            dropdown.classList.add('opacity-100', 'visible', 'scale-100');
+            dropdown.classList.remove('hidden');
             renderCalendar();
         }
 
         function hideCalendar() {
             const dropdown = document.getElementById('calendarDropdown');
-            dropdown.classList.add('opacity-0', 'invisible', 'scale-95');
-            dropdown.classList.remove('opacity-100', 'visible', 'scale-100');
+            dropdown.classList.add('hidden');
         }
 
         function renderCalendar() {
@@ -655,33 +570,10 @@ unset($__errorArgs, $__bag); ?>
             // Add empty cells for days before month starts
             for (let i = 0; i < firstDay; i++) {
                 const emptyDay = document.createElement('div');
-                emptyDay.className = 'h-12';
+                emptyDay.className = 'h-10';
                 daysContainer.appendChild(emptyDay);
             }
             
-            // Check availability for all days in the month
-            checkMonthAvailability(year, month, daysInMonth, daysContainer);
-        }
-
-        function checkMonthAvailability(year, month, daysInMonth, daysContainer) {
-            // Create date range for the month
-            const startDate = new Date(year, month, 1).toISOString().split('T')[0];
-            const endDate = new Date(year, month, daysInMonth).toISOString().split('T')[0];
-            
-            // Fetch availability for the entire month
-            fetch(`<?php echo e(route('activity.check.month.availability')); ?>?activity_id=<?php echo e($activity->id); ?>&start_date=${startDate}&end_date=${endDate}`)
-                .then(response => response.json())
-                .then(data => {
-                    renderDaysWithAvailability(year, month, daysInMonth, daysContainer, data.availability || {});
-                })
-                .catch(error => {
-                    console.error('Error checking month availability:', error);
-                    // Fallback to render days without availability data
-                    renderDaysWithAvailability(year, month, daysInMonth, daysContainer, {});
-                });
-        }
-
-        function renderDaysWithAvailability(year, month, daysInMonth, daysContainer, availability) {
             // Add days of the month
             for (let day = 1; day <= daysInMonth; day++) {
                 const dayElement = document.createElement('button');
@@ -693,58 +585,25 @@ unset($__errorArgs, $__bag); ?>
                 const isToday = dayDate.toDateString() === new Date().toDateString();
                 const isPast = dayDate < minDate;
                 const isSelected = selectedDate && dayDate.toDateString() === selectedDate.toDateString();
-                const dayAvailability = availability[dateString];
-                const isFullyBooked = dayAvailability && dayAvailability.is_fully_booked;
-                const isLimited = dayAvailability && dayAvailability.available_spots <= 3 && dayAvailability.available_spots > 0;
                 
-                // Base classes - ultra compact for better visibility
-                let classes = 'h-8 w-8 rounded-lg text-xs font-medium transition-all duration-300 relative overflow-hidden';
+                // Base classes
+                let classes = 'h-10 w-10 rounded-lg text-sm font-medium transition-all duration-300';
                 
                 if (isPast) {
                     classes += ' text-gray-300 cursor-not-allowed bg-gray-50';
                     dayElement.disabled = true;
-                } else if (isFullyBooked) {
-                    classes += ' text-red-400 cursor-not-allowed bg-red-50 line-through';
-                    dayElement.disabled = true;
-                    dayElement.title = 'Fully booked - No spots available';
                 } else if (isSelected) {
-                    classes += ' bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-sm transform scale-105';
+                    classes += ' bg-orange-500 text-white shadow-md';
                 } else if (isToday) {
-                    classes += ' bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-sm';
-                } else if (isLimited) {
-                    classes += ' text-yellow-700 bg-yellow-100 hover:bg-yellow-200 hover:scale-105 border border-yellow-300';
-                    dayElement.title = `Limited spots: ${dayAvailability.available_spots} remaining`;
+                    classes += ' bg-blue-500 text-white hover:bg-blue-600';
                 } else {
-                    classes += ' text-gray-700 hover:bg-gradient-to-r hover:from-orange-100 hover:to-orange-200 hover:text-orange-700 hover:scale-105';
+                    classes += ' text-gray-700 hover:bg-orange-100 hover:text-orange-700';
                 }
                 
                 dayElement.className = classes;
                 
-                if (!isPast && !isFullyBooked) {
+                if (!isPast) {
                     dayElement.addEventListener('click', () => selectDate(dayDate));
-                    
-                    // Add ripple effect
-                    dayElement.addEventListener('click', function(e) {
-                        const ripple = document.createElement('span');
-                        const rect = this.getBoundingClientRect();
-                        const size = Math.max(rect.width, rect.height);
-                        const x = e.clientX - rect.left - size / 2;
-                        const y = e.clientY - rect.top - size / 2;
-                        
-                        ripple.style.width = ripple.style.height = size + 'px';
-                        ripple.style.left = x + 'px';
-                        ripple.style.top = y + 'px';
-                        ripple.className = 'absolute bg-white bg-opacity-30 rounded-full animate-ping';
-                        
-                        this.appendChild(ripple);
-                        setTimeout(() => ripple.remove(), 600);
-                    });
-                }
-                
-                // Add special styling for weekends if not booked
-                const dayOfWeek = dayDate.getDay();
-                if ((dayOfWeek === 0 || dayOfWeek === 6) && !isPast && !isSelected && !isFullyBooked && !isLimited) { // Sunday or Saturday
-                    dayElement.classList.add('bg-gradient-to-r', 'from-purple-50', 'to-purple-100', 'text-purple-700');
                 }
                 
                 daysContainer.appendChild(dayElement);
@@ -759,24 +618,11 @@ unset($__errorArgs, $__bag); ?>
             // Update display
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('selectedDateText').textContent = date.toLocaleDateString('en-US', options);
+            document.getElementById('summaryDate').textContent = date.toLocaleDateString('en-US', options);
             
-            // Update subtext with relative date
-            const today = new Date();
-            const diffTime = date - today;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            
-            let subtextMessage = '';
-            if (diffDays === 0) {
-                subtextMessage = 'Today - Get ready for an amazing experience!';
-            } else if (diffDays === 1) {
-                subtextMessage = 'Tomorrow - Just one day away!';
-            } else if (diffDays <= 7) {
-                subtextMessage = `In ${diffDays} days - Perfect timing!`;
-            } else {
-                subtextMessage = 'Advance booking - Great choice!';
-            }
-            
-            document.getElementById('selectedDateSubtext').textContent = subtextMessage;
+            // Show availability display section
+            const availabilityDisplay = document.getElementById('availabilityDisplay');
+            availabilityDisplay.classList.remove('hidden');
             
             // Re-render calendar to show selection
             renderCalendar();
@@ -786,179 +632,6 @@ unset($__errorArgs, $__bag); ?>
             
             // Hide calendar after selection
             setTimeout(hideCalendar, 300);
-        }
-
-        // Function to reset availability state
-        function resetAvailabilityState() {
-            // Reset submit button to enabled state
-            const submitButton = document.getElementById('bookingForm').querySelector('button[type="submit"]');
-            submitButton.disabled = false;
-            submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
-            submitButton.classList.add('hover:from-orange-600', 'hover:to-orange-700', 'hover:scale-105');
-            
-            // Reset all participant options to enabled
-            const participantOptions = document.querySelectorAll('.participant-option');
-            participantOptions.forEach(option => {
-                option.disabled = false;
-                option.classList.remove('opacity-50', 'cursor-not-allowed');
-                option.classList.add('hover:border-orange-300', 'hover:bg-orange-50');
-            });
-            
-            // DON'T clear availabilityContent as it contains the availabilityStatus element
-            // Just ensure the status is reset to a neutral state
-            const availabilityStatus = document.getElementById('availabilityStatus');
-            if (availabilityStatus) {
-                availabilityStatus.innerHTML = `
-                    <div class="flex items-center gap-2 text-blue-700 text-sm">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-                        </svg>
-                        <span>Checking availability...</span>
-                    </div>
-                `;
-            }
-        }
-
-        // Function to check availability for a specific date
-        function checkAvailability(date) {
-            // Clear previous state immediately
-            resetAvailabilityState();
-            
-            // Show loading state
-            const availabilityStatus = document.getElementById('availabilityStatus');
-            availabilityStatus.innerHTML = `
-                <div class="flex items-center gap-2 text-blue-700 text-sm">
-                    <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span>Checking availability for selected date...</span>
-                </div>
-            `;
-
-            // Make AJAX request to check availability
-            fetch(`<?php echo e(route('activity.check.availability')); ?>?activity_id=<?php echo e($activity->id); ?>&date=${date}`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Availability check response for', date, ':', data);
-                    if (data.success) {
-                        updateAvailabilityDisplay(data);
-                    } else {
-                        showAvailabilityError(data.error || 'Failed to check availability');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error checking availability:', error);
-                    showAvailabilityError('Unable to check availability. Please try again.');
-                });
-        }
-
-        // Function to update availability display
-        function updateAvailabilityDisplay(data) {
-            const availabilityContent = document.getElementById('availabilityContent');
-            const submitButton = document.getElementById('bookingForm').querySelector('button[type="submit"]');
-            const isFullyBooked = data.is_fully_booked;
-            const isLimited = data.available_spots <= 3 && data.available_spots > 0;
-
-            // Always reset state first
-            resetAvailabilityState();
-
-            let statusClass = 'border-green-200 bg-green-50';
-            let statusText = 'Available';
-            let statusIcon = '✅';
-            let textClass = 'text-green-700';
-
-            if (isFullyBooked) {
-                statusClass = 'border-red-200 bg-red-50';
-                statusText = 'Fully Booked';
-                statusIcon = '🚫';
-                textClass = 'text-red-700';
-                // Disable submit button
-                submitButton.disabled = true;
-                submitButton.classList.add('opacity-50', 'cursor-not-allowed');
-                submitButton.classList.remove('hover:from-orange-600', 'hover:to-orange-700', 'hover:scale-105');
-            } else {
-                // Ensure submit button is enabled for available dates
-                submitButton.disabled = false;
-                submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
-                submitButton.classList.add('hover:from-orange-600', 'hover:to-orange-700', 'hover:scale-105');
-                
-                if (isLimited) {
-                    statusClass = 'border-yellow-200 bg-yellow-50';
-                    statusText = 'Limited Spots';
-                    statusIcon = '⚠️';
-                    textClass = 'text-yellow-700';
-                }
-            }
-
-            availabilityContent.innerHTML = `
-                <div class="flex justify-between items-center">
-                    <span class="text-sm">Maximum participants per day:</span>
-                    <span class="text-sm font-semibold">${data.max_participants}</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-sm">Currently booked:</span>
-                    <span class="text-sm font-semibold">${data.booked_spots}</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-sm">Still available:</span>
-                    <span class="text-sm font-semibold ${data.available_spots <= 3 ? 'text-orange-600' : 'text-green-600'}">${data.available_spots}</span>
-                </div>
-                <div class="bg-white p-3 rounded-lg border ${statusClass}" id="availabilityStatus">
-                    <div class="flex items-center justify-between mb-2">
-                        <div class="flex items-center gap-2 ${textClass} text-sm font-medium">
-                            <span>${statusIcon}</span>
-                            <span>${statusText}</span>
-                        </div>
-                        <span class="${textClass} text-sm font-bold">${data.booking_percentage}% Full</span>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2">
-                        <div class="h-2 rounded-full transition-all duration-500 ${isFullyBooked ? 'bg-red-500' : isLimited ? 'bg-yellow-500' : 'bg-green-500'}" 
-                             style="width: ${data.booking_percentage}%"></div>
-                    </div>
-                    ${isFullyBooked ? 
-                        '<p class="text-red-600 text-xs mt-2">This date is fully booked. Please select another date.</p>' : 
-                        isLimited ? 
-                            '<p class="text-yellow-600 text-xs mt-2">Only a few spots left! Book soon to secure your place.</p>' :
-                            '<p class="text-green-600 text-xs mt-2">Great availability! Perfect time to book your experience.</p>'
-                    }
-                </div>
-            `;
-
-            // Update max participants in the dropdown if needed
-            updateParticipantsDropdown(data.available_spots, data.max_participants);
-        }
-
-        // Function to show availability error
-        function showAvailabilityError(message) {
-            const availabilityStatus = document.getElementById('availabilityStatus');
-            availabilityStatus.innerHTML = `
-                <div class="flex items-center gap-2 text-red-700 text-sm">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                    </svg>
-                    <span>${message}</span>
-                </div>
-            `;
-        }
-
-        // Function to update participants dropdown based on availability
-        function updateParticipantsDropdown(availableSpots, maxParticipants) {
-            console.log('Updating participants dropdown - Available spots:', availableSpots, 'Max:', maxParticipants);
-            
-            const participantOptions = document.querySelectorAll('.participant-option');
-            participantOptions.forEach(option => {
-                const value = parseInt(option.dataset.value);
-                if (value > availableSpots) {
-                    option.disabled = true;
-                    option.classList.add('opacity-50', 'cursor-not-allowed');
-                    option.classList.remove('hover:border-orange-300', 'hover:bg-orange-50');
-                } else {
-                    option.disabled = false;
-                    option.classList.remove('opacity-50', 'cursor-not-allowed');
-                    option.classList.add('hover:border-orange-300', 'hover:bg-orange-50');
-                }
-            });
         }
 
         function changeMonth(direction) {
@@ -972,22 +645,110 @@ unset($__errorArgs, $__bag); ?>
             selectDate(date);
         }
 
-        // Initialize calendar on page load
+        // Function to check availability for a specific date
+        function checkAvailability(date) {
+            // Show loading state
+            const availabilityStatus = document.getElementById('availabilityStatus');
+            if (availabilityStatus) {
+                availabilityStatus.innerHTML = `
+                    <div class="flex items-center gap-2 text-blue-700 text-sm">
+                        <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span>Checking availability...</span>
+                    </div>
+                `;
+
+                // Make AJAX request to check availability
+                fetch(`<?php echo e(route('activity.check.availability')); ?>?activity_id=<?php echo e($activity->id); ?>&date=${date}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            updateAvailabilityDisplay(data);
+                        } else {
+                            showAvailabilityError(data.error || 'Failed to check availability');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error checking availability:', error);
+                        showAvailabilityError('Unable to check availability. Please try again.');
+                    });
+            }
+        }
+
+        // Function to update availability display
+        function updateAvailabilityDisplay(data) {
+            const availabilityStatus = document.getElementById('availabilityStatus');
+            if (!availabilityStatus) return;
+
+            const isFullyBooked = data.is_fully_booked;
+            const isLimited = data.available_spots <= 3 && data.available_spots > 0;
+
+            // Update the individual display elements
+            document.getElementById('maxCapacity').textContent = data.max_participants;
+            document.getElementById('bookedSpots').textContent = data.booked_spots;
+            document.getElementById('availableSpots').textContent = data.available_spots;
+            document.getElementById('bookingPercentage').textContent = data.booking_percentage + '%';
+
+            // Update progress bar
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = data.booking_percentage + '%';
+
+            let statusClass = 'text-green-700';
+            let statusText = 'Available';
+            let statusIcon = '✅';
+            let barColor = 'bg-green-500';
+
+            if (isFullyBooked) {
+                statusClass = 'text-red-700';
+                statusText = 'Fully Booked';
+                statusIcon = '🚫';
+                barColor = 'bg-red-500';
+            } else if (isLimited) {
+                statusClass = 'text-yellow-700';
+                statusText = 'Limited Spots';
+                statusIcon = '⚠️';
+                barColor = 'bg-yellow-500';
+            }
+
+            // Update progress bar color
+            progressBar.className = `h-3 rounded-full transition-all duration-500 ${barColor}`;
+
+            // Update availability status
+            availabilityStatus.innerHTML = `
+                <div class="flex items-center justify-center gap-2 ${statusClass} font-medium">
+                    <span class="text-lg">${statusIcon}</span>
+                    <span>${statusText}</span>
+                    <span class="text-sm opacity-75">(${data.available_spots} spots remaining)</span>
+                </div>
+                ${isFullyBooked ? 
+                    '<p class="text-red-600 text-sm mt-2 text-center">This date is fully booked. Please select another date.</p>' : 
+                    isLimited ? 
+                        '<p class="text-yellow-600 text-sm mt-2 text-center">Only a few spots left! Book soon to secure your place.</p>' :
+                        '<p class="text-green-600 text-sm mt-2 text-center">Great availability! Perfect time to book your experience.</p>'
+                }
+            `;
+        }
+
+        // Function to show availability error
+        function showAvailabilityError(message) {
+            const availabilityStatus = document.getElementById('availabilityStatus');
+            if (availabilityStatus) {
+                availabilityStatus.innerHTML = `
+                    <div class="flex items-center gap-2 text-red-700 text-sm">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>${message}</span>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             updatePrice();
-            
-            // Set up participants dropdown event listeners
-            document.getElementById('participantsDisplay').addEventListener('click', toggleParticipantsDropdown);
-            
-            // Close participants dropdown when clicking outside
-            document.addEventListener('click', function(e) {
-                const participantsDropdown = document.getElementById('participantsDropdown');
-                const participantsDisplay = document.getElementById('participantsDisplay');
-                
-                if (!participantsDropdown.contains(e.target) && !participantsDisplay.contains(e.target)) {
-                    hideParticipantsDropdown();
-                }
-            });
             
             // Set up calendar event listeners
             document.getElementById('dateDisplay').addEventListener('click', toggleCalendar);
@@ -1016,7 +777,6 @@ unset($__errorArgs, $__bag); ?>
             const oldDate = "<?php echo e(old('booking_date')); ?>";
             if (oldDate) {
                 selectDate(new Date(oldDate));
-                checkAvailability(oldDate);
             }
             
             const oldParticipants = "<?php echo e(old('participants', 1)); ?>";
@@ -1025,6 +785,76 @@ unset($__errorArgs, $__bag); ?>
             }
         });
     </script>
+
+    <!-- Mobile-Specific Styling -->
+    <style>
+        /* Improve calendar grid on mobile */
+        @media (max-width: 640px) {
+            #calendarDays button {
+                min-height: 40px;
+                font-size: 14px;
+            }
+            
+            /* Better spacing for participant options */
+            .participant-option {
+                min-height: 70px;
+            }
+            
+            /* Improve touch targets */
+            .quick-select-btn {
+                min-height: 44px;
+            }
+            
+            /* Better calendar visibility */
+            #calendarDropdown {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) !important;
+                width: 90vw;
+                max-width: 350px;
+                z-index: 9999;
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+            
+            /* Calendar overlay */
+            #calendarDropdown.fixed-overlay::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: -1;
+            }
+            
+            /* Better breadcrumb on mobile */
+            .breadcrumb-text {
+                max-width: 120px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+        
+        /* Smooth transitions for mobile interactions */
+        .participant-option:active {
+            transform: scale(0.95);
+        }
+        
+        .quick-select-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* Better form section spacing on mobile */
+        @media (max-width: 768px) {
+            .form-section {
+                margin-bottom: 1.5rem;
+            }
+        }
+    </style>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal23a33f287873b564aaf305a1526eada4)): ?>

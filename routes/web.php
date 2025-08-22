@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use App\Models\UserData;
 use App\Models\Activity;
 use App\Http\Controllers\SocialiteController;
@@ -40,10 +41,45 @@ Route::get('/', function () {
     return view('home', compact('activities', 'sliderActivities'));
 });
 
-Route::get('/activities', function () {
-    $activities = Activity::where('is_active', true)->orderBy('created_at', 'desc')->paginate(12);
-    return view('activities', compact('activities'));
+Route::get('/activities', function (Request $request) {
+    $searchDate = $request->get('date');
+    $participants = $request->get('participants', 1);
+    
+    $query = Activity::where('is_active', true);
+    
+    // Filter by date and participants if provided
+    if ($searchDate) {
+        // Get all activities and then filter by availability
+        $allActivities = $query->get();
+        $availableActivityIds = [];
+        
+        foreach ($allActivities as $activity) {
+            if ($activity->isAvailableForDate($searchDate, $participants)) {
+                $availableActivityIds[] = $activity->id;
+            }
+        }
+        
+        // Filter query to only include available activities
+        $query = Activity::whereIn('id', $availableActivityIds)->where('is_active', true);
+    }
+    
+    $activities = $query->orderBy('created_at', 'desc')->paginate(12);
+    
+    // Add search parameters to pagination links
+    $activities->appends($request->query());
+    
+    return view('activities', compact('activities', 'searchDate', 'participants'));
 })->name('activities');
+
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
+Route::post('/contact', [App\Http\Controllers\ContactController::class, 'submit'])->name('contact.submit');
 
 // Availability checking routes (must be before /activity/{id} route)
 Route::get('/activity/check-availability', [ActivityController::class, 'checkAvailability'])->name('activity.check.availability');
@@ -146,9 +182,17 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('bookings/{id}', [\App\Http\Controllers\AdminBookingController::class, 'show'])->name('bookings.show');
     Route::get('bookings-availability', [\App\Http\Controllers\AdminBookingController::class, 'availability'])->name('bookings.availability');
     Route::get('check-availability', [\App\Http\Controllers\AdminBookingController::class, 'getAvailability'])->name('bookings.check-availability');
+    Route::delete('bookings/clear-all', [\App\Http\Controllers\AdminBookingController::class, 'clearAll'])->name('bookings.clear-all');
+    Route::delete('bookings/clear-date-range', [\App\Http\Controllers\AdminBookingController::class, 'clearDateRange'])->name('bookings.clear-date-range');
     
     // Admin Management Routes
     Route::resource('admins', \App\Http\Controllers\AdminController::class);
+    
+    // Contact Messages Management Routes
+    Route::get('contact-messages', [\App\Http\Controllers\AdminContactController::class, 'index'])->name('contact-messages.index');
+    Route::get('contact-messages/{contactMessage}', [\App\Http\Controllers\AdminContactController::class, 'show'])->name('contact-messages.show');
+    Route::patch('contact-messages/{contactMessage}/status', [\App\Http\Controllers\AdminContactController::class, 'updateStatus'])->name('contact-messages.update-status');
+    Route::delete('contact-messages/{contactMessage}', [\App\Http\Controllers\AdminContactController::class, 'destroy'])->name('contact-messages.destroy');
 });
 
 Route::get('/addActivities', function () {

@@ -138,4 +138,51 @@ class AdminBookingController extends Controller
             return response()->json(['error' => 'Activity not found'], 404);
         }
     }
+
+    /**
+     * Clear all bookings (for testing/admin purposes)
+     */
+    public function clearAll(Request $request)
+    {
+        try {
+            // Delete all orders
+            $deletedCount = Order::count();
+            Order::truncate(); // This is faster than deleteAll for clearing everything
+            
+            return redirect()->route('admin.bookings.index')
+                ->with('success', "Successfully cleared all {$deletedCount} bookings from the system.");
+        } catch (\Exception $e) {
+            return redirect()->route('admin.bookings.index')
+                ->with('error', 'Failed to clear bookings: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Clear bookings for a specific date range
+     */
+    public function clearDateRange(Request $request)
+    {
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+        ]);
+
+        try {
+            $deletedCount = Order::whereBetween('booking_date', [
+                $request->start_date, 
+                $request->end_date
+            ])->count();
+            
+            Order::whereBetween('booking_date', [
+                $request->start_date, 
+                $request->end_date
+            ])->delete();
+            
+            return redirect()->route('admin.bookings.index')
+                ->with('success', "Successfully cleared {$deletedCount} bookings between {$request->start_date} and {$request->end_date}.");
+        } catch (\Exception $e) {
+            return redirect()->route('admin.bookings.index')
+                ->with('error', 'Failed to clear bookings: ' . $e->getMessage());
+        }
+    }
 }

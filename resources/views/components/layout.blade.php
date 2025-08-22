@@ -100,8 +100,8 @@
     <!-- Navigation Links - Hidden on mobile, shown on medium+ -->
     <div class="hidden md:flex justify-center items-center space-x-2">
         <x-navbar href="{{ route('activities') }}" class="text-base md:hover:bg-gray-100 no-underline px-4 py-2 rounded-[20px] cursor-pointer">Activities</x-navbar>
-        <x-navbar href="/about" class="text-base md:hover:bg-gray-100 no-underline px-4 py-2 rounded-[20px] cursor-pointer">About</x-navbar>
-        <x-navbar href="/contact" class="text-base md:hover:bg-gray-100 no-underline px-4 py-2 rounded-[20px] cursor-pointer">Contact</x-navbar>
+        <x-navbar href="{{ route('about') }}" class="text-base md:hover:bg-gray-100 no-underline px-4 py-2 rounded-[20px] cursor-pointer">About</x-navbar>
+        <x-navbar href="{{ route('contact') }}" class="text-base md:hover:bg-gray-100 no-underline px-4 py-2 rounded-[20px] cursor-pointer">Contact</x-navbar>
     </div>
 
     <!-- Mobile Menu Button (Hamburger) -->
@@ -169,8 +169,8 @@
 <div class="items-top fixed w-full mx-auto pb-7 bg-white bg-opacity-95 hidden z-40 pt-10 shadow-[0_10px_35px_rgba(0,0,0,0.15)] px-4" id="mobileMenu">
     <div class="container flex  flex-col mx-auto mt-18 px-4 gap-2">
         <x-navbar href="{{ route('activities') }}" class="block py-3 px-4 md:hover:bg-gray-100 rounded-[20px] text-xl text-center shadow-lg bg-orange-400 text-white cursor-pointer">Activities</x-navbar>
-        <x-navbar href="/about" class="block py-3 px-4 md:hover:bg-gray-100 rounded-[20px] text-xl text-center shadow-lg bg-orange-400 text-white cursor-pointer">About</x-navbar>
-        <x-navbar href="/contact" class="block py-3 px-4 md:hover:bg-gray-100 rounded-[20px] text-xl text-center shadow-lg  bg-orange-400 text-white cursor-pointer">Contact</x-navbar>
+        <x-navbar href="{{ route('about') }}" class="block py-3 px-4 md:hover:bg-gray-100 rounded-[20px] text-xl text-center shadow-lg bg-orange-400 text-white cursor-pointer">About</x-navbar>
+        <x-navbar href="{{ route('contact') }}" class="block py-3 px-4 md:hover:bg-gray-100 rounded-[20px] text-xl text-center shadow-lg  bg-orange-400 text-white cursor-pointer">Contact</x-navbar>
         <div class="space-y-2">
             @if(Auth::check() || session('is_admin'))
                 <!-- Dashboard link for admins (mobile) -->

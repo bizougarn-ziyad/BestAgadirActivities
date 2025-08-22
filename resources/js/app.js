@@ -348,3 +348,52 @@ document.addEventListener('DOMContentLoaded', function () {
         history.replaceState({}, '', window.location.pathname);
     });
 });
+
+//--------Search Button Handler--------//
+
+document.addEventListener('DOMContentLoaded', function () {
+    const searchBtn = document.getElementById('searchBtn');
+
+    if (searchBtn) {
+        searchBtn.addEventListener('click', function () {
+            // Get selected date
+            const hiddenDateInput = document.getElementById('hidden-date-input');
+            const selectedDate = hiddenDateInput ? hiddenDateInput.value : null;
+
+            // Get participant count
+            const adultsCount = document.getElementById('adultsCount');
+            const childrenCount = document.getElementById('childrenCount');
+            const adults = adultsCount ? parseInt(adultsCount.textContent) : 2;
+            const children = childrenCount ? parseInt(childrenCount.textContent) : 0;
+            const totalParticipants = adults + children;
+
+            // Show message if no date is selected
+            if (!selectedDate) {
+                // Create a temporary message
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'fixed top-[120px] left-1/2 transform -translate-x-1/2 bg-orange-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 text-sm';
+                messageDiv.textContent = 'Please select a date to search for available activities';
+                document.body.appendChild(messageDiv);
+
+                // Remove message after 3 seconds
+                setTimeout(() => {
+                    document.body.removeChild(messageDiv);
+                }, 3000);
+
+                return;
+            }
+
+            // Build the search URL
+            let searchUrl = '/activities';
+            const params = new URLSearchParams();
+
+            params.append('date', selectedDate);
+            params.append('participants', totalParticipants);
+
+            searchUrl += '?' + params.toString();
+
+            // Navigate to activities page with search parameters
+            window.location.href = searchUrl;
+        });
+    }
+});

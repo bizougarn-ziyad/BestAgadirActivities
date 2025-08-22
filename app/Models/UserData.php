@@ -78,4 +78,12 @@ class UserData extends Authenticatable implements CanResetPassword
     {
         return $this->hasMany(Order::class, 'user_id');
     }
+
+    /**
+     * Get the user's contact messages.
+     */
+    public function contactMessages()
+    {
+        return $this->hasMany(ContactMessage::class, 'user_id');
+    }
 }

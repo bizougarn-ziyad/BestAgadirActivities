@@ -9,13 +9,15 @@
 <?php endif; ?>
 <?php $component->withAttributes([]); ?>
     <?php if(session('success')): ?>
-        <div id="successAle                                    <label class="text-sm font-bold text-orange-800 mb-2 flex items-center gap-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                        </svg>
-                                        To Date
-                                    </label>ass="alert alert-success text-green-500 pt-[120px] m-0 pb-0 absolute left-[50%] transform -translate-x-1/2 text-[13px] w-full flex justify-center">
+        <div id="successAlert" class="alert alert-success text-green-500 pt-[120px] m-0 pb-0 absolute left-[50%] transform -translate-x-1/2 text-[13px] w-full flex justify-center">
             <?php echo e(session('success')); ?>
+
+        </div>
+    <?php endif; ?>
+
+    <?php if(session('error')): ?>
+        <div id="errorAlert" class="alert alert-danger text-red-500 pt-[120px] m-0 pb-0 absolute left-[50%] transform -translate-x-1/2 text-[13px] w-full flex justify-center">
+            <?php echo e(session('error')); ?>
 
         </div>
     <?php endif; ?>
@@ -332,6 +334,58 @@
                    class="flex items-center justify-center gap-2 bg-gray-500 hover:bg-gray-600 text-white px-4 py-3 rounded-lg transition-colors font-medium">
                     <span>←</span>
                     <span>Back to Dashboard</span>
+                </a>
+                
+                <!-- Clear Bookings Dropdown -->
+                <div class="relative">
+                    <button type="button" id="clearBookingsBtn" 
+                            class="flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-3 rounded-lg transition-colors font-medium w-full sm:w-auto">
+                        <span>🗑️</span>
+                        <span>Clear Bookings</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    
+                    <!-- Dropdown Menu -->
+                    <div id="clearBookingsDropdown" class="hidden absolute top-full left-0 right-0 sm:left-auto sm:right-auto sm:w-72 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
+                        <div class="p-4">
+                            <h4 class="text-lg font-bold text-red-600 mb-3">⚠️ Clear Bookings</h4>
+                            <p class="text-sm text-gray-600 mb-4">Choose how you want to clear bookings. This action cannot be undone!</p>
+                            
+                            <!-- Clear All Bookings -->
+                            <form method="POST" action="<?php echo e(route('admin.bookings.clear-all')); ?>" class="mb-4" onsubmit="return confirm('Are you absolutely sure you want to delete ALL bookings? This action cannot be undone!')">
+                                <?php echo csrf_field(); ?>
+                                <?php echo method_field('DELETE'); ?>
+                                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-3 rounded-lg transition-colors font-medium mb-2">
+                                    🗑️ Clear ALL Bookings
+                                </button>
+                            </form>
+                            
+                            <!-- Clear by Date Range -->
+                            <div class="border-t border-gray-200 pt-4">
+                                <h5 class="font-semibold text-gray-800 mb-2">Clear by Date Range</h5>
+                                <form method="POST" action="<?php echo e(route('admin.bookings.clear-date-range')); ?>" onsubmit="return confirm('Are you sure you want to delete bookings in this date range?')">
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('DELETE'); ?>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-700 mb-1">From Date</label>
+                                            <input type="date" name="start_date" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-700 mb-1">To Date</label>
+                                            <input type="date" name="end_date" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                                        </div>
+                                        <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors font-medium text-sm">
+                                            Clear Date Range
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 </a>
             </div>
 
@@ -985,6 +1039,26 @@
                     hideEndCalendar();
                 }
             });
+        });
+
+        // Clear Bookings Dropdown Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const clearBookingsBtn = document.getElementById('clearBookingsBtn');
+            const clearBookingsDropdown = document.getElementById('clearBookingsDropdown');
+
+            if (clearBookingsBtn && clearBookingsDropdown) {
+                clearBookingsBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    clearBookingsDropdown.classList.toggle('hidden');
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!clearBookingsDropdown.contains(e.target) && !clearBookingsBtn.contains(e.target)) {
+                        clearBookingsDropdown.classList.add('hidden');
+                    }
+                });
+            }
         });
     </script>
  <?php echo $__env->renderComponent(); ?>

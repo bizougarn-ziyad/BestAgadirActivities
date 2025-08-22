@@ -9,8 +9,7 @@
 <?php endif; ?>
 <?php $component->withAttributes([]); ?>
     <?php if(session('success')): ?>
-        <div id="successAlert" class="alert alert-success text-green-500 pt-[120px] m-0 p                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 515.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 919.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>0 absolute left-[50%] transform -translate-x-1/2 text-[13px] w-full flex justify-center">
+        <div id="successAlert" class="alert alert-success text-green-500 pt-[120px] m-0 pb-0 absolute left-[50%] transform -translate-x-1/2 text-[13px] w-full flex justify-center">
             <?php echo e(session('success')); ?>
 
         </div>
@@ -34,6 +33,7 @@
             <h1 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6">
                 Premium <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-orange-500">Activities</span>
             </h1>
+            
             <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
                 Discover the most exclusive and luxurious experiences Agadir has to offer. From desert safaris to coastal adventures, every activity is carefully curated for unforgettable memories.
             </p>
@@ -73,7 +73,9 @@
                 <!-- Filter and Sort Section -->
                 <div class="flex flex-wrap justify-between items-center mb-12">
                     <div class="flex items-center gap-4 mb-4 md:mb-0">
-                        <h2 class="text-2xl font-bold text-gray-800"><?php echo e($activities->total()); ?> Activities Found</h2>
+                        <h2 class="text-2xl font-bold text-gray-800">
+                            <?php echo e($activities->total()); ?> Activities Found
+                        </h2>
                     </div>
                     <div class="flex items-center gap-4">
                         <select class="bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer">
@@ -87,7 +89,7 @@
 
                 <!-- Activities Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-16">
-                    <?php $__currentLoopData = $activities; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $activity): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php $__empty_1 = true; $__currentLoopData = $activities; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $activity): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <div class="group relative bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 flex flex-col h-full transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl cursor-pointer">
                             <!-- Image Container -->
                             <div class="relative h-64 overflow-hidden flex-shrink-0">
@@ -166,7 +168,18 @@
                                 </div>
                             </div>
                         </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                        <!-- No Activities Found -->
+                        <div class="col-span-full flex flex-col items-center justify-center py-20">
+                            <div class="text-center">
+                                <svg class="w-24 h-24 text-gray-300 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <h3 class="text-2xl font-bold text-gray-600 mb-4">No Activities Found</h3>
+                                <p class="text-gray-500 mb-6">No activities are currently available. Please check back later.</p>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
 
                 <!-- Pagination -->
@@ -219,24 +232,6 @@
             @apply shadow-lg ring-2 ring-blue-300 ring-opacity-50;
         }
     </style>
-
-            <?php else: ?>
-                <!-- No Activities Placeholder -->
-                <div class="text-center py-20">
-                    <div class="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-orange-100 to-orange-200 rounded-full mb-8">
-                        <svg class="w-12 h-12 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M19 10a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-3xl font-bold text-gray-800 mb-4">No Activities Available Yet</h3>
-                    <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-8">We're working on bringing you the most amazing experiences in Agadir. Check back soon for exciting new activities!</p>
-                    <a href="/" class="inline-flex items-center bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                        </svg>
-                        Back to Home
-                    </a>
-                </div>
             <?php endif; ?>
         </div>
     </div>

@@ -94,7 +94,7 @@
 <!-- Responsive Navbar -->
 <nav class="flex md:flex-row justify-between items-center mx-auto gap-2 bg-white px-2 lg:px-5 md:w-[770px] lg:w-[1000px] shadow-[0_1px_25px_rgba(0,0,0,0.1)] md:rounded-[35px] fixed top-0 left-1/2 -translate-x-1/2 w-full z-50 transition-all duration-300 ease-in-out md:mt-5">
     <x-navbar href="/" class="cursor-pointer">
-        <img src="{{ asset('images/logoAgadir1.png') }}" alt="Logo Agadir" class="w-[220px] py-4 md:py-0 cursor-pointer">
+        <img src="{{ asset('images/logoAgadir1.png') }}" alt="Logo Agadir" class="w-[220px] py-4 md:py-2 cursor-pointer">
     </x-navbar>
 
     <!-- Navigation Links - Hidden on mobile, shown on medium+ -->

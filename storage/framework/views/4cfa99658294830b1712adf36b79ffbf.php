@@ -103,7 +103,7 @@
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
 <?php $component->withAttributes(['href' => '/','class' => 'cursor-pointer']); ?>
-        <img src="<?php echo e(asset('images/logoAgadir1.png')); ?>" alt="Logo Agadir" class="w-[220px] py-4 md:py-0 cursor-pointer">
+        <img src="<?php echo e(asset('images/logoAgadir1.png')); ?>" alt="Logo Agadir" class="w-[220px] py-4 md:py-2 cursor-pointer">
      <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginala591787d01fe92c5706972626cdf7231)): ?>

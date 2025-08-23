@@ -276,64 +276,180 @@
             </div>
 
             <!-- Mobile-Optimized Summary Statistics -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-                <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 sm:p-6 rounded-xl border border-blue-200">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-blue-200">
                     <div class="flex items-center justify-between">
-                        <div class="flex-1">
-                            <p class="text-blue-600 text-xs sm:text-sm font-medium mb-1">Total Bookings</p>
-                            <p class="text-2xl sm:text-3xl font-bold text-blue-800">{{ $totalBookings }}</p>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-blue-600 text-xs font-medium mb-1 truncate">Total Bookings</p>
+                            <p class="text-xl sm:text-2xl font-bold text-blue-800">{{ $totalBookings }}</p>
                         </div>
-                        <div class="text-3xl sm:text-4xl text-blue-500">📊</div>
+                        <div class="text-2xl sm:text-3xl text-blue-500 ml-2 flex-shrink-0">📊</div>
                     </div>
                 </div>
                 
-                <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 sm:p-6 rounded-xl border border-green-200">
+                <div class="bg-gradient-to-br from-green-50 to-green-100 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-green-200">
                     <div class="flex items-center justify-between">
-                        <div class="flex-1">
-                            <p class="text-green-600 text-xs sm:text-sm font-medium mb-1">Total Participants</p>
-                            <p class="text-2xl sm:text-3xl font-bold text-green-800">{{ $totalParticipants }}</p>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-green-600 text-xs font-medium mb-1 truncate">Total Participants</p>
+                            <p class="text-xl sm:text-2xl font-bold text-green-800">{{ $totalParticipants }}</p>
                         </div>
-                        <div class="text-3xl sm:text-4xl text-green-500">👥</div>
+                        <div class="text-2xl sm:text-3xl text-green-500 ml-2 flex-shrink-0">👥</div>
                     </div>
                 </div>
                 
-                <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-4 sm:p-6 rounded-xl border border-purple-200 sm:col-span-2 lg:col-span-1">
+                <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-purple-200">
                     <div class="flex items-center justify-between">
-                        <div class="flex-1">
-                            <p class="text-purple-600 text-xs sm:text-sm font-medium mb-1">Total Revenue</p>
-                            <p class="text-2xl sm:text-3xl font-bold text-purple-800">${{ number_format($totalRevenue, 2) }}</p>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-purple-600 text-xs font-medium mb-1 truncate">Total Revenue</p>
+                            <p class="text-lg sm:text-xl font-bold text-purple-800">${{ number_format($totalRevenue, 2) }}</p>
                         </div>
-                        <div class="text-3xl sm:text-4xl text-purple-500">💰</div>
+                        <div class="text-2xl sm:text-3xl text-purple-500 ml-2 flex-shrink-0">💰</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming vs Completed Bookings Statistics -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+                <!-- Upcoming Bookings Stats -->
+                <div class="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-lg sm:rounded-xl border border-orange-200">
+                    <h3 class="text-base sm:text-lg font-bold text-orange-800 mb-3 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span class="truncate">Upcoming Bookings</span>
+                    </h3>
+                    <div class="grid grid-cols-3 gap-2 sm:gap-3">
+                        <div class="text-center bg-white/50 p-2 rounded-lg">
+                            <div class="text-lg sm:text-xl font-bold text-orange-800">{{ $totalUpcomingBookings }}</div>
+                            <div class="text-xs text-orange-600">Bookings</div>
+                        </div>
+                        <div class="text-center bg-white/50 p-2 rounded-lg">
+                            <div class="text-lg sm:text-xl font-bold text-orange-800">{{ $totalUpcomingParticipants }}</div>
+                            <div class="text-xs text-orange-600">People</div>
+                        </div>
+                        <div class="text-center bg-white/50 p-2 rounded-lg">
+                            <div class="text-sm sm:text-base font-bold text-orange-800">${{ number_format($totalUpcomingRevenue, 2) }}</div>
+                            <div class="text-xs text-orange-600">Revenue</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Completed Bookings Stats -->
+                <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-lg sm:rounded-xl border border-gray-200">
+                    <h3 class="text-base sm:text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span class="truncate">Completed Bookings</span>
+                    </h3>
+                    <div class="grid grid-cols-3 gap-2 sm:gap-3">
+                        <div class="text-center bg-white/50 p-2 rounded-lg">
+                            <div class="text-lg sm:text-xl font-bold text-gray-800">{{ $totalCompletedBookings }}</div>
+                            <div class="text-xs text-gray-600">Bookings</div>
+                        </div>
+                        <div class="text-center bg-white/50 p-2 rounded-lg">
+                            <div class="text-lg sm:text-xl font-bold text-gray-800">{{ $totalCompletedParticipants }}</div>
+                            <div class="text-xs text-gray-600">People</div>
+                        </div>
+                        <div class="text-center bg-white/50 p-2 rounded-lg">
+                            <div class="text-sm sm:text-base font-bold text-gray-800">${{ number_format($totalCompletedRevenue, 2) }}</div>
+                            <div class="text-xs text-gray-600">Revenue</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Mobile-Optimized Quick Actions -->
-            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8">
-                <a href="{{ route('admin.bookings.availability') }}" 
-                   class="flex items-center justify-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-3 rounded-lg transition-colors font-medium">
-                    <span>📊</span>
-                    <span>View Availability</span>
-                </a>
-                <a href="{{ route('admin.dashboard') }}" 
-                   class="flex items-center justify-center gap-2 bg-gray-500 hover:bg-gray-600 text-white px-4 py-3 rounded-lg transition-colors font-medium">
-                    <span>←</span>
-                    <span>Back to Dashboard</span>
-                </a>
-                
-                <!-- Clear Bookings Dropdown -->
-                <div class="relative">
+            <div class="space-y-4 mb-6 sm:mb-8 lg:space-y-0">
+                <!-- Mobile/Tablet Layout: Stacked Rows -->
+                <div class="lg:hidden space-y-4">
+                    <!-- Top Row: Navigation Buttons -->
+                    <div class="flex flex-col xs:flex-row gap-3">
+                        <a href="{{ route('admin.bookings.availability') }}" 
+                           class="flex items-center justify-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-3 rounded-lg transition-colors font-medium text-sm">
+                            <span>📊</span>
+                            <span class="whitespace-nowrap">View Availability</span>
+                        </a>
+                        <a href="{{ route('admin.dashboard') }}" 
+                           class="flex items-center justify-center gap-2 bg-gray-500 hover:bg-gray-600 text-white px-4 py-3 rounded-lg transition-colors font-medium text-sm">
+                            <span>←</span>
+                            <span class="whitespace-nowrap">Back to Dashboard</span>
+                        </a>
+                    </div>
+
+                    <!-- Second Row: Booking Toggle Buttons -->
+                    <div class="flex flex-col xs:flex-row gap-3">
+                        <button id="upcomingBtn" 
+                                class="flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-3 rounded-lg transition-colors font-medium text-sm flex-1 xs:flex-initial">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span>Upcoming</span>
+                            <span class="bg-orange-600 text-xs px-2 py-0.5 rounded-full min-w-[20px] text-center">{{ $totalUpcomingBookings }}</span>
+                        </button>
+                        <button id="completedBtn" 
+                                class="flex items-center justify-center gap-2 bg-gray-400 hover:bg-gray-500 text-white px-4 py-3 rounded-lg transition-colors font-medium text-sm flex-1 xs:flex-initial">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span>Completed</span>
+                            <span class="bg-gray-500 text-xs px-2 py-0.5 rounded-full min-w-[20px] text-center">{{ $totalCompletedBookings }}</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Third Row: Clear Bookings Dropdown -->
+                    <div class="relative">
+                        <button type="button" id="clearBookingsBtn" 
+                                class="flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-3 rounded-lg transition-colors font-medium w-full text-sm">
+                            <span>🗑️</span>
+                            <span>Clear Bookings</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Wide Screen Layout: Single Row with Equal Width Buttons -->
+                <div class="hidden lg:flex lg:gap-3 lg:max-w-4xl">
+                    <a href="{{ route('admin.bookings.availability') }}" 
+                       class="flex items-center justify-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-3 rounded-lg transition-colors font-medium text-sm flex-1">
+                        <span>📊</span>
+                        <span class="whitespace-nowrap">View Availability</span>
+                    </a>
+                    <a href="{{ route('admin.dashboard') }}" 
+                       class="flex items-center justify-center gap-2 bg-gray-500 hover:bg-gray-600 text-white px-4 py-3 rounded-lg transition-colors font-medium text-sm flex-1">
+                        <span>←</span>
+                        <span class="whitespace-nowrap">Back to Dashboard</span>
+                    </a>
+                    <button id="upcomingBtn" 
+                            class="flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-3 rounded-lg transition-colors font-medium text-sm flex-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span>Upcoming</span>
+                        <span class="bg-orange-600 text-xs px-2 py-0.5 rounded-full min-w-[18px] text-center">{{ $totalUpcomingBookings }}</span>
+                    </button>
+                    <button id="completedBtn" 
+                            class="flex items-center justify-center gap-2 bg-gray-400 hover:bg-gray-500 text-white px-4 py-3 rounded-lg transition-colors font-medium text-sm flex-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span>Completed</span>
+                        <span class="bg-gray-500 text-xs px-2 py-0.5 rounded-full min-w-[18px] text-center">{{ $totalCompletedBookings }}</span>
+                    </button>
                     <button type="button" id="clearBookingsBtn" 
-                            class="flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-3 rounded-lg transition-colors font-medium w-full sm:w-auto">
+                            class="flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-3 rounded-lg transition-colors font-medium text-sm flex-1">
                         <span>🗑️</span>
                         <span>Clear Bookings</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
+                </div>
                     
                     <!-- Dropdown Menu -->
-                    <div id="clearBookingsDropdown" class="hidden absolute top-full left-0 right-0 sm:left-auto sm:right-auto sm:w-72 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
+                    <div id="clearBookingsDropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
                         <div class="p-4">
                             <h4 class="text-lg font-bold text-red-600 mb-3">⚠️ Clear Bookings</h4>
                             <p class="text-sm text-gray-600 mb-4">Choose how you want to clear bookings. This action cannot be undone!</p>
@@ -374,127 +490,262 @@
                 </a>
             </div>
 
-            <!-- Bookings by Date -->
-            <div class="space-y-6">
-                @forelse($dailyStats as $date => $stats)
-                    @php
-                        $carbonDate = \Carbon\Carbon::parse($date);
-                        $isToday = $carbonDate->isToday();
-                        $isTomorrow = $carbonDate->isTomorrow();
-                        $isPast = $carbonDate->isPast() && !$isToday;
-                        $isFuture = $carbonDate->isFuture();
-                    @endphp
-                    
-                    <div class="bg-gradient-to-r from-orange-50 to-yellow-50 border-2 {{ $isToday ? 'border-green-400 shadow-lg' : ($isTomorrow ? 'border-blue-400' : ($isPast ? 'border-gray-300' : 'border-orange-200')) }} rounded-xl p-4 sm:p-6 transition-all duration-300 hover:shadow-lg">
-                        <!-- Mobile-Optimized Date Header -->
-                        <div class="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6">
-                            <div class="flex items-start sm:items-center gap-3">
-                                <div class="text-2xl sm:text-3xl flex-shrink-0">
-                                    @if($isToday) 🌟
-                                    @elseif($isTomorrow) 🔜
-                                    @elseif($isPast) ✅
-                                    @else 📅
-                                    @endif
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-                                        <h3 class="text-lg sm:text-2xl font-bold text-orange-800 truncate">{{ $carbonDate->format('F j, Y') }}</h3>
-                                        @if($isToday)
-                                            <span class="bg-green-500 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-bold animate-pulse w-fit">TODAY</span>
-                                        @elseif($isTomorrow)
-                                            <span class="bg-blue-500 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-bold w-fit">TOMORROW</span>
-                                        @elseif($isPast)
-                                            <span class="bg-gray-400 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-medium w-fit">COMPLETED</span>
-                                        @endif
-                                    </div>
-                                    <p class="text-orange-600 font-medium text-sm sm:text-base mt-1">
-                                        📊 {{ $stats['total_bookings'] }} booking{{ $stats['total_bookings'] != 1 ? 's' : '' }} • 
-                                        👥 {{ $stats['total_participants'] }} participant{{ $stats['total_participants'] != 1 ? 's' : '' }}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="flex-shrink-0">
-                                <div class="bg-gradient-to-r from-green-500 to-green-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg shadow-md">
-                                    <div class="text-center">
-                                        <div class="text-xs sm:text-sm font-medium">Total Revenue</div>
-                                        <div class="text-lg sm:text-xl font-bold">${{ number_format($stats['total_revenue'], 2) }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Bookings for this date -->
-                        <div class="space-y-4">
-                            @foreach($stats['bookings'] as $booking)
-                                <div class="bg-white rounded-xl border border-gray-200 p-4 sm:p-5 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-                                    <!-- Mobile-First Header -->
-                                    <div class="flex items-start gap-3 mb-4">
-                                        <div class="w-1 sm:w-2 h-12 sm:h-8 bg-gradient-to-b from-orange-400 to-orange-600 rounded-full flex-shrink-0"></div>
-                                        <div class="flex-1 min-w-0">
-                                            <h4 class="text-base sm:text-lg font-bold text-gray-800 truncate">{{ $booking->activity->name }}</h4>
-                                            <div class="flex flex-col sm:flex-row sm:items-center gap-2 mt-1">
-                                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-semibold inline-flex items-center gap-1 w-fit">
-                                                    ✅ {{ ucfirst($booking->status) }}
-                                                </span>
-                                                <span class="text-gray-500 text-xs sm:text-sm">
-                                                    Booking #{{ str_pad($booking->id, 6, '0', STR_PAD_LEFT) }}
-                                                </span>
+            <!-- Bookings Section -->
+            <div class="bg-white rounded-lg sm:rounded-xl shadow-lg">
+                <!-- Upcoming Bookings Section -->
+                <div id="upcoming-section" class="booking-section">
+                    @if(count($upcomingDailyStats) > 0)
+                        @foreach($upcomingDailyStats as $date => $data)
+                            <div class="border-b border-gray-100 last:border-b-0">
+                                <div class="px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+                                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4 sm:mb-6">
+                                        <div class="flex items-center gap-2 sm:gap-3">
+                                            <div class="bg-gradient-to-r from-orange-500 to-yellow-500 text-white p-2 sm:p-3 rounded-lg">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <h3 class="text-lg sm:text-xl font-bold text-gray-800">
+                                                    {{ \Carbon\Carbon::parse($date)->format('l, F j, Y') }}
+                                                </h3>
+                                                <p class="text-sm sm:text-base text-gray-500">
+                                                    {{ count($data['orders']) }} booking{{ count($data['orders']) !== 1 ? 's' : '' }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-2 sm:gap-4 text-center">
+                                            <div class="bg-blue-50 p-2 sm:p-3 rounded-lg">
+                                                <p class="text-xs sm:text-sm text-blue-600 font-medium">Total People</p>
+                                                <p class="text-lg sm:text-xl font-bold text-blue-700">{{ $data['total_people'] }}</p>
+                                            </div>
+                                            <div class="bg-green-50 p-2 sm:p-3 rounded-lg">
+                                                <p class="text-xs sm:text-sm text-green-600 font-medium">Total Revenue</p>
+                                                <p class="text-lg sm:text-xl font-bold text-green-700">${{ number_format($data['total_revenue'], 2) }}</p>
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                    <!-- Mobile-Optimized Info Grid -->
-                                    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
-                                        <div class="bg-blue-50 p-3 rounded-lg text-center sm:text-left">
-                                            <div class="text-blue-600 font-medium text-xs uppercase tracking-wide mb-1">Participants</div>
-                                            <div class="text-blue-800 font-bold text-lg sm:text-xl">{{ $booking->participants }}</div>
-                                        </div>
-                                        <div class="bg-yellow-50 p-3 rounded-lg text-center sm:text-left">
-                                            <div class="text-yellow-600 font-medium text-xs uppercase tracking-wide mb-1">Price/Person</div>
-                                            <div class="text-yellow-800 font-bold text-sm sm:text-lg">${{ number_format($booking->price_per_person, 2) }}</div>
-                                        </div>
-                                        <div class="bg-green-50 p-3 rounded-lg text-center sm:text-left">
-                                            <div class="text-green-600 font-medium text-xs uppercase tracking-wide mb-1">Total</div>
-                                            <div class="text-green-800 font-bold text-lg sm:text-xl">${{ number_format($booking->total_price, 2) }}</div>
-                                        </div>
-                                        <div class="bg-purple-50 p-3 rounded-lg text-center sm:text-left col-span-2 sm:col-span-2 lg:col-span-1">
-                                            <div class="text-purple-600 font-medium text-xs uppercase tracking-wide mb-1">Booked</div>
-                                            <div class="text-purple-800 font-medium text-xs sm:text-sm">{{ $booking->created_at->format('M j, g:i A') }}</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Full-Width Action Button on Mobile -->
-                                    <div class="pt-3 border-t border-gray-100">
-                                        <a href="{{ route('admin.bookings.show', $booking->id) }}" 
-                                           class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                            <span>View Details</span>
-                                        </a>
+
+                                    <!-- Bookings Grid -->
+                                    <div class="space-y-3 sm:space-y-4">
+                                        @foreach($data['orders'] as $booking)
+                                            <div class="bg-gray-50 rounded-lg p-3 sm:p-4 lg:p-6 border border-gray-200 hover:shadow-md transition-shadow">
+                                                <!-- Mobile: Stack Layout -->
+                                                <div class="space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between lg:gap-6">
+                                                    <!-- Customer Info -->
+                                                    <div class="flex-1">
+                                                        <div class="flex items-start gap-3">
+                                                            <div class="bg-gradient-to-r from-orange-500 to-yellow-500 text-white p-2 rounded-lg flex-shrink-0">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                                                </svg>
+                                                            </div>
+                                                            <div class="flex-1 min-w-0">
+                                                                <h4 class="font-semibold text-gray-800 text-sm sm:text-base truncate">{{ $booking->user->name ?? 'Unknown User' }}</h4>
+                                                                <p class="text-gray-600 text-xs sm:text-sm truncate">{{ $booking->user->email ?? 'No email' }}</p>
+                                                                <p class="text-gray-500 text-xs">Booking #{{ $booking->id }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Activity & Booking Info -->
+                                                    <div class="flex-1">
+                                                        <div class="bg-white p-3 rounded-lg border">
+                                                            <h5 class="font-semibold text-gray-800 mb-2 text-sm sm:text-base truncate">{{ $booking->activity->name ?? 'Unknown Activity' }}</h5>
+                                                            <div class="grid grid-cols-2 gap-2 text-xs sm:text-sm">
+                                                                <div class="bg-gray-50 p-2 rounded">
+                                                                    <span class="text-gray-500 block">Date</span>
+                                                                    <span class="font-medium">{{ $booking->booking_date->format('M j') }}</span>
+                                                                </div>
+                                                                <div class="bg-gray-50 p-2 rounded">
+                                                                    <span class="text-gray-500 block">People</span>
+                                                                    <span class="font-medium">{{ $booking->participants }}</span>
+                                                                </div>
+                                                                <div class="bg-green-50 p-2 rounded">
+                                                                    <span class="text-green-600 block">Total</span>
+                                                                    <span class="font-bold text-green-700">${{ number_format($booking->total_price, 2) }}</span>
+                                                                </div>
+                                                                <div class="bg-gray-50 p-2 rounded">
+                                                                    <span class="text-gray-500 block">Per Person</span>
+                                                                    <span class="font-medium">${{ number_format($booking->price_per_person, 2) }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Actions -->
+                                                    <div class="lg:flex-shrink-0">
+                                                        <a href="{{ route('admin.bookings.show', $booking->id) }}" 
+                                                           class="w-full lg:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-2.5 rounded-lg font-medium transition-all duration-300 shadow-md hover:shadow-lg text-sm">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                            </svg>
+                                                            <span>View Details</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
-                            @endforeach
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="text-center py-12 sm:py-16 px-4">
+                            <div class="bg-gradient-to-br from-blue-100 to-green-100 rounded-full w-16 h-16 sm:w-24 sm:h-24 flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                                <div class="text-3xl sm:text-4xl">📅</div>
+                            </div>
+                            <h3 class="text-xl sm:text-2xl font-bold text-gray-600 mb-2 sm:mb-3">No upcoming bookings</h3>
+                            <p class="text-gray-500 text-base sm:text-lg mb-4 sm:mb-6">No upcoming bookings were found for the selected date range.</p>
                         </div>
-                    </div>
-                @empty
-                    <div class="text-center py-12 sm:py-16 px-4">
-                        <div class="bg-gradient-to-br from-orange-100 to-yellow-100 rounded-full w-16 h-16 sm:w-24 sm:h-24 flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                            <div class="text-3xl sm:text-4xl">📅</div>
+                    @endif
+                </div>
+
+                <!-- Completed Bookings Section -->
+                <div id="completed-section" class="booking-section" style="display: none;">
+                    @if(count($completedDailyStats) > 0)
+                        @foreach($completedDailyStats as $date => $data)
+                            <div class="border-b border-gray-100 last:border-b-0">
+                                <div class="px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+                                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4 sm:mb-6">
+                                        <div class="flex items-center gap-2 sm:gap-3">
+                                            <div class="bg-gradient-to-r from-gray-500 to-gray-600 text-white p-2 sm:p-3 rounded-lg">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <h3 class="text-lg sm:text-xl font-bold text-gray-800">
+                                                    {{ \Carbon\Carbon::parse($date)->format('l, F j, Y') }}
+                                                </h3>
+                                                <p class="text-sm sm:text-base text-gray-500">
+                                                    {{ count($data['orders']) }} booking{{ count($data['orders']) !== 1 ? 's' : '' }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-2 sm:gap-4 text-center">
+                                            <div class="bg-blue-50 p-2 sm:p-3 rounded-lg">
+                                                <p class="text-xs sm:text-sm text-blue-600 font-medium">Total People</p>
+                                                <p class="text-lg sm:text-xl font-bold text-blue-700">{{ $data['total_people'] }}</p>
+                                            </div>
+                                            <div class="bg-green-50 p-2 sm:p-3 rounded-lg">
+                                                <p class="text-xs sm:text-sm text-green-600 font-medium">Total Revenue</p>
+                                                <p class="text-lg sm:text-xl font-bold text-green-700">${{ number_format($data['total_revenue'], 2) }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Bookings Grid -->
+                                    <div class="space-y-3 sm:space-y-4">
+                                        @foreach($data['orders'] as $booking)
+                                            <div class="relative bg-gradient-to-r from-slate-50 via-slate-100 to-slate-50 rounded-lg sm:rounded-xl p-3 sm:p-4 lg:p-6 border-2 border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all duration-300 overflow-hidden">
+                                                <!-- Completed Badge -->
+                                                <div class="absolute top-2 sm:top-3 right-2 sm:right-3">
+                                                    <div class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-md">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                        </svg>
+                                                        <span class="hidden xs:inline">COMPLETED</span>
+                                                        <span class="xs:hidden">✓</span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Decorative Pattern -->
+                                                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 via-teal-500 to-cyan-500"></div>
+
+                                                <!-- Mobile: Stack Layout -->
+                                                <div class="space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between lg:gap-6 pt-6 sm:pt-4">
+                                                    <!-- Customer Info -->
+                                                    <div class="flex-1">
+                                                        <div class="flex items-start gap-3">
+                                                            <div class="relative">
+                                                                <div class="bg-gradient-to-br from-emerald-500 to-teal-600 text-white p-2 rounded-lg shadow-lg flex-shrink-0">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                                                    </svg>
+                                                                </div>
+                                                                <!-- Success indicator -->
+                                                                <div class="absolute -top-1 -right-1 bg-green-400 w-3 h-3 rounded-full border-2 border-white"></div>
+                                                            </div>
+                                                            <div class="flex-1 min-w-0">
+                                                                <div class="flex items-center gap-2 mb-1">
+                                                                    <h4 class="font-bold text-slate-800 text-sm sm:text-base truncate">{{ $booking->user->name ?? 'Unknown User' }}</h4>
+                                                                    <span class="text-emerald-600 text-xs font-medium bg-emerald-100 px-2 py-1 rounded-full whitespace-nowrap">✓ Served</span>
+                                                                </div>
+                                                                <p class="text-slate-600 text-xs sm:text-sm truncate mb-1">{{ $booking->user->email ?? 'No email' }}</p>
+                                                                <div class="flex items-center gap-2 text-xs">
+                                                                    <span class="text-slate-500">Booking #{{ $booking->id }}</span>
+                                                                    <span class="text-slate-400">•</span>
+                                                                    <span class="text-slate-500">{{ $booking->created_at->diffForHumans() }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Activity & Booking Info -->
+                                                    <div class="flex-1">
+                                                        <div class="bg-white/80 backdrop-blur-sm p-3 rounded-lg border border-slate-200 shadow-sm">
+                                                            <div class="flex items-center gap-2 mb-2">
+                                                                <div class="w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0"></div>
+                                                                <h5 class="font-bold text-slate-800 text-sm sm:text-base truncate">{{ $booking->activity->name ?? 'Unknown Activity' }}</h5>
+                                                            </div>
+                                                            <div class="grid grid-cols-2 gap-2 text-xs sm:text-sm">
+                                                                <div class="bg-slate-50 p-2 rounded">
+                                                                    <span class="text-slate-500 block">Date</span>
+                                                                    <span class="font-semibold text-slate-700">{{ $booking->booking_date->format('M j') }}</span>
+                                                                </div>
+                                                                <div class="bg-slate-50 p-2 rounded">
+                                                                    <span class="text-slate-500 block">People</span>
+                                                                    <span class="font-semibold text-slate-700">{{ $booking->participants }}</span>
+                                                                </div>
+                                                                <div class="bg-emerald-50 p-2 rounded">
+                                                                    <span class="text-emerald-600 block">Revenue</span>
+                                                                    <span class="font-bold text-emerald-700">${{ number_format($booking->total_price, 2) }}</span>
+                                                                </div>
+                                                                <div class="bg-slate-50 p-2 rounded">
+                                                                    <span class="text-slate-500 block">Per Person</span>
+                                                                    <span class="font-semibold text-slate-700">${{ number_format($booking->price_per_person, 2) }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Actions -->
+                                                    <div class="lg:flex-shrink-0">
+                                                        <a href="{{ route('admin.bookings.show', $booking->id) }}" 
+                                                           class="group relative w-full lg:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800 text-white px-4 py-2.5 rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-xl text-sm">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                                            </svg>
+                                                            <span>View Receipt</span>
+                                                            <!-- Hover effect -->
+                                                            <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="text-center py-12 sm:py-16 px-4">
+                            <div class="bg-gradient-to-br from-gray-100 to-gray-200 rounded-full w-16 h-16 sm:w-24 sm:h-24 flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                                <div class="text-3xl sm:text-4xl">✅</div>
+                            </div>
+                            <h3 class="text-xl sm:text-2xl font-bold text-gray-600 mb-2 sm:mb-3">No completed bookings</h3>
+                            <p class="text-gray-500 text-base sm:text-lg mb-4 sm:mb-6">No completed bookings were found for the selected date range.</p>
                         </div>
-                        <h3 class="text-xl sm:text-2xl font-bold text-gray-600 mb-2 sm:mb-3">No bookings found</h3>
-                        <p class="text-gray-500 text-base sm:text-lg mb-4 sm:mb-6">No bookings were found for the selected date range.</p>
-                        <div>
-                            <a href="{{ route('admin.bookings.index') }}" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg transition-colors font-semibold text-sm sm:text-base">
-                                Reset Filters
-                            </a>
-                        </div>
-                    </div>
-                @endforelse
+                    @endif
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Bottom spacing for better visual separation -->
+    <div class="h-16 sm:h-20 lg:h-24"></div>
 
     <script>
         // Auto-hide success alert after 3 seconds
@@ -1041,6 +1292,63 @@
                     }
                 });
             }
+        });
+
+        // Tab switching functionality for upcoming/completed bookings
+        document.addEventListener('DOMContentLoaded', function() {
+            const upcomingBtns = document.querySelectorAll('#upcomingBtn');
+            const completedBtns = document.querySelectorAll('#completedBtn');
+            const upcomingSection = document.getElementById('upcoming-section');
+            const completedSection = document.getElementById('completed-section');
+
+            function showUpcoming() {
+                // Show upcoming section
+                upcomingSection.style.display = 'block';
+                completedSection.style.display = 'none';
+                
+                // Update button styles for all upcoming buttons
+                upcomingBtns.forEach(btn => {
+                    btn.classList.remove('bg-gray-400', 'hover:bg-gray-500');
+                    btn.classList.add('bg-orange-500', 'hover:bg-orange-600');
+                });
+                
+                // Update button styles for all completed buttons
+                completedBtns.forEach(btn => {
+                    btn.classList.remove('bg-orange-500', 'hover:bg-orange-600');
+                    btn.classList.add('bg-gray-400', 'hover:bg-gray-500');
+                });
+            }
+
+            function showCompleted() {
+                // Show completed section
+                upcomingSection.style.display = 'none';
+                completedSection.style.display = 'block';
+                
+                // Update button styles for all completed buttons
+                completedBtns.forEach(btn => {
+                    btn.classList.remove('bg-gray-400', 'hover:bg-gray-500');
+                    btn.classList.add('bg-orange-500', 'hover:bg-orange-600');
+                });
+                
+                // Update button styles for all upcoming buttons
+                upcomingBtns.forEach(btn => {
+                    btn.classList.remove('bg-orange-500', 'hover:bg-orange-600');
+                    btn.classList.add('bg-gray-400', 'hover:bg-gray-500');
+                });
+            }
+
+            // Event listeners for all upcoming buttons
+            upcomingBtns.forEach(btn => {
+                btn.addEventListener('click', showUpcoming);
+            });
+            
+            // Event listeners for all completed buttons
+            completedBtns.forEach(btn => {
+                btn.addEventListener('click', showCompleted);
+            });
+
+            // Initialize with upcoming view
+            showUpcoming();
         });
     </script>
 </x-layout>

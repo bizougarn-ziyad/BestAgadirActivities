@@ -95,7 +95,7 @@ unset($__errorArgs, $__bag); ?>
                             <a href="<?php echo e(url('/forgot-password')); ?>" class="text-sm text-orange-500 hover:text-orange-600">Forgot password?</a>
                         </div>
 
-                        <button class="w-full bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-400 transition duration-300 font-semibold">
+                        <button class="w-full bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-400 transition duration-300 font-semibold cursor-pointer">
                             Sign In
                         </button>
                     </form>
@@ -175,7 +175,7 @@ unset($__errorArgs, $__bag); ?>
                         <input type="password" name="password_confirmation" required minlength="8" class="w-full mt-2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 transition-colors" placeholder="Confirm your password">
                     </div>
 
-                    <button type="submit" class="w-full bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-400 transition duration-300 font-semibold">
+                    <button type="submit" class="w-full bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-400 transition duration-300 font-semibold cursor-pointer">
                         Create Account
                     </button>
                 </form>
@@ -248,7 +248,7 @@ unset($__errorArgs, $__bag); ?>
                             <input type="password" name="password_confirmation" required minlength="8" class="w-full mt-2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 transition-colors" placeholder="Confirm your password">
                         </div>
 
-                        <button type="submit" class="w-full bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-400 transition duration-300 font-semibold">
+                        <button type="submit" class="w-full bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-400 transition duration-300 font-semibold cursor-pointer">
                             Set Password & Continue
                         </button>
                     </form>

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\Order;
+use Carbon\Carbon;
 
 class ActivityController extends Controller
 {
@@ -211,9 +212,21 @@ class ActivityController extends Controller
             return redirect()->back()->with('error', 'Activity not found.');
         }
         
+        // Validate the request
         $validator = Validator::make($request->all(), [
             'participants' => "required|integer|min:1|max:{$activity->max_participants}",
-            'booking_date' => 'required|date|after_or_equal:today',
+            'booking_date' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) {
+                    $selectedDate = Carbon::createFromFormat('Y-m-d', $value)->startOfDay();
+                    $today = Carbon::today()->startOfDay();
+                    
+                    if ($selectedDate->lt($today)) {
+                        $fail('Booking date cannot be in the past.');
+                    }
+                }
+            ],
         ], [
             'participants.required' => 'Number of participants is required.',
             'participants.integer' => 'Number of participants must be a valid number.',
@@ -221,7 +234,6 @@ class ActivityController extends Controller
             'participants.max' => "Maximum {$activity->max_participants} participants allowed for this activity.",
             'booking_date.required' => 'Booking date is required.',
             'booking_date.date' => 'Please provide a valid date.',
-            'booking_date.after_or_equal' => 'Booking date cannot be in the past.',
         ]);
 
         if ($validator->fails()) {

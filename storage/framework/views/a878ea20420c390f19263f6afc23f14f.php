@@ -487,6 +487,8 @@
         let currentDate = new Date();
         let selectedDate = null;
         const minDate = new Date();
+        // Reset time to start of day for accurate comparison
+        minDate.setHours(0, 0, 0, 0);
         
         // Month names
         const monthNames = [
@@ -581,6 +583,8 @@
                 dayElement.textContent = day;
                 
                 const dayDate = new Date(year, month, day);
+                // Reset time to start of day for accurate comparison
+                dayDate.setHours(0, 0, 0, 0);
                 const dateString = dayDate.toISOString().split('T')[0];
                 const isToday = dayDate.toDateString() === new Date().toDateString();
                 const isPast = dayDate < minDate;
@@ -612,7 +616,11 @@
 
         function selectDate(date) {
             selectedDate = date;
-            const formattedDate = date.toISOString().split('T')[0];
+            // Format date as YYYY-MM-DD without timezone conversion
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const formattedDate = `${year}-${month}-${day}`;
             document.getElementById('booking_date').value = formattedDate;
             
             // Update display

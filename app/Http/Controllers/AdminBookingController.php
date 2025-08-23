@@ -23,7 +23,7 @@ class AdminBookingController extends Controller
         $activities = Activity::orderBy('name')->get();
 
         // Build query with filters
-        $query = Order::with('activity')
+        $query = Order::with(['activity', 'user'])
             ->where('status', 'paid')
             ->whereBetween('booking_date', [$startDate, $endDate]);
 
@@ -33,13 +33,26 @@ class AdminBookingController extends Controller
         }
 
         // Get bookings grouped by date
-        $bookingsByDate = $query->orderBy('booking_date', 'asc')
+        $allBookings = $query->orderBy('booking_date', 'asc')
             ->get()
             ->groupBy(function($booking) {
                 return Carbon::parse($booking->booking_date)->toDateString();
             });
 
-        // Calculate summary statistics
+        // Separate upcoming and completed bookings
+        $upcomingBookings = [];
+        $completedBookings = [];
+        $today = Carbon::now()->toDateString();
+
+        foreach ($allBookings as $date => $bookings) {
+            if ($date >= $today) {
+                $upcomingBookings[$date] = $bookings;
+            } else {
+                $completedBookings[$date] = $bookings;
+            }
+        }
+
+        // Calculate summary statistics for all bookings
         $summaryQuery = Order::where('status', 'paid')
             ->whereBetween('booking_date', [$startDate, $endDate]);
 
@@ -51,22 +64,66 @@ class AdminBookingController extends Controller
         $totalParticipants = $summaryQuery->sum('participants');
         $totalRevenue = $summaryQuery->sum('total_price');
 
-        // Get daily statistics
-        $dailyStats = [];
-        foreach ($bookingsByDate as $date => $bookings) {
-            $dailyStats[$date] = [
+        // Calculate statistics for upcoming bookings
+        $upcomingQuery = Order::where('status', 'paid')
+            ->whereBetween('booking_date', [$startDate, $endDate])
+            ->where('booking_date', '>=', $today);
+
+        if ($activityId) {
+            $upcomingQuery->where('activity_id', $activityId);
+        }
+
+        $totalUpcomingBookings = $upcomingQuery->count();
+        $totalUpcomingParticipants = $upcomingQuery->sum('participants');
+        $totalUpcomingRevenue = $upcomingQuery->sum('total_price');
+
+        // Calculate statistics for completed bookings
+        $completedQuery = Order::where('status', 'paid')
+            ->whereBetween('booking_date', [$startDate, $endDate])
+            ->where('booking_date', '<', $today);
+
+        if ($activityId) {
+            $completedQuery->where('activity_id', $activityId);
+        }
+
+        $totalCompletedBookings = $completedQuery->count();
+        $totalCompletedParticipants = $completedQuery->sum('participants');
+        $totalCompletedRevenue = $completedQuery->sum('total_price');
+
+        // Get daily statistics for upcoming bookings
+        $upcomingDailyStats = [];
+        foreach ($upcomingBookings as $date => $bookings) {
+            $upcomingDailyStats[$date] = [
                 'total_bookings' => $bookings->count(),
-                'total_participants' => $bookings->sum('participants'),
+                'total_people' => $bookings->sum('participants'),
                 'total_revenue' => $bookings->sum('total_price'),
-                'bookings' => $bookings,
+                'orders' => $bookings,
+            ];
+        }
+
+        // Get daily statistics for completed bookings
+        $completedDailyStats = [];
+        foreach ($completedBookings as $date => $bookings) {
+            $completedDailyStats[$date] = [
+                'total_bookings' => $bookings->count(),
+                'total_people' => $bookings->sum('participants'),
+                'total_revenue' => $bookings->sum('total_price'),
+                'orders' => $bookings,
             ];
         }
 
         return view('admin.bookings.index', compact(
-            'dailyStats',
+            'upcomingDailyStats',
+            'completedDailyStats',
             'totalBookings', 
             'totalParticipants', 
             'totalRevenue',
+            'totalUpcomingBookings',
+            'totalUpcomingParticipants',
+            'totalUpcomingRevenue',
+            'totalCompletedBookings',
+            'totalCompletedParticipants',
+            'totalCompletedRevenue',
             'startDate',
             'endDate',
             'activities',

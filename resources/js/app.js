@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Handle date selection
     calendarDays.addEventListener('click', (e) => {
-        if (e.target.classList.contains('calendar-day')) {
+        if (e.target.classList.contains('calendar-day') && !e.target.dataset.disabled) {
             const date = new Date(e.target.dataset.date);
             selectedDate = date;
             selectedDateDisplay.textContent = date.toLocaleDateString('en-US', {
@@ -139,13 +139,16 @@ document.addEventListener('DOMContentLoaded', function () {
             const currentDay = new Date(date.getFullYear(), date.getMonth(), day);
             const isSelected = selectedDate && currentDay.toDateString() === selectedDate.toDateString();
             const isToday = currentDay.toDateString() === new Date().toDateString();
+            const isPast = currentDay < new Date().setHours(0, 0, 0, 0);
 
             daysHTML += `
                 <div 
-                    class="calendar-day cursor-pointer p-2 hover:bg-gray-100 rounded-full
+                    class="calendar-day ${isPast ? 'cursor-not-allowed text-gray-400' : 'cursor-pointer hover:bg-gray-100'} p-2 rounded-full
                     ${isSelected ? 'bg-orange-500 text-white hover:bg-orange-600' : ''}
-                    ${isToday ? 'border border-orange-500' : ''}"
+                    ${isToday ? 'border border-orange-500' : ''}
+                    ${isPast ? 'opacity-50' : ''}"
                     data-date="${currentDay.toISOString()}"
+                    ${isPast ? 'data-disabled="true"' : ''}
                 >
                     ${day}
                 </div>
@@ -155,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
         calendarDays.innerHTML = daysHTML;
 
         calendarDays.addEventListener('click', (e) => {
-            if (e.target.classList.contains('calendar-day')) {
+            if (e.target.classList.contains('calendar-day') && !e.target.dataset.disabled) {
                 const date = new Date(e.target.dataset.date);
                 selectedDate = date;
 
@@ -212,6 +215,9 @@ document.addEventListener('DOMContentLoaded', function () {
         children: 0
     };
 
+    // Initialize counts display
+    updateCounts();
+
     // Toggle travelers dropdown
     travelersBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -235,10 +241,15 @@ document.addEventListener('DOMContentLoaded', function () {
     incrementBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
             const type = btn.dataset.type;
-            if (type === 'adults' && counts[type] < 9) {
-                counts[type]++;
-            } else if (type === 'children' && counts[type] < 8) {
-                counts[type]++;
+            const total = counts.adults + counts.children;
+
+            // Check if we can add more people (max 15 total)
+            if (total < 15) {
+                if (type === 'adults' && counts[type] < 15) {
+                    counts[type]++;
+                } else if (type === 'children' && counts[type] < 15) {
+                    counts[type]++;
+                }
             }
             updateCounts();
         });
@@ -265,8 +276,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const total = counts.adults + counts.children;
         if (travelersCount) {
-            travelersCount.textContent = `${total} ${total === 1 ? 'Adult' : 'Participants'}`;
+            if (total === 1) {
+                travelersCount.textContent = '1 Adult';
+            } else {
+                const adultsText = counts.adults > 0 ? `${counts.adults} Adult${counts.adults > 1 ? 's' : ''}` : '';
+                const childrenText = counts.children > 0 ? `${counts.children} Child${counts.children > 1 ? 'ren' : ''}` : '';
+
+                if (counts.adults > 0 && counts.children > 0) {
+                    travelersCount.textContent = `${adultsText}, ${childrenText}`;
+                } else {
+                    travelersCount.textContent = adultsText || childrenText;
+                }
+            }
         }
+
+        // Disable increment buttons when at maximum (15 total)
+        incrementBtns.forEach(btn => {
+            if (total >= 15) {
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        });
     }
 });
 

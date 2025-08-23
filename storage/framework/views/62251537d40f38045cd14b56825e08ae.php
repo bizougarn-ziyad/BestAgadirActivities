@@ -165,6 +165,11 @@
             <!-- Travelers Dropdown -->
             <div id="travelersDropdown"  class="hidden absolute left-[50%] translate-x-[-50%] mt-2 z-50 bg-white rounded-xl shadow-lg p-4 w-80">
                 <div class="space-y-4">
+                    <!-- Maximum limit note -->
+                    <div class="text-center text-sm text-gray-600 bg-gray-50 rounded-lg py-2 px-3">
+                        Maximum 15 participants total
+                    </div>
+                    
                     <!-- Adults -->
                     <div class="flex items-center justify-between">
                         <div>

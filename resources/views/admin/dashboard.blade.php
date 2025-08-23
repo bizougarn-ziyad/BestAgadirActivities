@@ -87,7 +87,7 @@
             <div class="mt-8 text-center">
                 <form action="{{ route('logout') }}" method="POST" class="inline">
                     @csrf
-                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-xl transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center mx-auto gap-2">
+                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-xl transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center mx-auto gap-2 mb-10">
                         <span>🚪</span>
                         <span>Logout</span>
                     </button>

@@ -7,7 +7,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    @vite('resources/css/app.css')
+    <?php echo app('Illuminate\Foundation\Vite')('resources/css/app.css'); ?>
     <title>Forgot Password</title>
 </head>
 <body class="bg-[#fffaf0]">
@@ -19,21 +19,36 @@
                     <p class="text-gray-600 mt-2">Enter your email to reset your password</p>
                 </div>
 
-                @if (session('status'))
+                <?php if(session('status')): ?>
                     <div class="mb-4 text-sm font-medium text-green-600">
-                        {{ session('status') }}
-                    </div>
-                @endif
+                        <?php echo e(session('status')); ?>
 
-                <form class="space-y-6" method="POST" action="{{ route('password.email') }}">
-                    @csrf
+                    </div>
+                <?php endif; ?>
+
+                <form class="space-y-6" method="POST" action="<?php echo e(route('password.email')); ?>">
+                    <?php echo csrf_field(); ?>
                     <div>
                         <label class="text-gray-700 text-sm font-semibold">Email Address</label>
-                        <input type="email" name="email" class="w-full mt-2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 transition-colors @error('email')  @enderror" 
-                               placeholder="Enter your email" value="{{ old('email') }}" required autofocus>
-                        @error('email')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
+                        <input type="email" name="email" class="w-full mt-2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 transition-colors <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>  <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                               placeholder="Enter your email" value="<?php echo e(old('email')); ?>" required autofocus>
+                        <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="text-red-500 text-sm mt-1"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <button type="submit" class="w-full bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-400 transition duration-300 font-semibold cursor-pointer">
@@ -42,7 +57,7 @@
                 </form>
 
                 <div class="mt-6 text-center">
-                    <a href="{{ route('login') }}" class="text-orange-500 hover:text-orange-600 font-semibold">
+                    <a href="<?php echo e(route('login')); ?>" class="text-orange-500 hover:text-orange-600 font-semibold">
                         Back to Login
                     </a>
                 </div>
@@ -95,4 +110,4 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 </body>
-</html>
+</html><?php /**PATH C:\Users\ziyad\Herd\BestAgadirActivities\resources\views/auth/forgot-password.blade.php ENDPATH**/ ?>

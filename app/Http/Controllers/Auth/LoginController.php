@@ -16,20 +16,10 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         try {
-            // Debug logging - improved
-            Log::info('Login method called', [
-                'action' => $request->input('action'),
-                'has_first_name' => $request->has('first_name'),
-                'has_last_name' => $request->has('last_name'),
-                'has_password_confirmation' => $request->has('password_confirmation'),
-                'email' => $request->input('email'),
-                'all_inputs' => $request->except(['password', 'password_confirmation', '_token'])
-            ]);
 
             // Check if this is a registration request
             if ($request->input('action') === 'register' || 
                 ($request->has('first_name') && $request->has('last_name') && $request->has('password_confirmation'))) {
-                Log::info('Redirecting to registration method');
                 return $this->register($request);
             }
 
@@ -42,17 +32,12 @@ class LoginController extends Controller
             // Only check admin credentials if this is NOT a registration attempt
             // and if we have both email and password (indicating a login attempt)
             if (!$request->has('first_name') && !$request->has('last_name') && !$request->has('password_confirmation')) {
-                Log::info('Checking admin credentials for login');
-                
                 // Try to authenticate as admin using the admin guard
                 if (Auth::guard('admin')->attempt($credentials, $request->boolean('remember'))) {
-                    Log::info('Admin login successful');
                     $request->session()->regenerate();
                     $request->session()->put('is_admin', true);
                     return redirect()->route('admin.dashboard')->with('success', 'Welcome Admin!');
                 }
-            } else {
-                Log::info('Skipping admin check - appears to be registration form submission');
             }
 
             // Normal user login - first check if user exists but has no password (Google OAuth user)
@@ -60,7 +45,6 @@ class LoginController extends Controller
             
             if ($user && is_null($user->password)) {
                 // User exists but has no password (Google OAuth user)
-                Log::info('User exists but has no password', ['email' => $credentials['email']]);
                 return redirect()->back()
                     ->withErrors(['password' => 'This account was created using Google sign-in and doesn\'t have a password. Please set a password below or continue with Google sign-in.'])
                     ->with('show_password_setup', true)
@@ -73,7 +57,7 @@ class LoginController extends Controller
                 return redirect()->intended('/')->with('success', 'Successfully logged in! Welcome back!');
             }
 
-            // If not admin or user, redirect to home
+            // If not admin or user, redirect to login page with error 
             return redirect()->back()->withErrors(['email' => 'The provided credentials do not match our records.'])
                 ->withInput(['email' => $credentials['email']]);
 
@@ -103,14 +87,7 @@ class LoginController extends Controller
 
     public function register(Request $request)
     {
-        // Debug: Log the incoming request data (excluding sensitive info)
-        Log::info('Registration attempt', [
-            'email' => $request->input('email'),
-            'first_name' => $request->input('first_name'),
-            'last_name' => $request->input('last_name'),
-            'has_password' => !empty($request->input('password')),
-            'has_password_confirmation' => !empty($request->input('password_confirmation'))
-        ]);
+    // ...existing code...
 
         // Check if email exists in admins table first
         $email = $request->input('email');
@@ -125,9 +102,7 @@ class LoginController extends Controller
                 ->with('show_register', true);
         }
 
-        Log::info('Registration proceeding - email not found in admins table', [
-            'email' => $email
-        ]);
+    // ...existing code...
 
         // Manual validation with custom error messages
         $validator = Validator::make($request->all(), [
@@ -149,7 +124,6 @@ class LoginController extends Controller
         ]);
 
         if ($validator->fails()) {
-            Log::info('Registration validation failed', ['errors' => $validator->errors()->toArray()]);
             return redirect()->back()
                 ->withErrors($validator->errors())
                 ->withInput($request->except('password', 'password_confirmation'))
@@ -159,10 +133,7 @@ class LoginController extends Controller
         try {
             $validated = $validator->validated();
 
-            Log::info('Creating user with validated data', [
-                'name' => $validated['first_name'] . ' ' . $validated['last_name'],
-                'email' => $validated['email']
-            ]);
+            // ...existing code...
 
             // Create user and verify it was created
             $user = UserData::create([
@@ -172,7 +143,6 @@ class LoginController extends Controller
             ]);
 
             if (!$user) {
-                Log::error('UserData::create returned null');
                 return redirect()->back()
                     ->withErrors(['general' => 'Failed to create account. Please try again.'])
                     ->withInput($request->except('password', 'password_confirmation'))
@@ -182,33 +152,22 @@ class LoginController extends Controller
             // Verify user was actually saved to database
             $savedUser = UserData::where('email', $validated['email'])->first();
             if (!$savedUser) {
-                Log::error('User was not saved to database', ['email' => $validated['email']]);
                 return redirect()->back()
                     ->withErrors(['general' => 'Failed to save account to database. Please try again.'])
                     ->withInput($request->except('password', 'password_confirmation'))
                     ->with('show_register', true);
             }
 
-            Log::info('User created and verified in database successfully', [
-                'user_id' => $user->id, 
-                'email' => $user->email,
-                'saved_user_id' => $savedUser->id
-            ]);
+            // ...existing code...
 
             // Don't log in the user automatically, just redirect to login with success message
-            Log::info('Registration successful, redirecting to login page', [
-                'user_id' => $user->id,
-                'email' => $user->email
-            ]);
+            // ...existing code...
             
             return redirect()->route('login')
                 ->with('success', 'Account created successfully! Please log in with your credentials.');
 
         } catch (\Illuminate\Database\QueryException $e) {
-            Log::error('Database error during registration', [
-                'message' => $e->getMessage(),
-                'code' => $e->getCode()
-            ]);
+            // ...existing code...
             
             if (str_contains($e->getMessage(), 'Duplicate entry') || str_contains($e->getMessage(), 'UNIQUE constraint failed')) {
                 return redirect()->back()
@@ -223,12 +182,7 @@ class LoginController extends Controller
                 ->with('show_register', true);
 
         } catch (\Exception $e) {
-            Log::error('Unexpected registration error', [
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
-            ]);
+            // ...existing code...
             
             return redirect()->back()
                 ->withErrors(['general' => 'An unexpected error occurred. Please try again. Error: ' . $e->getMessage()])
@@ -313,7 +267,7 @@ class LoginController extends Controller
                         'password' => Hash::make($validated['password']),
                     ]);
                     
-                    Log::info('Password set for existing Google user', ['user_id' => $user->id, 'email' => $user->email]);
+                    // ...existing code...
                 } else {
                     // Create new user with Google data and password
                     $user = UserData::create([
@@ -324,7 +278,7 @@ class LoginController extends Controller
                         'password' => Hash::make($validated['password']),
                     ]);
                     
-                    Log::info('New Google OAuth user created with password', ['user_id' => $user->id, 'email' => $user->email]);
+                    // ...existing code...
                 }
                 
                 // Clear the pending Google user data from session
@@ -351,7 +305,7 @@ class LoginController extends Controller
                     'password' => Hash::make($validated['password']),
                 ]);
                 
-                Log::info('Password set for existing OAuth user', ['user_id' => $user->id, 'email' => $user->email]);
+                // ...existing code...
             }
 
             // Log the user in automatically
@@ -360,7 +314,7 @@ class LoginController extends Controller
             return redirect('/')->with('success', 'Password set successfully! You are now logged in.');
 
         } catch (\Exception $e) {
-            Log::error('Password setup error: ' . $e->getMessage());
+            // ...existing code...
             return redirect()->back()
                 ->withErrors(['general' => 'An error occurred while setting up your password. Please try again.'])
                 ->with('show_password_setup', true)

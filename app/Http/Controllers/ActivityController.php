@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\Order;
 use Carbon\Carbon;
+use App\Services\DefaultReviewService;
 
 class ActivityController extends Controller
 {
@@ -88,8 +89,12 @@ class ActivityController extends Controller
                 $imageData = base64_encode(file_get_contents($image->getPathname()));
             }
 
-            // Create activity
-            Activity::create([
+            // Generate default reviews
+            $defaultReviews = DefaultReviewService::generateDefaultReviews();
+            $ratingStats = DefaultReviewService::calculateRatingStats($defaultReviews);
+
+            // Create activity with default reviews
+            Activity::createWithDefaultReviews([
                 'name' => $request->name,
                 'bio' => $request->bio,
                 'image_data' => $imageData,

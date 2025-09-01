@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Services\DefaultReviewService;
 
 class Activity extends Model
 {
@@ -205,5 +206,23 @@ class Activity extends Model
             ->groupBy('booking_date')
             ->orderBy('booking_date', 'desc')
             ->get();
+    }
+
+    /**
+     * Create a new activity with default reviews
+     */
+    public static function createWithDefaultReviews(array $attributes)
+    {
+        // Generate default reviews if not provided
+        if (!isset($attributes['reviews'])) {
+            $defaultReviews = DefaultReviewService::generateDefaultReviews();
+            $ratingStats = DefaultReviewService::calculateRatingStats($defaultReviews);
+            
+            $attributes['reviews'] = $defaultReviews;
+            $attributes['average_rating'] = $ratingStats['average_rating'];
+            $attributes['review_count'] = $ratingStats['review_count'];
+        }
+
+        return static::create($attributes);
     }
 }

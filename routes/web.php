@@ -44,6 +44,7 @@ Route::get('/', function () {
 Route::get('/activities', function (Request $request) {
     $searchDate = $request->get('date');
     $participants = $request->get('participants', 1);
+    $sortBy = $request->get('sort', 'newest'); // Default to newest
     
     $query = Activity::where('is_active', true);
     
@@ -63,12 +64,30 @@ Route::get('/activities', function (Request $request) {
         $query = Activity::whereIn('id', $availableActivityIds)->where('is_active', true);
     }
     
-    $activities = $query->orderBy('created_at', 'desc')->paginate(12);
+    // Apply sorting based on the sort parameter
+    switch ($sortBy) {
+        case 'price_low_to_high':
+            $query->orderBy('price', 'asc');
+            break;
+        case 'price_high_to_low':
+            $query->orderBy('price', 'desc');
+            break;
+        case 'newest':
+            $query->orderBy('created_at', 'desc');
+            break;
+        case 'popular':
+        default:
+            // For popular, we can order by average rating or created_at for now
+            $query->orderBy('average_rating', 'desc')->orderBy('created_at', 'desc');
+            break;
+    }
+    
+    $activities = $query->paginate(12);
     
     // Add search parameters to pagination links
     $activities->appends($request->query());
     
-    return view('activities', compact('activities', 'searchDate', 'participants'));
+    return view('activities', compact('activities', 'searchDate', 'participants', 'sortBy'));
 })->name('activities');
 
 Route::get('/about', function () {

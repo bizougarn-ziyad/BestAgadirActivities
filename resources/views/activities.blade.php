@@ -67,11 +67,11 @@
                         </h2>
                     </div>
                     <div class="flex items-center gap-4">
-                        <select class="bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer">
-                            <option>Sort by Popular</option>
-                            <option>Price: Low to High</option>
-                            <option>Price: High to Low</option>
-                            <option>Newest First</option>
+                        <select id="sortSelect" class="bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer">
+                            <option value="popular" {{ ($sortBy ?? 'popular') === 'popular' ? 'selected' : '' }}>Sort by Popular</option>
+                            <option value="price_low_to_high" {{ ($sortBy ?? '') === 'price_low_to_high' ? 'selected' : '' }}>Price: Low to High</option>
+                            <option value="price_high_to_low" {{ ($sortBy ?? '') === 'price_high_to_low' ? 'selected' : '' }}>Price: High to Low</option>
+                            <option value="newest" {{ ($sortBy ?? '') === 'newest' ? 'selected' : '' }}>Newest Added</option>
                         </select>
                     </div>
                 </div>
@@ -255,6 +255,18 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Load favorite status for all activities when page loads
     loadFavoriteStatuses();
+    
+    // Handle sorting change
+    const sortSelect = document.getElementById('sortSelect');
+    if (sortSelect) {
+        sortSelect.addEventListener('change', function() {
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('sort', this.value);
+            // Reset to page 1 when sorting changes
+            currentUrl.searchParams.delete('page');
+            window.location.href = currentUrl.toString();
+        });
+    }
     
     // Handle favorite button clicks
     const favoriteButtons = document.querySelectorAll('.favorite-btn');
